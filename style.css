@@ -98,13 +98,13 @@
     width: 300px;
   }
 
-  #subtitle_TD {
+  #subtitle {
     position: relative;
-    top: -682px;
-    left: 191px;
+    top: 55px;
+    left: 370px;
     font-size: 14px;
     font-weight: bold;
-    width: 300px;
+    width: 500px;
   }
 
   #title_BU {
@@ -116,14 +116,6 @@
     width: 300px;
   }
 
-  #subtitle_BU {
-    position: relative;
-    top: -732px;
-    left: 921px;
-    font-size: 14px;
-    font-weight: bold;
-    width: 300px;
-  }
   table, th, td {
     border: none;
     border-collapse: collapse;
