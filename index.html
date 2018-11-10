@@ -200,8 +200,13 @@
 				      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
 				      .sort(function(a, b) { return b.dy - a.dy; })
 				      .style("stroke", function (d) {
-				      	console.log("d.target.name: ", d.target.name)
-		                return colour_dict[d.target.name];
+				      	console.log("link d: ", d)
+				      	console.log("link d.source.name: ", d.source.name)
+				      	console.log("link d.target.name: ", d.target.name)
+				      	if (d.source.name === "Tropics") return colour_dict[d.source.name];
+				      	else if (d.source.name === "Mid lat") return colour_dict[d.source.name];
+				      	else if (d.source.name === "High lat") return colour_dict[d.source.name];
+		                else return colour_dict[d.target.name];
 		              });
 
 		        //add in the nodes
