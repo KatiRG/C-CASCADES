@@ -100,20 +100,17 @@
 
   #subtitle {
     position: relative;
-    top: 55px;
+    top: 85px;
     left: 370px;
     font-size: 14px;
     font-weight: bold;
     width: 500px;
   }
 
-  #title_BU {
+  #chart {
     position: relative;
-    top: -733px;
-    left: 960px;
-    font-size: 14px;
-    font-weight: bold;
-    width: 300px;
+    top: 111px;
+    left: 0px;
   }
 
   table, th, td {

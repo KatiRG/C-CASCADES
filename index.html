@@ -26,16 +26,16 @@
 
     <div class="row"> <!-- info row 1 -->
     	<div id="subtitle">Total freshwater CO<sub>2</sub> fluxes: 1292.0 Tg CO<sub>2</sub> yr<sup>-1</sup></div>
-    	<p id="chart">
-	    </p>
+    	<div id="chart">
+	    </div>
 	</div> <!-- ./info row 1 -->
 
 	<script src="sankey.js"></script>
     <script>
 
-    	//Read data
-        //var jsonFile = "data/test_3levels.json";
-        var jsonFile = "data/test_3levels_co2.json";
+    	//Read data      
+        //var jsonFile = "data/test_3levels_co2.json";
+        var jsonFile = "data/test_mean_3levels.json";
 
         //Global stats
         //Global stats for sources
@@ -73,7 +73,7 @@
 	            top: 0,
 	            right: 0,
 	            bottom: 0,
-	            left: 0
+	            left: 60
 	        };
 
 	        var width = 1000 - margin.left - margin.right,
@@ -97,8 +97,8 @@
 
 	        //set the sankey diagram properties
 	        var sankey = d3.sankey()
-	            .nodeWidth(55)
-	            .nodePadding(100)
+	            .nodeWidth(35)
+	            .nodePadding(50)
 	            .size([width, height]);
 
 	        var path = sankey.link();
