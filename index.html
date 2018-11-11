@@ -111,12 +111,12 @@
           	var colour_dict = {
 	            //source
 	            "Mid lat": "#00ff00",
-	            "High lat": "#ffffff",
+	            "High lat": "#bebebe",
 	            "Tropics": "#ffa500",
 	            //target1
-	            "Lakes": "#ccccff",
-	            "Rivers": "#4c4cff",
-	            "Estuaries": "#b2ffff",
+	            "Lakes": "#7f9ed4",
+	            "Rivers": "#16469a",
+	            "Estuaries": "#47eded",
 	            //target2 regions
 	            "Africa": "#F9D423",
 	            "Asia": "#7FA0FF",
@@ -221,10 +221,7 @@
 	                return "translate(" + d.x + "," + d.y + ")";
 	              })
 	              .style("cursor", function (d) {
-	                if (d.name === "fakeSource") {
-	                  return "auto";
-	                } 
-	                else return "crosshair";
+	                 return "crosshair";
 	              });
 	              // .on("click", highlight_node_links)
 	              // .call(function() {
@@ -243,6 +240,24 @@
 	              })
 	              .style("stroke-width", "2px")
 	              .style("stroke", "#555");
+
+	            //apend text to nodes
+	            node.append("text")
+	              .attr("x", -6)
+	              .attr("y", function(d) {
+	                return d.dy / 2;
+	              })
+	              .attr("dy", ".35em")
+	              .attr("text-anchor", "end")
+	              .attr("transform", null)
+	              .text(function(d) {
+	                return d.name;
+	              })
+	              .filter(function(d) {
+	                return d.x < width / 2;
+	              })
+	              .attr("x", 6 + sankey.nodeWidth())
+	              .attr("text-anchor", "start");
 
 	        } //end make()
 
