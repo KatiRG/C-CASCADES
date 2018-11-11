@@ -225,7 +225,13 @@
 	              })
 	              .style("cursor", function (d) {
 	                 return "crosshair";
-	              });
+	              })
+	              .call(d3.behavior.drag() //moves nodes with mouse drag
+		              .origin(function(d) {
+		                return d;
+		              })
+		              .on("drag", dragmove)
+		           );
 	              // .on("click", highlight_node_links)
 	              // .call(function() {
 	              //   manualLayout();
@@ -262,7 +268,7 @@
 	              .attr("x", 6 + sankey.nodeWidth())
 	              .attr("text-anchor", "start");
 
-	        } //end make()
+	        } //end make()	      
 
 	    } //end makeSankey()
 
