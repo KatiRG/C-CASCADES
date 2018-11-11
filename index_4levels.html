@@ -6,7 +6,7 @@
 <!--bootstrap 3.0.2 -->
 <link href="lib/bootstrap.css" rel="stylesheet">
 <script src="lib/bootstrap.min.js"></script>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style_4levels.css" rel="stylesheet" type="text/css">
 
 <title>CO2 Fluxes</title>
 
@@ -35,7 +35,7 @@
 
     	//Read data      
         //var jsonFile = "data/test_3levels_co2.json";
-        var jsonFile = "data/test_mean_3levels.json";
+        var jsonFile = "data/test_mean_4levels.json";
 
         //Global stats
         //Global stats for sources
@@ -97,9 +97,10 @@
 
 	        //set the sankey diagram properties
 	        var sankey = d3.sankey()
-	            .nodeWidth(35)
-	            .nodePadding(50)
-	            .size([width, height]);
+	            .nodeWidth(30)
+	            .nodePadding(10)
+	            //.size([width, height]);
+	            .size([width, 850]);
 
 	        var path = sankey.link();
 
@@ -115,10 +116,10 @@
 	            "Tropics": "#ffa500",
 	            //target1
 	            "Lakes": "#7f9ed4",
-	            "Rivers": "#0d01cb",
+	            "Rivers": "#16469a",
 	            "Estuaries": "#47eded",
 	            //target2 regions
-	            "Africa": "#F9D423",
+	             "Africa": "#F9D423",
 	            "Asia": "#cb011d",
 	            "Europe": "#00ff00",
 	            "N America": "#95649d",
@@ -154,62 +155,35 @@
 	              .links(graph.links)
 	              .layout(32);
 
-
-	            //add the links
-	            // var link = svg.append("g").selectAll(".link")
-		           //    .data(graph.links)
-		           //    .enter().append("path")
-		           //    .attr("class", function (d) {		               
-		           //        if (categories.indexOf(d.target.name) != -1 ){
-		           //          if (subCategories.indexOf(d.source.name) != -1) {
-		           //            return "link link-subsources belongsTo-" + d.target.name;
-		           //          }
-		           //        } else return "link";	               
-		           //    })
-		           //    .attr("d", path)
-		           //    .attr("id", function (d, i) {
-		           //      d.id = i;
-		           //      return "link-" + i;
-		           //    })
-		           //    .style("stroke-width", function(d) {
-		           //      return Math.max(1, d.dy);
-		           //    })
-		           //    .style("stroke", function (d) {
-		           //      return colour_dict[d.target.name];
-		           //    })
-		           //    .style("opacity", function (d) {
-		           //      return 1;
-		           //    })
-		           //    .style("cursor", function (d) {
-		           //     	return "crosshair";
-		           //    })
-		           //    .sort(function(a, b) {
-		           //      return b.dy - a.dy;
-		           //    });
-		           //  // .call(function () {
-		           //  //   DO NOT PUT CALL IN link, PUT IN node (see below)
-		           //  //   manualLayout();
-		           //  // });
-	            // //d3.selectAll(".link-subsources").style("display", "none");
-
 	            var link = svg.append("g").selectAll(".link")
 				      .data(graph.links)
 				    .enter().append("path")
 				      .attr("class", "link")
 				      .attr("d", path)
-				      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
-				      .sort(function(a, b) { return b.dy - a.dy; })
+				      .style("stroke-width", function(d) { 
+				      	if (d.value > 0) return Math.max(1, d.dy);
+				      })
+				      .sort(function(a, b) { 
+				      	if (b.dy && a.dy) {
+				      		return b.dy - a.dy;
+				      	}
+				      	
+				      })
 				      .style("stroke", function (d) {
-				      	// console.log("link d: ", d)
-				      	// console.log("link d.source.name: ", d.source.name)
-				      	// console.log("link d.target.name: ", d.target.name)
-				      	// if (d.source.name === "Tropics") return colour_dict[d.source.name];
-				      	// else if (d.source.name === "Mid lat") return colour_dict[d.source.name];
-				      	// else if (d.source.name === "High lat") return colour_dict[d.source.name];
-				      	// else if (d.source.name === "Rivers") return colour_dict[d.source.name];
-				      	// else if (d.source.name === "Lakes") return colour_dict[d.source.name];
-				      	// else if (d.source.name === "Estuaries") return colour_dict[d.source.name];
-		                return colour_dict[d.source.name];
+				      	if (d.value > 0) {
+					      	if (d.source.name === "Tropics") return colour_dict[d.source.name];
+					      	else if (d.source.name === "Mid lat") return colour_dict[d.source.name];
+					      	else if (d.source.name === "High lat") return colour_dict[d.source.name];
+					      	else if (d.source.name === "Rivers") return colour_dict[d.source.name];
+					      	else if (d.source.name === "Lakes") return colour_dict[d.source.name];
+					      	else if (d.source.name === "Estuaries") return colour_dict[d.source.name];
+					      	else if (d.target.name.indexOf("lakes") >= 0) return colour_dict["Lakes"];
+					      	else if (d.target.name.indexOf("rivers") >= 0) return colour_dict["Rivers"];
+					      	else if (d.target.name.indexOf("estuaries") >= 0) return colour_dict["Estuaries"];
+			            } 
+		              })
+		              .style("stroke-opacity", function (d) {
+		              	if (d.value == 0) return 0;
 		              });
 
 		        //add in the nodes
@@ -221,7 +195,7 @@
 	              })
 	              .attr("transform", function(d) {
 	                //col_xcoord.push(d.x); //x-coord of each Sankey col
-	                return "translate(" + d.x + "," + d.y + ")";
+	                if (d.value > 0) return "translate(" + d.x + "," + d.y + ")";
 	              })
 	              .style("cursor", function (d) {
 	                 return "crosshair";
@@ -240,12 +214,25 @@
 				//apend rects to the nodes
             	node.append("rect")
 	              .attr("height", function(d) {
-	                return d.dy;
+	                if (d.value > 0) return d.dy;
 	              })
 	              .attr("width", sankey.nodeWidth())
 	              .style("fill", function(d, idx) {
-	              	console.log("rect d.name: ", d.name)
-	                return colour_dict[d.name];
+	              	//console.log("rect d.name: ", d.name)
+	              	if (d.name.indexOf("Australia") >= 0) return colour_dict["Oceania"];
+	              	else if (d.name.indexOf("Brazil") >= 0) return colour_dict["S America"];
+	              	else if (d.name.indexOf("Peru") >= 0) return colour_dict["S America"];
+	              	else if (d.name.indexOf("Argentina") >= 0) return colour_dict["S America"];
+	              	else if (d.name.indexOf("Canada") >= 0) return colour_dict["N America"];
+	              	else if (d.name.indexOf("USA") >= 0) return colour_dict["N America"];
+	              	else if (d.name.indexOf("Russia") >= 0) return colour_dict["Europe"];
+	              	else if (d.name.indexOf("Sweden") >= 0) return colour_dict["Europe"];
+	              	else if (d.name.indexOf("Belgium") >= 0) return colour_dict["Europe"];
+	              	else if (d.name.indexOf("China") >= 0) return colour_dict["Asia"];
+	              	else if (d.name.indexOf("India") >= 0) return colour_dict["Asia"];
+	              	else if (d.name.indexOf("Iran") >= 0) return colour_dict["Asia"];
+	              	else if (d.name.indexOf("DRC") >= 0) return colour_dict["Africa"];
+	                else return colour_dict[d.name];
 	              })
 	              .style("stroke-width", "2px")
 	              .style("stroke", "#555");
@@ -254,16 +241,16 @@
 	            node.append("text")
 	              .attr("x", -6)
 	              .attr("y", function(d) {
-	                return d.dy / 2;
+	                if (d.value > 0) return d.dy / 2;
 	              })
 	              .attr("dy", ".35em")
 	              .attr("text-anchor", "end")
 	              .attr("transform", null)
 	              .text(function(d) {
-	                return d.name;
+	                if (d.value > 0) return d.name;
 	              })
 	              .filter(function(d) {
-	                return d.x < width / 2;
+	                if (d.value > 0) return d.x < width / 2;
 	              })
 	              .attr("x", 6 + sankey.nodeWidth())
 	              .attr("text-anchor", "start");
@@ -282,7 +269,9 @@
 		          link.attr("d", path);
 		        }
 
-	        } //end make()	      
+	        } //end make()
+
+
 
 	    } //end makeSankey()
 
@@ -297,6 +286,8 @@
                 a.push(arr[i]);
             return a;
         }
+
+       
 
 
 
