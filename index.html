@@ -115,7 +115,7 @@
 	            "Tropics": "#ffa500",
 	            //target1
 	            "Lakes": "#7f9ed4",
-	            "Rivers": "#16469a",
+	            "Rivers": "#0d01cb",
 	            "Estuaries": "#47eded",
 	            //target2 regions
 	            "Africa": "#F9D423",
@@ -200,13 +200,16 @@
 				      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
 				      .sort(function(a, b) { return b.dy - a.dy; })
 				      .style("stroke", function (d) {
-				      	console.log("link d: ", d)
-				      	console.log("link d.source.name: ", d.source.name)
-				      	console.log("link d.target.name: ", d.target.name)
-				      	if (d.source.name === "Tropics") return colour_dict[d.source.name];
-				      	else if (d.source.name === "Mid lat") return colour_dict[d.source.name];
-				      	else if (d.source.name === "High lat") return colour_dict[d.source.name];
-		                else return colour_dict[d.target.name];
+				      	// console.log("link d: ", d)
+				      	// console.log("link d.source.name: ", d.source.name)
+				      	// console.log("link d.target.name: ", d.target.name)
+				      	// if (d.source.name === "Tropics") return colour_dict[d.source.name];
+				      	// else if (d.source.name === "Mid lat") return colour_dict[d.source.name];
+				      	// else if (d.source.name === "High lat") return colour_dict[d.source.name];
+				      	// else if (d.source.name === "Rivers") return colour_dict[d.source.name];
+				      	// else if (d.source.name === "Lakes") return colour_dict[d.source.name];
+				      	// else if (d.source.name === "Estuaries") return colour_dict[d.source.name];
+		                return colour_dict[d.source.name];
 		              });
 
 		        //add in the nodes
