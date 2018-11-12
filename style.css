@@ -49,54 +49,6 @@
     border-color: #000;
     border-radius: 8px;
   }
-  
-  .nytg-sort li.selected {
-    background: none repeat scroll 0 0 #e9e9e9;
-    border-color: #aaa;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2) inset;
-    color: #555;
-  }
-
-  .nytg-sort li.enabled {    
-    border-color: #808080;
-    color: #595959;
-  }  
-  
-  ul {
-    list-style: outside none none;
-    margin-top: 80px;
-  }
-
-   .nytg-sort li {
-    background: none repeat scroll 0 0 #f9f9f9;
-    border-bottom: 1px solid #ccc;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    border-top: 1px solid #ccc;
-    color: #999;
-    cursor: pointer;
-    float: left;
-    font-size: 14px;
-    margin: 0;
-    padding: 10px 18px;
-    border-radius: 4px 4px 4px 4px;
-  }
-
-  #infotext {
-    position: absolute;
-    top: 50px;
-    left: 106px;
-    width: 950px;
-  }
-
-  #title_TD {
-    position: relative;
-    top: -683px;
-    left: 228px;
-    font-size: 14px;
-    font-weight: bold;
-    width: 300px;
-  }
 
   #subtitle {
     position: relative;
@@ -109,7 +61,7 @@
 
   #chart {
     position: relative;
-    top: -400px;
+    top: -550px;
     left: 0px;
   }
 
