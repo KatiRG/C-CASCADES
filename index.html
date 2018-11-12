@@ -210,6 +210,10 @@
 				    .enter().append("path")
 				      .attr("class", "link")
 				      .attr("d", path)
+				      .attr("id", function (d, i) {
+		                d.id = i;
+		                return "link-" + i;
+		              })
 				      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
 				      .sort(function(a, b) { return b.dy - a.dy; })
 				      .style("stroke", function (d) {
@@ -231,7 +235,7 @@
 	                //   maxValue = getStat(maxStat, d);
 
 	                //Reduce opacity of all but link that is moused over	                
-	                // d3.selectAll(".link:not(#" + this.id + ")").style("opacity", 0.5);
+	                d3.selectAll(".link:not(#" + this.id + ")").style("opacity", 0.5);
 	                	               
                   	//Tooltip
                   	var sourceName = (d.source.name === "Tropics" || d.source.name === "Mid lat" || d.source.name === "High lat") ? 
@@ -249,13 +253,12 @@
 	                    "</table>"
                     )
                     .style("left", (d3.event.pageX) + "px")
-                    .style("top", (d3.event.pageY - yshift_tooltip) + "px");	                
+                    .style("top", (d3.event.pageY - yshift_tooltip) + "px");
 	              })
 	              .on("mouseout", function(d) {   
 
 	                //Restore opacity
-	                // d3.selectAll(".link:not(#" + this.id + ")").style("opacity", 1)
-	                // d3.select("#link-fake").style("opacity", 0);
+	                d3.selectAll(".link:not(#" + this.id + ")").style("opacity", 1);
 
 	                div.transition()
 	                  .style("opacity", 0);
