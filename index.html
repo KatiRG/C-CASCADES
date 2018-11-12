@@ -79,7 +79,7 @@
 	        var width = 1000 - margin.left - margin.right,
 	            height = 1500 - margin.top - margin.bottom;
 
-	        var formatNumber = d3.format(".0f"), //d3.format(".2f"),
+	        var formatNumber = d3.format(".2f"), //d3.format(".2f"),
 	            format = function(d) {
 	              return formatNumber(d);
 	            },
@@ -97,8 +97,8 @@
 
 	        //set the sankey diagram properties
 	        var sankey = d3.sankey()
-	            .nodeWidth(35)
-	            .nodePadding(50)
+	            .nodeWidth(30)
+	            .nodePadding(10)
 	            .size([width, height]);
 
 	        var path = sankey.link();
@@ -106,6 +106,7 @@
 	        var col_xcoord = []; //x-coords of Sankey cols
 
 	        var units = "Tg CO<sub>2</sub> yr <sup>-1</sup>";
+	        var yshift_tooltip = 90; //amount to raise tooltip in y-dirn
 
 	        //https://www.colorcodehex.com/eff3ff/
           	var colour_dict = {
@@ -125,6 +126,13 @@
 	            "S America": "#f13e16",
 	            "Oceania": "#007f00"
           	};
+
+          	var name_dict = {
+            	//latitude bands
+            	"Tropics": "Tropics (> 50 degrees)",
+            	"High lat": "High latitudes (< -50 degrees)",
+            	"Mid lat": "Mid latitudes (30–50 degrees)"
+        	}
 
 	        //load the data        
 	        d3.json(jsonFile, function(error, graph) {
@@ -153,6 +161,11 @@
 	              .nodes(graph.nodes)
 	              .links(graph.links)
 	              .layout(32);
+
+	            // tooltip div
+	            var div = d3.select("body").append("div")
+	              .attr("class", "tooltip")
+	              .style("opacity", 0);
 
 
 	            //add the links
@@ -197,6 +210,10 @@
 				    .enter().append("path")
 				      .attr("class", "link")
 				      .attr("d", path)
+				      .attr("id", function (d, i) {
+		                d.id = i;
+		                return "link-" + i;
+		              })
 				      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
 				      .sort(function(a, b) { return b.dy - a.dy; })
 				      .style("stroke", function (d) {
@@ -211,6 +228,41 @@
 				      	// else if (d.source.name === "Estuaries") return colour_dict[d.source.name];
 		                return colour_dict[d.source.name];
 		              });
+
+		        //add link tooltip
+	            link.on("mouseover", function(d) {
+	                // var minValue = getStat(minStat, d),
+	                //   maxValue = getStat(maxStat, d);
+
+	                //Reduce opacity of all but link that is moused over	                
+	                d3.selectAll(".link:not(#" + this.id + ")").style("opacity", 0.5);
+	                	               
+                  	//Tooltip
+                  	var sourceName = (d.source.name === "Tropics" || d.source.name === "Mid lat" || d.source.name === "High lat") ? 
+                  					name_dict[d.source.name] : d.source.name;
+                 	div.transition()
+                    .style("opacity", .9);
+                  	div.html(
+	                    "<b>" + sourceName + "</b>"+ "<br><br>" +
+	                    "<table>" +
+	                      "<tr>" + 
+	                      "<td>" + d.target.name + " flux: </td>" +
+	                        "<td><b>" + format(d.value)  + "</td>" +
+	                        "<td>" + " " + units + "</td>" +
+	                      "</tr>" +
+	                    "</table>"
+                    )
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - yshift_tooltip) + "px");
+	              })
+	              .on("mouseout", function(d) {   
+
+	                //Restore opacity
+	                d3.selectAll(".link:not(#" + this.id + ")").style("opacity", 1);
+
+	                div.transition()
+	                  .style("opacity", 0);
+	              });
 
 		        //add in the nodes
 	            var node = svg.append("g").selectAll(".node")
@@ -260,7 +312,8 @@
 	              .attr("text-anchor", "end")
 	              .attr("transform", null)
 	              .text(function(d) {
-	                return d.name;
+	              	if (d.name === "Tropics" || d.name === "Mid lat" || d.name === "High lat") return name_dict[d.name];
+	                else return d.name;
 	              })
 	              .filter(function(d) {
 	                return d.x < width / 2;
