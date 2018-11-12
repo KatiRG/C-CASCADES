@@ -50,6 +50,13 @@
     border-radius: 8px;
   }
 
+  #infotext {
+    position: absolute;
+    top: 50px;
+    left: 106px;
+    width: 950px;
+}
+
   #subtitle {
     position: relative;
     top: 85px;
