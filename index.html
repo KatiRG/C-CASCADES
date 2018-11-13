@@ -333,14 +333,11 @@
 	              	console.log("d: ", d)
 	              	console.log("d.name: ", d.name)
 	              	console.log("d.value: ", d.value)
-	              	// console.log("this: ", this)
-	              	// console.log("select this text: ", d3.select(this).text())
 
-	              	//Reduce opacity of all but link that is moused over	                
-	                // d3.selectAll(".link:not(.from" + d.name.replace(/\s+/g, '') + ")").style("opacity", .5);
-	                // d3.selectAll(".link:not(.to" + d.name.replace(/\s+/g, '') + ")").style("opacity", .5);
+	              	//Make all links inactive
 	                d3.selectAll(".link").classed("inactive", true);
 
+	                //Remove inactive class to selected links and make them active
 	                if (d.sourceLinks.length > 0) { //rect acts as a source to next rect
 	                	var fromLink = d3.selectAll(".from" + d.name.replace(/\s+/g, ''));
 	                	fromLink.classed("inactive", !fromLink.classed("inactive"));
@@ -355,14 +352,10 @@
 	                	toLink.classed("active", true);
 	                }
 
-
-	                
-	                
-
 	              	var sourceName = (d.name === "Tropics" || d.name === "Mid lat" || d.name === "High lat") ? 
                   					name_dict[d.name] : d.name;
 	              	div.transition()
-                    //.style("opacity", .9);
+                    .style("opacity", .9);
                   	div.html(
 	                    "<b>" + sourceName + "</b>"+ "<br><br>" +
 	                    "<table>" +
@@ -378,12 +371,12 @@
 
 	              })
 				  .on("mouseout", function(d) {
-				  	console.log("mouseout")
+				  	//Remove active and inactive classes added on mouseover
 	                d3.selectAll(".inactive").classed("inactive", false);
 	                d3.selectAll(".active").classed("active", false);
 
-	                // div.transition()
-	                //   .style("opacity", 0);
+	                div.transition()
+	                  .style("opacity", 0);
 	              });
 
 	            // the function for moving the nodes
