@@ -379,7 +379,8 @@
 	              })
 				  .on("mouseout", function(d) {
 				  	console.log("mouseout")
-	                //d3.selectAll(".link").style("stroke-opacity", 0.5);
+	                d3.selectAll(".inactive").classed("inactive", false);
+	                d3.selectAll(".active").classed("active", false);
 
 	                // div.transition()
 	                //   .style("opacity", 0);
