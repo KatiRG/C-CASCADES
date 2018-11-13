@@ -208,12 +208,20 @@
 	            var link = svg.append("g").selectAll(".link")
 				      .data(graph.links)
 				    .enter().append("path")
-				      .attr("class", "link")
+				      //.attr("class", "link")
+				      .attr("class", function (d, i) {
+		              	var fromName = "from" + d.source.name.replace(/\s+/g, ''),
+		              		toName = "to" + d.target.name.replace(/\s+/g, '');
+		              	return "link" + " " + fromName + " " + toName;
+		              })
 				      .attr("d", path)
 				      .attr("id", function (d, i) {
 		                d.id = i;
 		                return "link-" + i;
 		              })
+		              // .attr("class", function (d, i) {
+		              // 	console.log("link d: ", d)
+		              // })
 				      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
 				      .sort(function(a, b) { return b.dy - a.dy; })
 				      .style("stroke", function (d) {
@@ -296,7 +304,6 @@
 	              })
 	              .attr("width", sankey.nodeWidth())
 	              .style("fill", function(d, idx) {
-	              	console.log("rect d.name: ", d.name)
 	                return colour_dict[d.name];
 	              })
 	              .style("stroke-width", "2px")
@@ -320,6 +327,64 @@
 	              })
 	              .attr("x", 6 + sankey.nodeWidth())
 	              .attr("text-anchor", "start");
+
+	              //add node tooltip
+	              node.on("mouseover", function(d) {
+	              	console.log("d: ", d)
+	              	console.log("d.name: ", d.name)
+	              	console.log("d.value: ", d.value)
+	              	// console.log("this: ", this)
+	              	// console.log("select this text: ", d3.select(this).text())
+
+	              	//Reduce opacity of all but link that is moused over	                
+	                // d3.selectAll(".link:not(.from" + d.name.replace(/\s+/g, '') + ")").style("opacity", .5);
+	                // d3.selectAll(".link:not(.to" + d.name.replace(/\s+/g, '') + ")").style("opacity", .5);
+	                d3.selectAll(".link").classed("inactive", true);
+
+	                if (d.sourceLinks.length > 0) { //rect acts as a source to next rect
+	                	var fromLink = d3.selectAll(".from" + d.name.replace(/\s+/g, ''));
+	                	fromLink.classed("inactive", !fromLink.classed("inactive"));
+
+	                	fromLink.classed("active", true);
+	                }
+
+	                if (d.targetLinks.length > 0) { //rect acts as a target from previous rect
+	                	var toLink = d3.selectAll(".to" + d.name.replace(/\s+/g, ''));	                	
+	                	toLink.classed("inactive", !toLink.classed("inactive"));
+
+	                	toLink.classed("active", true);
+	                }
+
+
+	                
+	                
+
+	              	var sourceName = (d.name === "Tropics" || d.name === "Mid lat" || d.name === "High lat") ? 
+                  					name_dict[d.name] : d.name;
+	              	div.transition()
+                    //.style("opacity", .9);
+                  	div.html(
+	                    "<b>" + sourceName + "</b>"+ "<br><br>" +
+	                    "<table>" +
+	                      "<tr>" + 
+	                      "<td> Total flux: </td>" +
+	                        "<td><b>" + format(d.value)  + "</td>" +
+	                        "<td>" + " " + units + "</td>" +
+	                      "</tr>" +
+	                    "</table>"
+                    )
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - yshift_tooltip) + "px");
+
+	              })
+				  .on("mouseout", function(d) {
+				  	console.log("mouseout")
+	                d3.selectAll(".inactive").classed("inactive", false);
+	                d3.selectAll(".active").classed("active", false);
+
+	                // div.transition()
+	                //   .style("opacity", 0);
+	              });
 
 	            // the function for moving the nodes
 		        function dragmove(d) {
