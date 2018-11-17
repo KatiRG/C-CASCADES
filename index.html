@@ -6,7 +6,7 @@
 <!--bootstrap 3.0.2 -->
 <link href="lib/bootstrap.css" rel="stylesheet">
 <script src="lib/bootstrap.min.js"></script>
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="style.css.orig" rel="stylesheet" type="text/css">
 
 <title>CO2 Fluxes</title>
 
@@ -15,27 +15,23 @@
 	<div class="container">
     
     <div class="row"> <!-- header row -->
-      	<div class="col-lg-7 headings" style="text-align: center; left:207px;">
+      	<div class="col-lg-8 headings" style="text-align: center; left:207px;">
         	CO<sub>2</sub> fluxes across countries and regions from freshwater sources
       	</div>
-
-      	<div id="infotext">
+    </div> <!-- ./header row -->
+    <div class="row"> <!-- info row -->
+      	<div class="col-lg-8" id="infotext">
       		CO<sub>2</sub> flux estimates over the period 2003&ndash;2012 from the LOAC budget showing contributions (mean [min, max] in Tg CO<sub>2</sub> yr<sup>-1</sup>) from 3 freshwater source categories (Rivers, Lakes, and Estuaries) in terms of 3 latitude bands and 6 continental regions.
       	</div>
-    </div> <!-- ./header row -->
+    </div> <!-- ./info row -->
 
     <div class="row"> <!-- row for info -->
-    	<div id="subtitle">Total freshwater CO<sub>2</sub> fluxes: 1292.0 Tg CO<sub>2</sub> yr<sup>-1</sup></div>
+    	<div class="col-lg-8" id="subtitle">Total freshwater CO<sub>2</sub> fluxes: 1292.0 Tg CO<sub>2</sub> yr<sup>-1</sup></div>
 	</div> <!-- ./row for info -->
 
 	<div class="row"> <!-- row for charts -->    	
     	<div class="col-lg-4" id="chart1"></div>
     	<div class="col-lg-4" id="chart2"></div>
-    	<div class="col-lg-4">
-    		<div class="row"> </div>
-    			<div class="col-lg-4" id="treemap1"></div>
-
-    	</div>
 	</div> <!-- ./row for charts -->
 
 	<!-- class="col-lg-2" -->
@@ -50,8 +46,7 @@
         var jsonFile2 = "data/LOAC_budget_TgCyr181113_sankey2.json";
 
         makeSankey("#chart1", jsonFile1, 1);
-        makeSankey("#chart2", jsonFile2, 2);
-        makeSankey("#treemap1", jsonFile2, 3);
+        makeSankey("#chart2", jsonFile2, 2);       
 
         function makeSankey(chart_div, jsonFile, chartNum) {          
 	         var margin = {
