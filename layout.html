@@ -64,11 +64,93 @@
         // var jsonFile = "data/test_mean_3levels.json";
         var jsonFile1 = "data/LOAC_budget_TgCyr181113_sankey1.json";
         var jsonFile2 = "data/LOAC_budget_TgCyr181113_sankey2.json";
+        var treemapFile1 = "data/party_asset.json";
 
         makeSankey("#chart1", jsonFile1, 1);
         makeSankey("#chart2", jsonFile2, 2);
 
-        function makeSankey(chart_div, jsonFile, chartNum) {          
+        makeTreemap("#treemap1", treemapFile1);
+
+        function makeTreemap(chart_id, jsonFile) {
+
+        	var w = 200 - 80,
+		    h = 800 - 180,
+		    x = d3.scale.linear().range([0, w]),
+		    y = d3.scale.linear().range([0, h]),
+		    color = d3.scale.category20c(),
+		    root,
+		    node;
+
+			var treemap = d3.layout.treemap()
+			    .round(false)
+			    .size([w, h])
+			    .sticky(true)
+			    .value(function(d) { return d.total; });
+
+			var svg = d3.select(chart_id).append("div")
+			    .attr("class", "chart")
+			    .style("width", w + "px")
+			    .style("height", h + "px")
+			  .append("svg:svg")
+			    .attr("width", w)
+			    .attr("height", h)
+			  .append("svg:g")
+			    .attr("transform", "translate(.5,.5)");
+
+			//d3.json("kinoko_takenoko.json", function(data) {
+			d3.json(jsonFile, function(data) {
+			  node = root = data;
+			  console.log(data);
+			  var nodes = treemap.nodes(root)
+			      .filter(function(d) {return !d.children; });
+
+			  var cell = svg.selectAll("g")
+			      .data(nodes)
+			    .enter().append("svg:g")
+			      .attr("class", "cell")
+			      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+			  cell.append("svg:rect")
+			      .attr("width", function(d) { return d.dx - 1; })
+			      .attr("height", function(d) { return d.dy - 1; })
+			      .style("fill", function(d) {return color(d.parent.name); });
+
+			  cell.append("svg:text")
+			      .attr("x", function(d) { return d.dx / 2; })
+			      .attr("y", function(d) { return d.dy / 2; })
+			      .attr("dy", ".35em")
+			      .attr("text-anchor", "middle")
+			      .text(function(d) { return d.name; })
+			      .style("opacity", function(d) { d.w = this.getComputedTextLength(); return d.dx > d.w ? 1 : 0; });
+			});
+
+			function size(d) {
+			  return d.size;
+			}
+
+			function total(d) {
+			  return d.total;
+			}
+
+			function building(d) {
+			  return d.building;
+			}
+
+			function ground(d) {
+			  return d.ground;
+			}
+
+			function cash(d) {
+			  return d.cash;
+			}
+
+			function count(d) {
+			  return 1;
+			}
+
+        } //.makeTreemap
+
+        function makeSankey(chart_div, jsonFile, chartNum) {
 	         var margin = {
 	            top: 0,
 	            right: 0,
