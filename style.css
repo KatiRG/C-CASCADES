@@ -7,14 +7,15 @@
   }
   
   .container {
-    margin-left: 10px;
+    margin: 0 auto;
+    text-align: left;
   }
 
   .headings {
     font-size: 20px;
     padding-left: 20px;
     color: #565656;
-    text-align: left;
+    text-align: center;
   }
   
   .node rect {
@@ -57,31 +58,36 @@
     border-radius: 8px;
   }
 
-  #infotext {
-    position: absolute;
-    top: 50px;
-    left: 106px;
-    width: 950px;
-}
+ #infotext {
+    /*position: absolute;*/
+    top: 20px;
+    /*left: 106px;*/
+    /*width: 950px;*/
+  }
 
   #subtitle {
-    position: relative;
-    top: 85px;
-    left: 370px;
+    /*position: relative;*/
+    top: 55px;
+    /*left: 370px;*/
     font-size: 14px;
     font-weight: bold;
-    width: 500px;
+    text-align: center;
+    /*width: 500px;*/
   }
 
-  #chart1 {
+  .sankeyChart {
+    /*top: 170px;*/
+  }
+
+  #chart1, #chart2, #treemap1, #treemap2 {
     position: relative;
-    top: -600px;
-    left: 0px;
+    top: 70px;
+    /*left: 0px;*/
   }
   #chart2 {
-    position: relative;
+/*    position: relative;
     top: -600px;
-    left: 180px;
+    left: 180px;*/
   }
 
   table, th, td {
