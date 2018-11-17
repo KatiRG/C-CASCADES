@@ -75,15 +75,24 @@
     /*width: 500px;*/
   }
 
-  .sankeyChart {
-    /*top: 170px;*/
-  }
-
-  #chart1, #chart2, #treemap1, #treemap2 {
+  #treemap1, #treemap2, #treemap3,
+  #treemap4, #treemap5, #treemap6 {
     position: relative;
     top: 70px;
     /*left: 0px;*/
   }
+
+  #chart1 {
+    position: relative;
+    top: -600px;
+  }
+
+  #chart2 {
+    position: relative;
+    top: -620px;
+  }
+
+
   #chart2 {
 /*    position: relative;
     top: -600px;
