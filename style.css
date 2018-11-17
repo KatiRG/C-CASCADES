@@ -75,8 +75,13 @@
 
   #chart1 {
     position: relative;
-    top: -550px;
+    top: -600px;
     left: 0px;
+  }
+  #chart2 {
+    position: relative;
+    top: -600px;
+    left: 160px;
   }
 
   table, th, td {
