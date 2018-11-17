@@ -26,7 +26,7 @@
 
     <div class="row"> <!-- info row 1 -->
     	<div id="subtitle">Total freshwater CO<sub>2</sub> fluxes: 1292.0 Tg CO<sub>2</sub> yr<sup>-1</sup></div>
-    	<div id="chart">
+    	<div id="chart1">
 	    </div>
 	</div> <!-- ./info row 1 -->
 
@@ -67,7 +67,7 @@
           {sourceName:"Russia", mean: 38, min: 31, max: 44}
         ];
 
-        makeSankey("#chart", jsonFile, TD_sourceStats, TD_regionStats);
+        makeSankey("#chart1", jsonFile, TD_sourceStats, TD_regionStats);
 
         function makeSankey(chart_div, jsonFile, sourceStats, regionStats) {          
 	         var margin = {
@@ -112,13 +112,13 @@
 	        //https://www.colorcodehex.com/eff3ff/
           	var colour_dict = {
 	            //source
-	            "Lakes": "#7f9ed4",
-	            "Rivers": "#0d01cb",
-	            "Estuaries": "#47eded",
+	            "Lakes": "#607890",
+	            "Rivers": "#A9C1D9",
+	            "Estuaries": "#ABBE71", //AED17E
 	            //target Sankey1
-	             "Mid lat": "#00ff00",
-	            "High lat": "#bebebe",
-	            "Tropics": "#ffa500"
+	             "Mid lat": "#CC982A",
+	            "High lat": "#928941",
+	            "Tropics": "#FFDC68"
           	};
 
           	var name_dict = {
