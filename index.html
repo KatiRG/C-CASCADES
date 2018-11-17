@@ -31,6 +31,11 @@
 	<div class="row"> <!-- row for charts -->    	
     	<div class="col-lg-4" id="chart1"></div>
     	<div class="col-lg-4" id="chart2"></div>
+    	<div class="col-lg-4">
+    		<div class="row"> </div>
+    			<div class="col-lg-4" id="treemap1"></div>
+
+    	</div>
 	</div> <!-- ./row for charts -->
 
 	<!-- class="col-lg-2" -->
@@ -45,7 +50,8 @@
         var jsonFile2 = "data/LOAC_budget_TgCyr181113_sankey2.json";
 
         makeSankey("#chart1", jsonFile1, 1);
-         makeSankey("#chart2", jsonFile2, 2);
+        makeSankey("#chart2", jsonFile2, 2);
+        makeSankey("#treemap1", jsonFile2, 3);
 
         function makeSankey(chart_div, jsonFile, chartNum) {          
 	         var margin = {
@@ -197,21 +203,9 @@
 		                d.id = i;
 		                return "link-" + i;
 		              })
-		              // .attr("class", function (d, i) {
-		              // 	console.log("link d: ", d)
-		              // })
 				      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
 				      .sort(function(a, b) { return b.dy - a.dy; })
 				      .style("stroke", function (d) {
-				      	// console.log("link d: ", d)
-				      	// console.log("link d.source.name: ", d.source.name)
-				      	// console.log("link d.target.name: ", d.target.name)
-				      	// if (d.source.name === "Tropics") return colour_dict[d.source.name];
-				      	// else if (d.source.name === "Mid lat") return colour_dict[d.source.name];
-				      	// else if (d.source.name === "High lat") return colour_dict[d.source.name];
-				      	// else if (d.source.name === "Rivers") return colour_dict[d.source.name];
-				      	// else if (d.source.name === "Lakes") return colour_dict[d.source.name];
-				      	// else if (d.source.name === "Estuaries") return colour_dict[d.source.name];
 		                return colour_dict[d.source.name];
 		              });
 
@@ -222,7 +216,7 @@
 
 	                //Reduce opacity of all but link that is moused over	                
 	                d3.selectAll(".link:not(#" + this.id + ")").style("opacity", 0.5);
-	                	               
+
                   	//Tooltip
                   	var sourceName = (d.source.name === "Tropics" || d.source.name === "Mid lat" || d.source.name === "High lat") ? 
                   					name_dict[d.source.name] : d.source.name;
