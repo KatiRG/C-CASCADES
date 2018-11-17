@@ -35,7 +35,8 @@
 
     	//Read data      
         //var jsonFile = "data/test_3levels_co2.json";
-        var jsonFile = "data/test_mean_3levels.json";
+        // var jsonFile = "data/test_mean_3levels.json";
+        var jsonFile = "data/LOAC_budget_TgCyr181113_sankey1.json";
 
         //Global stats
         //Global stats for sources
@@ -76,7 +77,7 @@
 	            left: 60
 	        };
 
-	        var width = 1000 - margin.left - margin.right,
+	        var width = 670 - margin.left - margin.right,
 	            height = 1500 - margin.top - margin.bottom;
 
 	        var formatNumber = d3.format(".2f"), //d3.format(".2f"),
@@ -111,20 +112,13 @@
 	        //https://www.colorcodehex.com/eff3ff/
           	var colour_dict = {
 	            //source
-	            "Mid lat": "#00ff00",
-	            "High lat": "#bebebe",
-	            "Tropics": "#ffa500",
-	            //target1
 	            "Lakes": "#7f9ed4",
 	            "Rivers": "#0d01cb",
 	            "Estuaries": "#47eded",
-	            //target2 regions
-	            "Africa": "#F9D423",
-	            "Asia": "#cb011d",
-	            "Europe": "#00ff00",
-	            "N America": "#95649d",
-	            "S America": "#f13e16",
-	            "Oceania": "#007f00"
+	            //target Sankey1
+	             "Mid lat": "#00ff00",
+	            "High lat": "#bebebe",
+	            "Tropics": "#ffa500"
           	};
 
           	var name_dict = {
