@@ -59,23 +59,20 @@
 	<script src="sankey.js"></script>
     <script>
 
-    	//Read data      
-        //var jsonFile = "data/test_3levels_co2.json";
-        // var jsonFile = "data/test_mean_3levels.json";
+    	//Data files
         var jsonFile1 = "data/LOAC_budget_TgCyr181113_sankey1.json";
         var jsonFile2 = "data/LOAC_budget_TgCyr181113_sankey2.json";
-        // var treemapFile1 = "data/party_asset.json";
-        var treemapFile1 = "data/treemap_africa.json";
+
 
         // makeSankey("#chart1", jsonFile1, 1);
         makeSankey("#chart2", jsonFile2, 2);
 
         makeTreemap("#treemap1", "data/treemap_samerica.json", 197);
         makeTreemap("#treemap2", "data/treemap_africa.json", 114);
-        makeTreemap("#treemap3", treemapFile1, 228);
-        makeTreemap("#treemap4", treemapFile1, 100);
-        makeTreemap("#treemap5", treemapFile1, 100);
-        makeTreemap("#treemap6", treemapFile1, 100);
+        makeTreemap("#treemap3", "data/treemap_asia.json", 231);
+        makeTreemap("#treemap4", "data/treemap_namer.json", 167.316);
+        makeTreemap("#treemap5", "data/treemap_oceania.json", 15);
+        makeTreemap("#treemap6", "data/treemap_europe.json", 61);
 
         function makeTreemap(chart_id, jsonFile, h) {
 

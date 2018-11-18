@@ -1,0 +1,53 @@
+{
+"name":"flux",
+"children":
+	[
+		
+		{
+		"name":"breakdown",
+		"children":
+			[
+				{
+				 "name": "Sweden",
+	
+				 "children":
+					[
+						{
+						 "name": "Sw riv",
+						 "total":"0.4"
+						},
+						{
+						 "name": " Sw lakes",
+						 "total":"7.8"
+						},
+						{
+						 "name": "Sw es",
+						 "total":"0.5"
+						}
+						
+					]
+				},
+
+				{
+				 "name": "Belgium",
+				  "children":
+					[
+						{
+						 "name": "B r",
+						 "total":"0.1"
+						},
+						{
+						 "name": " B es",
+						 "total":"0.1"
+						}
+					]
+				},
+
+				{
+				 "name": "Remaining",
+				 "total":"89.8"
+				}
+			]
+		}
+	]
+}

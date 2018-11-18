@@ -1,0 +1,56 @@
+{
+"name":"flux",
+"children":
+	[
+		
+		{
+		"name":"breakdown",
+		"children":
+			[
+				{
+				 "name": "Canada",
+	
+				 "children":
+					[
+						{
+						 "name": "C riv",
+						 "total":"9.5"
+						},
+						{
+						 "name": " C lakes",
+						 "total":"139.8"
+						},
+						{
+						 "name": "C es",
+						 "total":"13.3"
+						}
+						
+					]
+				},
+
+				{
+				 "name": "USA",
+				  "children":
+					[
+						{
+						 "name": "US r",
+						 "total":"69.0"
+						},
+						{
+						 "name": "US l",
+						 "total":"33.0"
+						},
+						{
+						 "name": " US es",
+						 "total":"10.9"
+						}
+					]
+				},
+				{
+				 "name": "Remaining",
+				 "total":"3.4"
+				}
+			]
+		}
+	]
+}
