@@ -34,22 +34,22 @@
     	<div class="col-lg-4" id="chart2">sankey2</div>
     	<div class="col-lg-4">
     		<div class="row"> 
-    			<div id="treemap1"></div>
+    			<div id="treemap1"></div> <!--S Amer-->
     		</div>
     		<div class="row"> 
-    			<div id="treemap2"></div>
+    			<div id="treemap2" style="padding-top:87.3px;"></div> <!--Africa-->
     		</div>
     		<div class="row"> 
-    			<div id="treemap3"></div>
+    			<div id="treemap3"></div> <!--Asia-->
     		</div>
     		<div class="row"> 
-    			<div id="treemap4"></div>
+    			<div id="treemap4"></div> <!--N Amer-->
     		</div>
     		<div class="row"> 
-    			<div id="treemap5"></div>
+    			<div id="treemap5"></div> <!--Oceania-->
     		</div>
     		<div class="row"> 
-    			<div id="treemap6"></div>
+    			<div id="treemap6"></div> <!--Europe-->
     		</div>
     	</div>
 	</div> <!-- ./row for charts -->
@@ -67,8 +67,8 @@
         makeSankey("#chart1", jsonFile1, 1);
         makeSankey("#chart2", jsonFile2, 2);
 
-        makeTreemap("#treemap1", "data/treemap_samerica.json", 197);
-        makeTreemap("#treemap2", "data/treemap_africa.json", 114);
+        makeTreemap("#treemap1", "data/treemap_samerica.json", 134.28);
+        makeTreemap("#treemap2", "data/treemap_africa.json", 34.7); //pad top 87.3
         makeTreemap("#treemap3", "data/treemap_asia.json", 231);
         makeTreemap("#treemap4", "data/treemap_namer.json", 167.316);
         makeTreemap("#treemap5", "data/treemap_oceania.json", 15);
