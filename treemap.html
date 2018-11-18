@@ -188,13 +188,16 @@
 	              	});
 
 			    cell.on("mouseover", function(d) {
+			    	console.log("d: ", d)
 					console.log("d.parent.children: ", d.parent.children)
+					console.log("d.parent.value: ", d.parent.value)
 					console.log("Rivers LOAC: ", d.parent.children.find(x => x.LOAC === "Rivers"))
 					console.log("Rivers tot LOAC: ", d.parent.children.find(x => x.LOAC === "Rivers").total)	
 					
 					var title = d.parent.name,
 					 	val_rivers = d.parent.children.find(x => x.LOAC === "Rivers").total,
-					 	val_lakes = d.parent.children.find(x => x.LOAC === "Lakes").total;
+					 	val_lakes = d.parent.children.find(x => x.LOAC === "Lakes").total
+					 	val_tot = d.parent.value;
 
 					//check if estuaries value exists before assigning					
 					 	val_est = d.parent.children.find(x => x.LOAC === "Estuaries") ? 
@@ -221,6 +224,12 @@
 				          "<td> Estuaries (E): </td>" +
 				            "<td><b>" + val_est  + "</td>" +
 				            "<td>" + " " + units + "</td>" +
+				          "</tr>" +
+
+				          "<tr>" + 
+				          "<td><b> TOTAL: </b></td>" +
+				            "<td><b>" + val_tot  + "</b></td>" +
+				            "<td><b>" + " " + units + "</b></td>" +
 				          "</tr>" +
 
 				        "</table>"
