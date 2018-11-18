@@ -175,7 +175,10 @@
 				      	console.log("fill d parent: ", d.parent.name)
 				      	// return color(d.parent.name);
 				      	return countryColour_dict[d.parent.name];
-				    });
+				    })
+				    .style("cursor", function (d) {
+	                	return "crosshair";
+	              	});
 
 				 cell.append("svg:text")
 				    .attr("x", function(d) { return d.dx / 2; })
@@ -183,11 +186,21 @@
 				    .attr("dy", ".35em")
 				    .attr("text-anchor", "middle")
 				    .text(function(d) { return d.name; })
-				    .style("opacity", function(d) { d.w = this.getComputedTextLength(); return d.dx > d.w ? 1 : 0; });
+				    .style("opacity", function(d) { d.w = this.getComputedTextLength(); return d.dx > d.w ? 1 : 0; })
+				    .style("cursor", function (d) {
+	                	return "crosshair";
+	              	});
 
 			    cell.on("mouseover", function(d) {
 					console.log("MOUSEOVER d: ", d)
-					var title = d.parent.name;
+					console.log("d.parent.children: ", d.parent.children)
+					console.log("Rivers LOAC: ", d.parent.children.find(x => x.LOAC === "Rivers"))
+					console.log("Rivers tot LOAC: ", d.parent.children.find(x => x.LOAC === "Rivers").total)
+					
+					var title = d.parent.name,
+					 	val_rivers = d.parent.children.find(x => x.LOAC === "Rivers").total,
+					 	val_lakes = d.parent.children.find(x => x.LOAC === "Lakes").total,
+					 	val_est = d.parent.children.find(x => x.LOAC === "Estuaries").total;
 
 					div.transition()
 					    .style("opacity", .9);
@@ -195,10 +208,23 @@
 				        "<b>" + title + "</b>"+ "<br><br>" +
 				        "<table>" +
 				          "<tr>" + 
-				          "<td> Total flux: </td>" +
-				            "<td><b>" + 999  + "</td>" +
+				          "<td> Rivers (R): </td>" +
+				            "<td><b>" + val_rivers  + "</td>" +
 				            "<td>" + " " + units + "</td>" +
 				          "</tr>" +
+
+				          "<tr>" + 
+				          "<td> Lakes (L): </td>" +
+				            "<td><b>" + val_lakes  + "</td>" +
+				            "<td>" + " " + units + "</td>" +
+				          "</tr>" +
+
+				          "<tr>" + 
+				          "<td> Estuaries (E): </td>" +
+				            "<td><b>" + val_est  + "</td>" +
+				            "<td>" + " " + units + "</td>" +
+				          "</tr>" +
+
 				        "</table>"
 				    )
 				    .style("left", (d3.event.pageX) + "px")
