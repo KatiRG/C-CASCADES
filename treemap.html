@@ -63,6 +63,12 @@
         var jsonFile1 = "data/LOAC_budget_TgCyr181113_sankey1.json";
         var jsonFile2 = "data/LOAC_budget_TgCyr181113_sankey2.json";
 
+        //Number format
+        var formatNumber = d3.format(".2f"), //d3.format(".2f"),
+        format = function(d) {
+          	return formatNumber(d);
+        }
+
         //Dictionaries
       	var colour_dict = {
             //source
@@ -210,25 +216,25 @@
 				        "<table>" +
 				          "<tr>" + 
 				          "<td> Rivers (R): </td>" +
-				            "<td><b>" + val_rivers  + "</td>" +
+				            "<td><b>" + format(val_rivers)  + "</td>" +
 				            "<td>" + " " + units + "</td>" +
 				          "</tr>" +
 
 				          "<tr>" + 
 				          "<td> Lakes (L): </td>" +
-				            "<td><b>" + val_lakes  + "</td>" +
+				            "<td><b>" + format(val_lakes)  + "</td>" +
 				            "<td>" + " " + units + "</td>" +
 				          "</tr>" +
 
 				          "<tr>" + 
 				          "<td> Estuaries (E): </td>" +
-				            "<td><b>" + val_est  + "</td>" +
+				            "<td><b>" + format(val_est)  + "</td>" +
 				            "<td>" + " " + units + "</td>" +
 				          "</tr>" +
 
 				          "<tr>" + 
 				          "<td><b> TOTAL: </b></td>" +
-				            "<td><b>" + val_tot  + "</b></td>" +
+				            "<td><b>" + format(val_tot)  + "</b></td>" +
 				            "<td><b>" + " " + units + "</b></td>" +
 				          "</tr>" +
 
@@ -282,11 +288,7 @@
 	        var width = 360 - margin.left - margin.right,
 	            height = 1500 - margin.top - margin.bottom;
 
-	        var formatNumber = d3.format(".2f"), //d3.format(".2f"),
-	            format = function(d) {
-	              return formatNumber(d);
-	            },
-	        color = d3.scale.category20();
+	        var color = d3.scale.category20();
 
 	        //append the svg canvas to the page
 	        var svg = d3.select(chart_div).append("svg")
