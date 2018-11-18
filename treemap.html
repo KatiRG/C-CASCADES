@@ -194,20 +194,16 @@
 	              	});
 
 			    cell.on("mouseover", function(d) {
-			    	console.log("d: ", d)
-					console.log("d.parent.children: ", d.parent.children)
-					console.log("d.parent.value: ", d.parent.value)
-					console.log("Rivers LOAC: ", d.parent.children.find(x => x.LOAC === "Rivers"))
-					console.log("Rivers tot LOAC: ", d.parent.children.find(x => x.LOAC === "Rivers").total)	
-					
 					var title = d.parent.name,
 					 	val_rivers = d.parent.children.find(x => x.LOAC === "Rivers").total,
-					 	val_lakes = d.parent.children.find(x => x.LOAC === "Lakes").total
 					 	val_tot = d.parent.value;
 
-					//check if estuaries value exists before assigning					
-					 	val_est = d.parent.children.find(x => x.LOAC === "Estuaries") ? 
+					//check if estuaries or lakes LOAC value exists before assigning
+					var	val_est = d.parent.children.find(x => x.LOAC === "Estuaries") ? 
 					 	d.parent.children.find(x => x.LOAC === "Estuaries").total : 0.0;
+
+					var	val_lakes = d.parent.children.find(x => x.LOAC === "Lakes") ? 
+					 	d.parent.children.find(x => x.LOAC === "Lakes").total : 0.0;
 
 					div.transition()
 					    .style("opacity", .9);
@@ -249,31 +245,7 @@
       				   .style("opacity", 0);
 				  });
 				  
-			});
-
-			// function size(d) {
-			//   return d.size;
-			// }
-
-			// function total(d) {
-			//   return d.total;
-			// }
-
-			// function building(d) {
-			//   return d.building;
-			// }
-
-			// function ground(d) {
-			//   return d.ground;
-			// }
-
-			// function cash(d) {
-			//   return d.cash;
-			// }
-
-			// function count(d) {
-			//   return 1;
-			// }
+			});		
 
         } //.makeTreemap
 
@@ -497,10 +469,6 @@
 
 	              //add node tooltip
 	              node.on("mouseover", function(d) {
-	              	console.log("d: ", d)
-	              	console.log("d.name: ", d.name)
-	              	console.log("d.value: ", d.value)
-
 	              	//Make all links inactive
 	                d3.selectAll(".link").classed("inactive", true);
 
@@ -513,7 +481,7 @@
 	                }
 
 	                if (d.targetLinks.length > 0) { //rect acts as a target from previous rect
-	                	var toLink = d3.selectAll(".to" + d.name.replace(/\s+/g, '') + chartNum);	                	
+	                	var toLink = d3.selectAll(".to" + d.name.replace(/\s+/g, '') + chartNum);
 	                	toLink.classed("inactive", !toLink.classed("inactive"));
 
 	                	toLink.classed("active", true);

@@ -14,14 +14,17 @@
 					[
 						{
 						 "name": "Australia Rivers",
+						 "LOAC": "Rivers",
 						 "total":"5.1"
 						},
 						{
 						 "name": " Lakes",
+						 "LOAC": "Lakes",
 						 "total":"2.5"
 						},
 						{
 						 "name": "Estuaries",
+						 "LOAC": "Estuaries",
 						 "total":"4.9"
 						}
 						

@@ -14,14 +14,17 @@
 					[
 						{
 						 "name": "R",
+						 "LOAC": "Rivers",
 						 "total":"0.4"
 						},
 						{
 						 "name": " Sweden Lakes",
+						 "LOAC": "Lakes",
 						 "total":"7.8"
 						},
 						{
 						 "name": "E",
+						 "LOAC": "Estuaries",
 						 "total":"0.5"
 						}
 						
@@ -34,10 +37,12 @@
 					[
 						{
 						 "name": "R",
+						 "LOAC": "Rivers",
 						 "total":"0.1"
 						},
 						{
 						 "name": "E",
+						 "LOAC": "Estuaries",
 						 "total":"0.1"
 						}
 					]
