@@ -1,0 +1,34 @@
+{
+"name":"flux",
+"children":
+	[
+		{
+		"name":"total",
+		"children":
+			[
+				{
+				 "name": "total",
+				 "total":"192.3"
+				}
+			]
+		},
+		{
+		"name":"breakdown",
+		"children":
+			[
+				{
+				 "name": "rivers",
+				 "total":"162.5"
+				},
+				{
+				 "name": "lakes",
+				 "total":"24.3"
+				},
+				{
+				 "name": "est",
+				 "total":"5.5"
+				}
+			]
+		}
+	]
+}
