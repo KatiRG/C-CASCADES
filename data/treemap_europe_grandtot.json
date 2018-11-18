@@ -17,7 +17,7 @@
 						 "total":"0.4"
 						},
 						{
-						 "name": " Sweden lakes",
+						 "name": " Sw lakes",
 						 "total":"7.8"
 						},
 						{
@@ -41,6 +41,11 @@
 						 "total":"0.1"
 						}
 					]
+				},
+
+				{
+				 "name": "Remaining",
+				 "total":"89.8"
 				}
 			]
 		}

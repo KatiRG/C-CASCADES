@@ -13,15 +13,15 @@
 				 "children":
 					[
 						{
-						 "name": "China riv",
+						 "name": "Ch riv",
 						 "total":"25.0"
 						},
 						{
-						 "name": " China lakes",
+						 "name": " Ch lakes",
 						 "total":"9.4"
 						},
 						{
-						 "name": "China es",
+						 "name": "Ch es",
 						 "total":"3.7"
 						}
 						
@@ -33,15 +33,15 @@
 				  "children":
 					[
 						{
-						 "name": "India r",
+						 "name": "Ind r",
 						 "total":"23.1"
 						},
 						{
-						 "name": "India l",
+						 "name": "Ind l",
 						 "total":"8.4"
 						},
 						{
-						 "name": " India es",
+						 "name": " Ind es",
 						 "total":"4.7"
 						}
 					]
@@ -52,15 +52,15 @@
 				  "children":
 					[
 						{
-						 "name": "Iran r",
+						 "name": "Ir r",
 						 "total":"1.6"
 						},
 						{
-						 "name": "Iran l",
+						 "name": "Ir l",
 						 "total":"4.2"
 						},
 						{
-						 "name": " Iran es",
+						 "name": " Ir es",
 						 "total":"0.4"
 						}
 					]
@@ -68,6 +68,11 @@
 
 
 
+				},
+
+				{
+				 "name": "Remaining Asia",
+				 "total":"299.4"
 				}
 			]
 		}

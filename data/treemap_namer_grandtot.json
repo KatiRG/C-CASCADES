@@ -17,7 +17,7 @@
 						 "total":"9.5"
 						},
 						{
-						 "name": " Canada lakes",
+						 "name": " C lakes",
 						 "total":"139.8"
 						},
 						{
@@ -33,11 +33,11 @@
 				  "children":
 					[
 						{
-						 "name": "US rivers",
+						 "name": "US r",
 						 "total":"69.0"
 						},
 						{
-						 "name": "US lakes",
+						 "name": "US l",
 						 "total":"33.0"
 						},
 						{
@@ -45,6 +45,10 @@
 						 "total":"10.9"
 						}
 					]
+				},
+				{
+				 "name": "Remaining",
+				 "total":"3.4"
 				}
 			]
 		}
