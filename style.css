@@ -78,8 +78,9 @@
   #treemap1, #treemap2, #treemap3,
   #treemap4, #treemap5, #treemap6 {
     position: relative;
-    top: 70px;
+    top: 64px;
     padding-top: 10px;
+    padding-left: 10px;
     /*left: 0px;*/
   }
 

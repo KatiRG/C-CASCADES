@@ -2,7 +2,16 @@
 "name":"flux",
 "children":
 	[
-		
+		{
+		"name":"SA total",
+		"children":
+			[
+				{
+				 "name": "tot",
+				 "total":"325.1"
+				}
+			]
+		},
 		{
 		"name":"breakdown",
 		"children":
@@ -13,7 +22,7 @@
 				 "children":
 					[
 						{
-						 "name": "B riv",
+						 "name": "B rivers",
 						 "total":"24.3"
 						},
 						{
@@ -30,14 +39,15 @@
 
 				{
 				 "name": "Peru",
+
 				  "children":
 					[
 						{
-						 "name": "P r",
+						 "name": "P rivers",
 						 "total":"21.0"
 						},
 						{
-						 "name": "P l",
+						 "name": "P lakes",
 						 "total":"1.8"
 						},
 						{
@@ -47,32 +57,10 @@
 					]
 				},
 
+
 				{
 				 "name": "Arg",
-				  "children":
-					[
-						{
-						 "name": "A r",
-						 "total":"6.1"
-						},
-						{
-						 "name": "A l",
-						 "total":"1.8"
-						},
-						{
-						 "name": " A es",
-						 "total":"0.6"
-						}
-					]
-		
-
-
-
-				},
-
-				{
-				 "name": "Remaining SA",
-				 "total":"101.3"
+				 "total":"8.5"
 				}
 			]
 		}

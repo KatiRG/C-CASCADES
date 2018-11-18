@@ -30,9 +30,9 @@
 	</div> <!-- ./row for info -->
 
 	<div class="row"> <!-- row for charts -->    	
-    	<div class="col-lg-5" id="chart1"></div>
-    	<div class="col-lg-5" id="chart2">sankey2</div>
-    	<div class="col-lg-2">
+    	<div class="col-lg-4" id="chart1"></div>
+    	<div class="col-lg-4" id="chart2">sankey2</div>
+    	<div class="col-lg-4">
     		<div class="row"> 
     			<div id="treemap1"></div>
     		</div>
@@ -67,20 +67,20 @@
         // var treemapFile1 = "data/party_asset.json";
         var treemapFile1 = "data/treemap_africa.json";
 
-        makeSankey("#chart1", jsonFile1, 1);
+        // makeSankey("#chart1", jsonFile1, 1);
         makeSankey("#chart2", jsonFile2, 2);
 
-        makeTreemap("#treemap1", "data/treemap_samerica.json");
-        makeTreemap("#treemap2", treemapFile1);
-        makeTreemap("#treemap3", treemapFile1);
-        makeTreemap("#treemap4", treemapFile1);
-        makeTreemap("#treemap5", treemapFile1);
-        makeTreemap("#treemap6", treemapFile1);
+        makeTreemap("#treemap1", "data/treemap_samerica.json", 197);
+        makeTreemap("#treemap2", "data/treemap_africa.json", 114);
+        makeTreemap("#treemap3", treemapFile1, 228);
+        makeTreemap("#treemap4", treemapFile1, 100);
+        makeTreemap("#treemap5", treemapFile1, 100);
+        makeTreemap("#treemap6", treemapFile1, 100);
 
-        function makeTreemap(chart_id, jsonFile) {
+        function makeTreemap(chart_id, jsonFile, h) {
 
-        	var w = 100,
-		    h = 100,
+        	var w = 390,//130,
+		    //h = 100,
 		    x = d3.scale.linear().range([0, w]),
 		    y = d3.scale.linear().range([0, h]),
 		    color = d3.scale.category20c(),
@@ -164,7 +164,7 @@
 	            left: 0
 	        };
 
-	        var width = 460 - margin.left - margin.right,
+	        var width = 360 - margin.left - margin.right,
 	            height = 1500 - margin.top - margin.bottom;
 
 	        var formatNumber = d3.format(".2f"), //d3.format(".2f"),
