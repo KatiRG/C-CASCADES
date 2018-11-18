@@ -1,10 +1,10 @@
 {
-"name":"flux",
+"name":"AsiaFlux",
 "children":
 	[
 		
 		{
-		"name":"breakdown",
+		"name":"Asia",
 		"children":
 			[
 				{
@@ -13,15 +13,15 @@
 				 "children":
 					[
 						{
-						 "name": "China riv",
+						 "name": "China Rivers",
 						 "total":"25.0"
 						},
 						{
-						 "name": " China lakes",
+						 "name": " China L",
 						 "total":"9.4"
 						},
 						{
-						 "name": "China es",
+						 "name": "China E",
 						 "total":"3.7"
 						}
 						
@@ -33,15 +33,15 @@
 				  "children":
 					[
 						{
-						 "name": "India r",
+						 "name": "India Rivers",
 						 "total":"23.1"
 						},
 						{
-						 "name": "India l",
+						 "name": "L",
 						 "total":"8.4"
 						},
 						{
-						 "name": " India es",
+						 "name": "E",
 						 "total":"4.7"
 						}
 					]
@@ -52,15 +52,15 @@
 				  "children":
 					[
 						{
-						 "name": "Iran r",
+						 "name": "R",
 						 "total":"1.6"
 						},
 						{
-						 "name": "Iran l",
+						 "name": "Ir L",
 						 "total":"4.2"
 						},
 						{
-						 "name": " Iran es",
+						 "name": "E",
 						 "total":"0.4"
 						}
 					]

@@ -63,6 +63,28 @@
         var jsonFile1 = "data/LOAC_budget_TgCyr181113_sankey1.json";
         var jsonFile2 = "data/LOAC_budget_TgCyr181113_sankey2.json";
 
+        //Dictionaries
+        var countryColour_dict = {
+        	//S America
+        	"Brazil": "#128c0b",
+        	"Peru": "#7FAF1B",
+        	"Argentina": "#C3FF68",
+        	//Africa
+        	"DRC": "#fff44f",  //"#ffff4d", //"#EDAC03", //#E4F658, #FCE00F
+        	//Asia
+        	"China": "#ED5E6D",
+        	"India": "#9D6766",
+        	"Iran": "#9F8088", //"#C8C8A9",
+        	//N America
+        	"Canada": "#b9aabd",
+        	"US": "#cecbd1", //"#ECE5CE",
+        	//Oceania
+        	"Australia": "#60ffad", //"#79ffba", //"#DEFFEE",
+        	//Europe
+        	"Belgium": "#8f7e94", //"#F7E9CC",
+        	"Sweden": "#F1D4AF"
+        }
+
 
         makeSankey("#chart1", jsonFile1, 1);
         makeSankey("#chart2", jsonFile2, 2);
@@ -116,7 +138,12 @@
 			  cell.append("svg:rect")
 			      .attr("width", function(d) { return d.dx - 1; })
 			      .attr("height", function(d) { return d.dy - 1; })
-			      .style("fill", function(d) {return color(d.parent.name); });
+			      .style("fill", function(d) {
+			      	console.log("fill d: ", d)
+			      	console.log("fill d parent: ", d.parent.name)
+			      	// return color(d.parent.name);
+			      	return countryColour_dict[d.parent.name];
+			      });
 
 			  cell.append("svg:text")
 			      .attr("x", function(d) { return d.dx / 2; })

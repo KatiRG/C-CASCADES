@@ -1,10 +1,10 @@
 {
-"name":"flux",
+"name":"OceaniaFlux",
 "children":
 	[
 		
 		{
-		"name":"breakdown",
+		"name":"Oceania",
 		"children":
 			[
 				{
@@ -13,15 +13,15 @@
 				 "children":
 					[
 						{
-						 "name": "Aus rivers",
+						 "name": "Australia Rivers",
 						 "total":"5.1"
 						},
 						{
-						 "name": " Aus lakes",
+						 "name": " Lakes",
 						 "total":"2.5"
 						},
 						{
-						 "name": "Aus estuaries",
+						 "name": "Estuaries",
 						 "total":"4.9"
 						}
 						

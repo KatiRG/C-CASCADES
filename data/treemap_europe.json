@@ -1,10 +1,10 @@
 {
-"name":"flux",
+"name":"EuropeFlux",
 "children":
 	[
 		
 		{
-		"name":"breakdown",
+		"name":"Europe",
 		"children":
 			[
 				{
@@ -13,15 +13,15 @@
 				 "children":
 					[
 						{
-						 "name": "Sw riv",
+						 "name": "R",
 						 "total":"0.4"
 						},
 						{
-						 "name": " Sweden lakes",
+						 "name": " Sweden Lakes",
 						 "total":"7.8"
 						},
 						{
-						 "name": "Sw es",
+						 "name": "E",
 						 "total":"0.5"
 						}
 						
@@ -33,11 +33,11 @@
 				  "children":
 					[
 						{
-						 "name": "B r",
+						 "name": "R",
 						 "total":"0.1"
 						},
 						{
-						 "name": " B es",
+						 "name": "E",
 						 "total":"0.1"
 						}
 					]

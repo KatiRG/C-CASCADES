@@ -1,10 +1,10 @@
 {
-"name":"flux",
+"name":"SAmerFlux",
 "children":
 	[
 		
 		{
-		"name":"breakdown",
+		"name":"SAmer",
 		"children":
 			[
 				{
@@ -13,15 +13,15 @@
 				 "children":
 					[
 						{
-						 "name": "B riv",
+						 "name": "Brazil Rivers",
 						 "total":"162.5"
 						},
 						{
-						 "name": " B lakes",
+						 "name": " Lakes",
 						 "total":"24.3"
 						},
 						{
-						 "name": "B es",
+						 "name": "E",
 						 "total":"5.5"
 						}
 						
@@ -33,34 +33,34 @@
 				  "children":
 					[
 						{
-						 "name": "P r",
+						 "name": "Peru R",
 						 "total":"21.0"
 						},
 						{
-						 "name": "P l",
+						 "name": "L",
 						 "total":"1.8"
 						},
 						{
-						 "name": " P es",
+						 "name": "E",
 						 "total":"0.1"
 						}
 					]
 				},
 
 				{
-				 "name": "Arg",
+				 "name": "Argentina",
 				  "children":
 					[
 						{
-						 "name": "A r",
+						 "name": "Arg R",
 						 "total":"6.1"
 						},
 						{
-						 "name": "A l",
+						 "name": "L",
 						 "total":"1.8"
 						},
 						{
-						 "name": " A es",
+						 "name": "E",
 						 "total":"0.6"
 						}
 					]

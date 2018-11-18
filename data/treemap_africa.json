@@ -1,22 +1,22 @@
 {
-"name":"flux",
+"name":"AfricaFlux",
 "children":
 	[
 	{
-		"name":"breakdown",
+		"name":"Africa",
 		"children":
 			[
 				{
-				 "name": "Congo",
+				 "name": "DRC",
 	
 				 "children":
 					[
 						{
-						 "name": "DRC riv",
+						 "name": "DRC Rivers",
 						 "total":"46.7"
 						},
 						{
-						 "name": " DRC lakes",
+						 "name": " DRC Lakes",
 						 "total":"11.1"
 						}						
 					]
