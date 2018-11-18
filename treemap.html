@@ -64,6 +64,30 @@
         var jsonFile2 = "data/LOAC_budget_TgCyr181113_sankey2.json";
 
         //Dictionaries
+      	var colour_dict = {
+            //source
+            "Lakes": "#607890",
+            "Rivers": "#A9C1D9",
+            "Estuaries": "#ABBE71", //AED17E
+            //target Sankey1
+             "Mid lat": "#CC982A",
+            "High lat": "#928941",
+            "Tropics": "#FFDC68",
+            "Europe": "#FAB491",
+            "S America": "#0F7409",
+            "Oceania": "#00CC99",
+            "Africa": "#EBCD0C",
+            "N America": "#B5B0B9",
+            "Asia": "#C02942"
+      	};
+
+      	var name_dict = {
+        	//latitude bands
+        	"Tropics": "Tropics (> 50 degrees)",
+        	"High lat": "High latitudes (< -50 degrees)",
+        	"Mid lat": "Mid latitudes (30–50 degrees)"
+    	}
+
         var countryColour_dict = {
         	//S America
         	"Brazil": "#15a40d",
@@ -86,7 +110,7 @@
         	"Sweden": "#F1D4AF"
         }
 
-
+        //Call each component
         makeSankey("#chart1", jsonFile1, 1);
         makeSankey("#chart2", jsonFile2, 2);
 
@@ -98,6 +122,13 @@
         makeTreemap("#treemap6", "data/treemap_europe.json", 20);  //61
 
         function makeTreemap(chart_id, jsonFile, h) {
+
+        	//tooltip div
+            var div = d3.select("body").append("div")
+              .attr("class", "tooltip")
+              .style("opacity", 0);
+            var units = "Tg CO<sub>2</sub> yr <sup>-1</sup>";
+	        var yshift_tooltip = 90; //amount to raise tooltip in y-dirn
 
         	var w = 390,//130,
 		    //h = 100,
@@ -125,59 +156,88 @@
 
 			//d3.json("kinoko_takenoko.json", function(data) {
 			d3.json(jsonFile, function(data) {
-			  node = root = data;
-			  console.log(data);
-			  var nodes = treemap.nodes(root)
-			      .filter(function(d) {return !d.children; });
+				node = root = data;
+				console.log(data);
+				var nodes = treemap.nodes(root)
+				    .filter(function(d) {return !d.children; });
 
-			  var cell = svg.selectAll("g")
-			      .data(nodes)
-			    .enter().append("svg:g")
-			      .attr("class", "cell")
-			      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+				var cell = svg.selectAll("g")
+				    .data(nodes)
+				    .enter().append("svg:g")
+				      .attr("class", "cell")
+				      .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 
-			  cell.append("svg:rect")
-			      .attr("width", function(d) { return d.dx - 1; })
-			      .attr("height", function(d) { return d.dy - 1; })
-			      .style("fill", function(d) {
-			      	console.log("fill d: ", d)
-			      	console.log("fill d parent: ", d.parent.name)
-			      	// return color(d.parent.name);
-			      	return countryColour_dict[d.parent.name];
-			      });
+				cell.append("svg:rect")
+				    .attr("width", function(d) { return d.dx - 1; })
+				    .attr("height", function(d) { return d.dy - 1; })
+				    .style("fill", function(d) {
+				     	console.log("fill d: ", d)
+				      	console.log("fill d parent: ", d.parent.name)
+				      	// return color(d.parent.name);
+				      	return countryColour_dict[d.parent.name];
+				    });
 
-			  cell.append("svg:text")
-			      .attr("x", function(d) { return d.dx / 2; })
-			      .attr("y", function(d) { return d.dy / 2; })
-			      .attr("dy", ".35em")
-			      .attr("text-anchor", "middle")
-			      .text(function(d) { return d.name; })
-			      .style("opacity", function(d) { d.w = this.getComputedTextLength(); return d.dx > d.w ? 1 : 0; });
+				 cell.append("svg:text")
+				    .attr("x", function(d) { return d.dx / 2; })
+				    .attr("y", function(d) { return d.dy / 2; })
+				    .attr("dy", ".35em")
+				    .attr("text-anchor", "middle")
+				    .text(function(d) { return d.name; })
+				    .style("opacity", function(d) { d.w = this.getComputedTextLength(); return d.dx > d.w ? 1 : 0; });
+
+			    cell.on("mouseover", function(d) {
+					console.log("MOUSEOVER d: ", d)
+					var title = d.parent.name;
+
+					div.transition()
+					    .style("opacity", .9);
+				  	div.html(
+				        "<b>" + title + "</b>"+ "<br><br>" +
+				        "<table>" +
+				          "<tr>" + 
+				          "<td> Total flux: </td>" +
+				            "<td><b>" + 999  + "</td>" +
+				            "<td>" + " " + units + "</td>" +
+				          "</tr>" +
+				        "</table>"
+				    )
+				    .style("left", (d3.event.pageX) + "px")
+				    .style("top", (d3.event.pageY - yshift_tooltip) + "px");
+
+
+
+				   })
+				  .on("mouseout", function(d) {
+				  	//Remove active and inactive classes added on mouseover
+				   	div.transition()
+      				   .style("opacity", 0);
+				  });
+				  
 			});
 
-			function size(d) {
-			  return d.size;
-			}
+			// function size(d) {
+			//   return d.size;
+			// }
 
-			function total(d) {
-			  return d.total;
-			}
+			// function total(d) {
+			//   return d.total;
+			// }
 
-			function building(d) {
-			  return d.building;
-			}
+			// function building(d) {
+			//   return d.building;
+			// }
 
-			function ground(d) {
-			  return d.ground;
-			}
+			// function ground(d) {
+			//   return d.ground;
+			// }
 
-			function cash(d) {
-			  return d.cash;
-			}
+			// function cash(d) {
+			//   return d.cash;
+			// }
 
-			function count(d) {
-			  return 1;
-			}
+			// function count(d) {
+			//   return 1;
+			// }
 
         } //.makeTreemap
 
@@ -221,31 +281,6 @@
 	        var units = "Tg CO<sub>2</sub> yr <sup>-1</sup>";
 	        var yshift_tooltip = 90; //amount to raise tooltip in y-dirn
 
-	        //https://www.colorcodehex.com/eff3ff/
-          	var colour_dict = {
-	            //source
-	            "Lakes": "#607890",
-	            "Rivers": "#A9C1D9",
-	            "Estuaries": "#ABBE71", //AED17E
-	            //target Sankey1
-	             "Mid lat": "#CC982A",
-	            "High lat": "#928941",
-	            "Tropics": "#FFDC68",
-	            "Europe": "#FAB491",
-	            "S America": "#0F7409",
-	            "Oceania": "#00CC99",
-	            "Africa": "#EBCD0C",
-	            "N America": "#B5B0B9",
-	            "Asia": "#C02942"
-          	};
-
-          	var name_dict = {
-            	//latitude bands
-            	"Tropics": "Tropics (> 50 degrees)",
-            	"High lat": "High latitudes (< -50 degrees)",
-            	"Mid lat": "Mid latitudes (30–50 degrees)"
-        	}
-
 	        //load the data        
 	        d3.json(jsonFile, function(error, graph) {
 	            make(graph);
@@ -274,7 +309,7 @@
 	              .links(graph.links)
 	              .layout(32);
 
-	            // tooltip div
+	            //tooltip div
 	            var div = d3.select("body").append("div")
 	              .attr("class", "tooltip")
 	              .style("opacity", 0);
