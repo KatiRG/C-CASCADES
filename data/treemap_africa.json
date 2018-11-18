@@ -13,12 +13,14 @@
 					[
 						{
 						 "name": "DRC Rivers",
+						 "LOAC": "Rivers",
 						 "total":"46.7"
 						},
 						{
-						 "name": " DRC Lakes",
+						 "name": "DRC Lakes",
+						 "LOAC": "Lakes",
 						 "total":"11.1"
-						}						
+						}				
 					]
 				}
 			]

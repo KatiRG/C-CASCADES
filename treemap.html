@@ -156,8 +156,7 @@
 
 			//d3.json("kinoko_takenoko.json", function(data) {
 			d3.json(jsonFile, function(data) {
-				node = root = data;
-				console.log(data);
+				node = root = data;				
 				var nodes = treemap.nodes(root)
 				    .filter(function(d) {return !d.children; });
 
@@ -171,9 +170,6 @@
 				    .attr("width", function(d) { return d.dx - 1; })
 				    .attr("height", function(d) { return d.dy - 1; })
 				    .style("fill", function(d) {
-				     	console.log("fill d: ", d)
-				      	console.log("fill d parent: ", d.parent.name)
-				      	// return color(d.parent.name);
 				      	return countryColour_dict[d.parent.name];
 				    })
 				    .style("cursor", function (d) {
@@ -192,15 +188,17 @@
 	              	});
 
 			    cell.on("mouseover", function(d) {
-					console.log("MOUSEOVER d: ", d)
 					console.log("d.parent.children: ", d.parent.children)
 					console.log("Rivers LOAC: ", d.parent.children.find(x => x.LOAC === "Rivers"))
-					console.log("Rivers tot LOAC: ", d.parent.children.find(x => x.LOAC === "Rivers").total)
+					console.log("Rivers tot LOAC: ", d.parent.children.find(x => x.LOAC === "Rivers").total)	
 					
 					var title = d.parent.name,
 					 	val_rivers = d.parent.children.find(x => x.LOAC === "Rivers").total,
-					 	val_lakes = d.parent.children.find(x => x.LOAC === "Lakes").total,
-					 	val_est = d.parent.children.find(x => x.LOAC === "Estuaries").total;
+					 	val_lakes = d.parent.children.find(x => x.LOAC === "Lakes").total;
+
+					//check if estuaries value exists before assigning					
+					 	val_est = d.parent.children.find(x => x.LOAC === "Estuaries") ? 
+					 	d.parent.children.find(x => x.LOAC === "Estuaries").total : 0.0;
 
 					div.transition()
 					    .style("opacity", .9);
@@ -229,9 +227,6 @@
 				    )
 				    .style("left", (d3.event.pageX) + "px")
 				    .style("top", (d3.event.pageY - yshift_tooltip) + "px");
-
-
-
 				   })
 				  .on("mouseout", function(d) {
 				  	//Remove active and inactive classes added on mouseover
