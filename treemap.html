@@ -34,13 +34,13 @@
     	<div class="col-lg-4" id="chart2">sankey2</div>
     	<div class="col-lg-4">
     		<div class="row"> 
-    			<div id="treemap1"></div> <!--S Amer-->
+    			<div id="treemap1" style="padding-top:6px;"></div> <!--S Amer-->
     		</div>
     		<div class="row"> 
-    			<div id="treemap2" style="padding-top:87.3px;"></div> <!--Africa-->
+    			<div id="treemap2" style="padding-top:88.3px;"></div> <!--Africa-->
     		</div>
     		<div class="row"> 
-    			<div id="treemap3" style="padding-top:190.7px;"></div> <!--Asia-->
+    			<div id="treemap3" style="padding-top:105.5px;"></div> <!--Asia-->
     		</div>
     		<div class="row"> 
     			<div id="treemap4"></div> <!--N Amer-->
@@ -66,7 +66,7 @@
         //Dictionaries
         var countryColour_dict = {
         	//S America
-        	"Brazil": "#128c0b",
+        	"Brazil": "#15a40d",
         	"Peru": "#7FAF1B",
         	"Argentina": "#C3FF68",
         	//Africa
@@ -75,6 +75,7 @@
         	"China": "#ED5E6D",
         	"India": "#9D6766",
         	"Iran": "#9F8088", //"#C8C8A9",
+        	"Russia": "#E78084",
         	//N America
         	"Canada": "#b9aabd",
         	"US": "#cecbd1", //"#ECE5CE",
@@ -91,7 +92,7 @@
 
         makeTreemap("#treemap1", "data/treemap_samerica.json", 134.28);
         makeTreemap("#treemap2", "data/treemap_africa.json", 34.7); //pad top 87.3
-        makeTreemap("#treemap3", "data/treemap_asia.json", 48.37); //pad 190.7    // 231);
+        makeTreemap("#treemap3", "data/treemap_asia_withRussia.json", 134.6); //134.6 //48.37 //pad 190.7    // 231);
         makeTreemap("#treemap4", "data/treemap_namer.json", 167.316);
         makeTreemap("#treemap5", "data/treemap_oceania.json", 15);
         makeTreemap("#treemap6", "data/treemap_europe.json", 20);  //61
