@@ -14,14 +14,17 @@
 					[
 						{
 						 "name": "China R",
+						 "LOAC": "Rivers",
 						 "total":"25.0"
 						},
 						{
 						 "name": "L",
+						 "LOAC": "Lakes",
 						 "total":"9.4"
 						},
 						{
 						 "name": "E",
+						 "LOAC": "Estuaries",
 						 "total":"3.7"
 						}
 						
@@ -34,14 +37,17 @@
 					[
 						{
 						 "name": "India Rivers",
+						 "LOAC": "Rivers",
 						 "total":"23.1"
 						},
 						{
 						 "name": "L",
+						 "LOAC": "Lakes",
 						 "total":"8.4"
 						},
 						{
 						 "name": "E",
+						 "LOAC": "Estuaries",
 						 "total":"4.7"
 						}
 					]
@@ -53,14 +59,17 @@
 					[
 						{
 						 "name": "Rivers",
+						 "LOAC": "Rivers",
 						 "total":"17.1"
 						},
 						{
 						 "name": "Russia Lakes",
+						 "LOAC": "Lakes",
 						 "total":"109.6"
 						},
 						{
 						 "name": "E",
+						 "LOAC": "Estuaries",
 						 "total":"17.1"
 						}
 					]
@@ -72,14 +81,17 @@
 					[
 						{
 						 "name": "R",
+						 "LOAC": "Rivers",
 						 "total":"1.6"
 						},
 						{
 						 "name": "Iran L",
+						 "LOAC": "Lakes",
 						 "total":"4.2"
 						},
 						{
 						 "name": "E",
+						 "LOAC": "Estuaries",
 						 "total":"0.4"
 						}
 					]
