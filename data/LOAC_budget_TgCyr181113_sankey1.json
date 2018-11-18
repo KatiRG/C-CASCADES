@@ -1,0 +1,21 @@
+{
+"nodes": [
+{"name": "Estuaries"},
+{"name": "Lakes"},
+{"name": "Rivers"},
+{"name": "High lat"},
+{"name": "Mid lat"},
+{"name": "Tropics"}
+],
+"links": [
+{"source": "Estuaries", "target": "High lat", "value": "58.70"},
+{"source": "Estuaries", "target": "Mid lat", "value": "29.10"},
+{"source": "Estuaries", "target": "Tropics", "value": "64.40"},
+{"source": "Lakes", "target": "High lat", "value": "281.80"},
+{"source": "Lakes", "target": "Mid lat", "value": "90.20"},
+{"source": "Lakes", "target": "Tropics", "value": "118.00"},
+{"source": "Rivers", "target": "High lat", "value": "28.40"},
+{"source": "Rivers", "target": "Mid lat", "value": "66.40"},
+{"source": "Rivers", "target": "Tropics", "value": "555.00"}
+]
+}

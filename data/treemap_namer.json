@@ -1,0 +1,58 @@
+{
+"name":"NAmerFlux",
+"children":
+	[
+		
+		{
+		"name":"NAmer",
+		"children":
+			[
+				{
+				 "name": "Canada",
+	
+				 "children":
+					[
+						{
+						 "name": "R",
+						 "LOAC": "Rivers",
+						 "total":"9.5"
+						},
+						{
+						 "name": " Canada Lakes",
+						 "LOAC": "Lakes",
+						 "total":"139.8"
+						},
+						{
+						 "name": "E",
+						 "LOAC": "Estuaries",
+						 "total":"13.3"
+						}
+						
+					]
+				},
+
+				{
+				 "name": "US",
+				  "children":
+					[
+						{
+						 "name": "USA Rivers",
+						 "LOAC": "Rivers",
+						 "total":"69.0"
+						},
+						{
+						 "name": "USA Lakes",
+						 "LOAC": "Lakes",
+						 "total":"33.0"
+						},
+						{
+						 "name": " USA E",
+						 "LOAC": "Estuaries",
+						 "total":"10.9"
+						}
+					]
+				}
+			]
+		}
+	]
+}

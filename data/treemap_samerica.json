@@ -1,0 +1,84 @@
+{
+"name":"SAmerFlux",
+"children":
+	[
+		
+		{
+		"name":"SAmer",
+		"children":
+			[
+				{
+				 "name": "Brazil",
+	
+				 "children":
+					[
+						{
+						 "name": "Brazil Rivers",
+						 "LOAC": "Rivers",
+						 "total":"162.5"
+						},
+						{
+						 "name": "Lakes",
+						 "LOAC": "Lakes",
+						 "total":"24.3"
+						},
+						{
+						 "name": "E",
+						 "LOAC": "Estuaries",
+						 "total":"5.5"
+						}
+						
+					]
+				},
+
+				{
+				 "name": "Peru",
+				  "children":
+					[
+						{
+						 "name": "Peru R",
+						 "LOAC": "Rivers",
+						 "total":"21.0"
+						},
+						{
+						 "name": "L",
+						 "LOAC": "Lakes",
+						 "total":"1.8"
+						},
+						{
+						 "name": "E",
+						 "LOAC": "Estuaries",
+						 "total":"0.1"
+						}
+					]
+				},
+
+				{
+				 "name": "Argentina",
+				  "children":
+					[
+						{
+						 "name": "Arg R",
+						 "LOAC": "Rivers",
+						 "total":"6.1"
+						},
+						{
+						 "name": "L",
+						 "LOAC": "Lakes",
+						 "total":"1.8"
+						},
+						{
+						 "name": "E",
+						 "LOAC": "Estuaries",
+						 "total":"0.6"
+						}
+					]
+		
+
+
+
+				}
+			]
+		}
+	]
+}
