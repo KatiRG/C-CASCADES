@@ -202,6 +202,29 @@
 			      })
 			      .style("fill", function(d) { return color(d.loac); });
 
+			   country.selectAll("rect")
+			       .on("mouseover", function(d){
+
+			          var delta = d.y1 - d.y0;
+			          var xPos = parseFloat(d3.select(this).attr("x"));
+			          var yPos = parseFloat(d3.select(this).attr("y"));
+			          var height = parseFloat(d3.select(this).attr("height"))
+
+			          d3.select(this).attr("stroke","blue").attr("stroke-width",0.8);
+
+			          svg.append("text")
+			          .attr("x",xPos)
+			          .attr("y",yPos +height/2)
+			          .attr("class","tooltip")
+			          .text(d.name +": "+ delta); 
+			          
+			       })
+			       .on("mouseout",function(){
+			          svg.select(".tooltip").remove();
+			          d3.select(this).attr("stroke","pink").attr("stroke-width",0.2);
+			                                
+			        })
+
 	
 
 			
