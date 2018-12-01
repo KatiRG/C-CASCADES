@@ -58,6 +58,11 @@
 
 	<script src="sankey.js"></script>
     <script>
+    	var units = "Tg CO<sub>2</sub> yr <sup>-1</sup>";
+    	var formatNumber = d3.format(".2f"),
+            format = function(d) {
+              return formatNumber(d);
+            };
 
     	//Read data
         var jsonFile1 = "data/LOAC_budget_TgCyr181113_sankey1.json";
@@ -80,38 +85,6 @@
 	          .style("opacity", 0);
 
 		    var yshift_tooltip = 90; //amount to raise tooltip in y-dirn
-	   
-        	
-    		
-
-    		var countryColour_dict = {
-	        	//S America
-	        	"Brazil": "#15a40d",
-	        	"Peru": "#7FAF1B",
-	        	"Argentina": "#C3FF68",
-	        	//Africa
-	        	"DRC": "#fff44f",
-	        	//Asia
-	        	"China": "#ED5E6D",
-	        	"India": "#9D6766",
-	        	"Iran": "#9F8088",
-	        	"Russia": "#E78084",
-	        	//N America
-	        	"Canada": "#b9aabd",
-	        	"US": "#cecbd1",
-	        	//Oceania
-	        	"Australia": "#60ffad",
-	        	//Europe
-	        	"Belgium": "#8f7e94",
-	        	"Sweden": "#F1D4AF"
-	        }
-
-	        var loacColour_dict = {
-	            //source
-	            "Lakes": "#607890",
-	            "Rivers": "#A9C1D9",
-	            "Estuaries": "#ABBE71"
-	      	};
 
 	    	var margin = {top: 20, right: 20, bottom: 30, left: 40},
 			    width = 960 - margin.left - margin.right,
@@ -209,38 +182,31 @@
 			      .style("fill", function(d) { return color(d.loac); });
 
 			   country.selectAll("rect")
-			       .on("mouseover", function(d){
-			       	console.log("d: ", d)
+			       .on("mouseover", function(d){			     
 
+			       	var delta = d.y1 - d.y0;
+			    
 			        //Tooltip                  
                  	div.transition()
                     .style("opacity", .9);
                   	div.html(
-	                    "<b>" + d.name + "</b>"+ "<br><br>" +
-	                    "<table>" +
-	                      "<tr>" + 
-	                      "<td>" + d.name + " flux: </td>" +
-	                        "<td><b>" + d.name  + "</td>" +
-	                        "<td>" + " units"  + "</td>" +
-	                      "</tr>" +
-	                    "</table>"
-                    )
+						"<b>" + d.loac + "</b>"+ "<br><br>" +
+					    "<table>" +
+					      "<tr>" + 
+					        "<td><b>" + format(delta)  + "</td>" +
+					        "<td>" + " " + units + "</td>" +
+					      "</tr>" +
+					    "</table>"
+					)                
                     .style("left", (d3.event.pageX) + "px")
                     .style("top", (d3.event.pageY - yshift_tooltip) + "px");
 			          
 			       })
 			       .on("mouseout",function(){
-			            //Restore opacity
-		                d3.selectAll(".link:not(#" + this.id + ")").style("opacity", 1);
-
 		                div.transition()
 		                  .style("opacity", 0);
 			        })
 
-
-	              
-
-	
 
 			
 			})
@@ -260,11 +226,8 @@
 	        var width = 460 - margin.left - margin.right,
 	            height = 1500 - margin.top - margin.bottom;
 
-	        var formatNumber = d3.format(".2f"), //d3.format(".2f"),
-	            format = function(d) {
-	              return formatNumber(d);
-	            },
-	        color = d3.scale.category20();
+	       
+	        var color = d3.scale.category20();
 
 	        //append the svg canvas to the page
 	        var svg = d3.select(chart_div).append("svg")
@@ -286,7 +249,7 @@
 
 	        var col_xcoord = []; //x-coords of Sankey cols
 
-	        var units = "Tg CO<sub>2</sub> yr <sup>-1</sup>";
+	        
 	        var yshift_tooltip = 90; //amount to raise tooltip in y-dirn
 
 	        //https://www.colorcodehex.com/eff3ff/
