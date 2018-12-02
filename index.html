@@ -71,12 +71,12 @@
         makeSankey("#chart1", jsonFile1, 1);
         makeSankey("#chart2", jsonFile2, 2);
 
-        makeStackedBar("#stackedbar_SA", "data/LOAC_budget_TgCyr181113_stackedbar_SAmer.csv", 290, 190);
-        makeStackedBar("#stackedbar_Africa", "data/LOAC_budget_TgCyr181113_stackedbar_Africa.csv", 90, 100);
-        makeStackedBar("#stackedbar_Asia", "data/LOAC_budget_TgCyr181113_stackedbar_Asia.csv", 250, 190);
-        makeStackedBar("#stackedbar_NAmer", "data/LOAC_budget_TgCyr181113_stackedbar_NAmer.csv", 179, 125);
-        // makeStackedBar("#stackedbar_Oceania", "data/LOAC_budget_TgCyr181113_stackedbar_Oceania.csv", 100);
-        makeStackedBar("#stackedbar_Europe", "data/LOAC_budget_TgCyr181113_stackedbar_Europe.csv", 100, 125);
+        makeStackedBar("#stackedbar_SA", "data/LOAC_budget_TgCyr181113_stackedbar_SAmer.csv", 270, 190);
+        makeStackedBar("#stackedbar_Africa", "data/LOAC_budget_TgCyr181113_stackedbar_Africa.csv", 110, 100);
+        makeStackedBar("#stackedbar_Asia", "data/LOAC_budget_TgCyr181113_stackedbar_Asia.csv", 235, 190);
+        makeStackedBar("#stackedbar_NAmer", "data/LOAC_budget_TgCyr181113_stackedbar_NAmer.csv", 165, 130);
+        makeStackedBar("#stackedbar_Oceania", "data/LOAC_budget_TgCyr181113_stackedbar_Oceania.csv", 30, 130);
+        makeStackedBar("#stackedbar_Europe", "data/LOAC_budget_TgCyr181113_stackedbar_Europe.csv", 80, 145);
 
         function makeStackedBar(chart_id, fname, h, w) {
 	        // tooltip div
@@ -88,14 +88,14 @@
 
 		    var top_dict = {
 		    	"#stackedbar_SA": 60,
-		    	"#stackedbar_Africa": 10,
+		    	"#stackedbar_Africa": 5,
 		    	"#stackedbar_Asia": 5,
 		    	"#stackedbar_NAmer": 5,
-		    	"#stackedbar_Oceania": 60,
+		    	"#stackedbar_Oceania": 2,
 		    	"#stackedbar_Europe": 5
 		    }
 
-	    	var margin = {top: top_dict[chart_id], right: 20, bottom: 30, left: 40},
+	    	var margin = {top: top_dict[chart_id], right: 20, bottom: 17, left: 40},
 			    width = w - margin.left - margin.right,
 			    height = h - margin.top - margin.bottom;
 
