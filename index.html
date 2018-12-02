@@ -73,7 +73,7 @@
 
         makeStackedBar("#stackedbar_SA", "data/LOAC_budget_TgCyr181113_stackedbar_SAmer.csv", 290, 190);
         makeStackedBar("#stackedbar_Africa", "data/LOAC_budget_TgCyr181113_stackedbar_Africa.csv", 114, 100);
-        // makeStackedBar("#stackedbar_Asia", "data/LOAC_budget_TgCyr181113_stackedbar_Asia.csv", 228);
+        makeStackedBar("#stackedbar_Asia", "data/LOAC_budget_TgCyr181113_stackedbar_Asia.csv", 240, 190);
         // makeStackedBar("#stackedbar_NAmer", "data/LOAC_budget_TgCyr181113_stackedbar_NAmer.csv", 100);
         // makeStackedBar("#stackedbar_Oceania", "data/LOAC_budget_TgCyr181113_stackedbar_Oceania.csv", 100);
         // makeStackedBar("#stackedbar_Europe", "data/LOAC_budget_TgCyr181113_stackedbar_Europe.csv", 100);
@@ -86,7 +86,14 @@
 
 		    var yshift_tooltip = 90; //amount to raise tooltip in y-dirn
 
-	    	var margin = {top: 60, right: 20, bottom: 30, left: 40},
+		    var top_dict = {
+		    	"#stackedbar_SA": 60,
+		    	"#stackedbar_Africa": 60,
+		    	"#stackedbar_Asia": 0
+
+		    }
+
+	    	var margin = {top: top_dict[chart_id], right: 20, bottom: 30, left: 40},
 			    width = w - margin.left - margin.right,
 			    height = h - margin.top - margin.bottom;
 
