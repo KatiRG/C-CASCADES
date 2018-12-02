@@ -86,20 +86,15 @@
 
 		    var yshift_tooltip = 90; //amount to raise tooltip in y-dirn
 
-	    	var margin = {top: 20, right: 20, bottom: 30, left: 40},
-			    width = 960 - margin.left - margin.right,
-			    height = 500 - margin.top - margin.bottom;
+	    	var margin = {top: 80, right: 20, bottom: 30, left: 40},
+			    width = 190 - margin.left - margin.right,
+			    height = 300 - margin.top - margin.bottom;
 
 			var x = d3.scale.ordinal()
 			    .rangeRoundBands([0, width], .1);
 
 			var y = d3.scale.linear()
 			    .rangeRound([height, 0]);
-
-			var margin = {top: 20, right: 20, bottom: 30, left: 40},
-    			width = 960 - margin.left - margin.right,
-    			height = 500 - margin.top - margin.bottom;
-
 
     		var color = d3.scale.ordinal()
     				.range(["#A9C1D9",  "#607890",  "#ABBE71"]);
