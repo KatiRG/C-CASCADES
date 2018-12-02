@@ -101,6 +101,10 @@
   .x.axis path {
     display: none;
   }
+  .tick {
+    fill: #565656;
+    font-size: 11px;
+  }
 
 
 
