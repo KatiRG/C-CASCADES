@@ -67,7 +67,7 @@
 
   #subtitle {
     /*position: relative;*/
-    top: 55px;
+    top: 45px;
     /*left: 370px;*/
     font-size: 14px;
     font-weight: bold;
@@ -75,14 +75,6 @@
     /*width: 500px;*/
   }
 
-  #treemap1, #treemap2, #treemap3,
-  #treemap4, #treemap5, #treemap6 {
-    position: relative;
-    top: 128.72px;
-    padding-top: 8px;
-    padding-left: 10px;
-    /*left: 0px;*/
-  }
 
   #chart1 {
     position: relative;
@@ -94,12 +86,28 @@
     top: -620px;
   }
 
-
-  #chart2 {
-/*    position: relative;
-    top: -600px;
-    left: 180px;*/
+  /*stacked bar chart*/
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
   }
+
+  .bar {
+    fill: steelblue;
+  }
+
+  .x.axis path {
+    display: none;
+  }
+  .tick {
+    fill: #565656;
+    font-size: 11px;
+  }
+
+
+
 
   table, th, td {
     border: none;
