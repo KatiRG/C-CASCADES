@@ -71,12 +71,12 @@
         makeSankey("#chart1", jsonFile1, 1);
         makeSankey("#chart2", jsonFile2, 2);
 
-        makeStackedBar("#stackedbar_SA", "data/LOAC_budget_TgCyr181113_stackedbar_SAmer.csv", 265, 190);
-        makeStackedBar("#stackedbar_Africa", "data/LOAC_budget_TgCyr181113_stackedbar_Africa.csv", 110, 100);
+        makeStackedBar("#stackedbar_SA", "data/LOAC_budget_TgCyr181113_stackedbar_SAmer.csv", 225, 190);
+        makeStackedBar("#stackedbar_Africa", "data/LOAC_budget_TgCyr181113_stackedbar_Africa.csv", 130, 100);
         makeStackedBar("#stackedbar_Asia", "data/LOAC_budget_TgCyr181113_stackedbar_Asia.csv", 235, 190);
-        makeStackedBar("#stackedbar_NAmer", "data/LOAC_budget_TgCyr181113_stackedbar_NAmer.csv", 185, 130);
-        makeStackedBar("#stackedbar_Oceania", "data/LOAC_budget_TgCyr181113_stackedbar_Oceania.csv", 30, 130);
-        makeStackedBar("#stackedbar_Europe", "data/LOAC_budget_TgCyr181113_stackedbar_Europe.csv", 80, 145);
+        makeStackedBar("#stackedbar_NAmer", "data/LOAC_budget_TgCyr181113_stackedbar_NAmer.csv", 195, 130);
+        makeStackedBar("#stackedbar_Oceania", "data/LOAC_budget_TgCyr181113_stackedbar_Oceania.csv", 35, 130);
+        makeStackedBar("#stackedbar_Europe", "data/LOAC_budget_TgCyr181113_stackedbar_Europe.csv", 75, 145);
 
         function makeStackedBar(chart_id, fname, h, w) {
 	        // tooltip div
@@ -87,10 +87,10 @@
 		    var yshift_tooltip = 90; //amount to raise tooltip in y-dirn
 
 		    var top_dict = {
-		    	"#stackedbar_SA": 50,
-		    	"#stackedbar_Africa": 5,
-		    	"#stackedbar_Asia": 5,
-		    	"#stackedbar_NAmer": 15,
+		    	"#stackedbar_SA": 25,
+		    	"#stackedbar_Africa": 25,
+		    	"#stackedbar_Asia": 15,
+		    	"#stackedbar_NAmer": 25,
 		    	"#stackedbar_Oceania": 2,
 		    	"#stackedbar_Europe": 5
 		    }
@@ -178,10 +178,6 @@
 			          return x(d.country);
 			        })
 			      .attr("height", function(d) { return y(d.y0) - y(d.y1); })
-			      .attr("class", function(d) {
-			      	console.log("class d: ", d)
-			        
-			      })
 			      .style("fill", function(d) { return color(d.loac); });
 
 			   country.selectAll("rect")
@@ -209,9 +205,7 @@
 		                div.transition()
 		                  .style("opacity", 0);
 			        })
-
 			})
-
 			
 
         } //.makeStackedBar
@@ -243,7 +237,7 @@
 	        //set the sankey diagram properties
 	        var sankey = d3.sankey()
 	            .nodeWidth(30)
-	            .nodePadding(15)
+	            .nodePadding(20)
 	            .size([width, height]);
 
 	        var path = sankey.link();
