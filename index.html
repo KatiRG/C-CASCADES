@@ -71,14 +71,14 @@
         makeSankey("#chart1", jsonFile1, 1);
         makeSankey("#chart2", jsonFile2, 2);
 
-        makeStackedBar("#stackedbar_SA", "data/LOAC_budget_TgCyr181113_stackedbar_SAmer.csv", 134.28);
-        // makeStackedBar("#stackedbar_Africa", "data/LOAC_budget_TgCyr181113_stackedbar_Africa.csv", 114);
+        makeStackedBar("#stackedbar_SA", "data/LOAC_budget_TgCyr181113_stackedbar_SAmer.csv", 290, 190);
+        makeStackedBar("#stackedbar_Africa", "data/LOAC_budget_TgCyr181113_stackedbar_Africa.csv", 114, 100);
         // makeStackedBar("#stackedbar_Asia", "data/LOAC_budget_TgCyr181113_stackedbar_Asia.csv", 228);
         // makeStackedBar("#stackedbar_NAmer", "data/LOAC_budget_TgCyr181113_stackedbar_NAmer.csv", 100);
         // makeStackedBar("#stackedbar_Oceania", "data/LOAC_budget_TgCyr181113_stackedbar_Oceania.csv", 100);
         // makeStackedBar("#stackedbar_Europe", "data/LOAC_budget_TgCyr181113_stackedbar_Europe.csv", 100);
 
-        function makeStackedBar(chart_id, fname, h) {
+        function makeStackedBar(chart_id, fname, h, w) {
 	        // tooltip div
 	        var div = d3.select("body").append("div")
 	          .attr("class", "tooltip")
@@ -87,8 +87,8 @@
 		    var yshift_tooltip = 90; //amount to raise tooltip in y-dirn
 
 	    	var margin = {top: 60, right: 20, bottom: 30, left: 40},
-			    width = 190 - margin.left - margin.right,
-			    height = 290 - margin.top - margin.bottom;
+			    width = w - margin.left - margin.right,
+			    height = h - margin.top - margin.bottom;
 
 			var x = d3.scale.ordinal()
 			    .rangeRoundBands([0, width], .1);
@@ -118,12 +118,11 @@
 			d3.csv(fname, function(error, data) {
 			  if (error) throw error;
 
-			  color.domain(d3.keys(data[0]).filter(function(key) { 
-			  	console.log("key: ", key)
-			  	return key !== "country"; }));
+			  color.domain(d3.keys(data[0]).filter(function(key) {
+			  	return key !== "country";
+			  }));
 
 			  data.forEach(function(d) {
-			  	console.log("d: ", d)
 			    var country = d.country;
 			    var y0 = 0;
 			    d.flux = color.domain().map(function(name) {
@@ -165,9 +164,7 @@
 			      .attr("width", x.rangeBand())
 			      .attr("y", function(d) { return y(d.y1); })
 			      .attr("x",function(d) {
-			      	  console.log("d.country: ", d.country)
-			      	  console.log("x d.country: ", x(d.country))
-			          return x(d.country)
+			          return x(d.country);
 			        })
 			      .attr("height", function(d) { return y(d.y0) - y(d.y1); })
 			      .attr("class", function(d) {
