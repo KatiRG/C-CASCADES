@@ -112,10 +112,12 @@
 			    .scale(x)
 			    .orient("bottom");
 
+			var numTicks = (chart_id === "#stackedbar_Oceania") ? 1 : 3;
 			var yAxis = d3.svg.axis()
 			    .scale(y)
 			    .orient("left")
-			    .tickFormat(d3.format(".2s"));
+			    .tickFormat(d3.format(".2s"))
+			    .ticks(numTicks);
 
 			var svg = d3.select(chart_id).append("div")
 				.append("svg")
@@ -152,7 +154,7 @@
 
 			  svg.append("g")
 			      .attr("class", "y axis")
-			      .call(yAxis)
+			      .call(yAxis)		     
 			    .append("text")
 			      .attr("transform", "rotate(-90)")
 			      .attr("y", 6)
@@ -208,8 +210,6 @@
 		                  .style("opacity", 0);
 			        })
 
-
-			
 			})
 
 			
