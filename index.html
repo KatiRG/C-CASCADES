@@ -147,6 +147,31 @@
 			  x.domain(data.map(function(d) { return d.country; }));
 			  y.domain([0, d3.max(data, function(d) { return d.total; })]);
 
+			  if (chart_id === "#stackedbar_SA") {
+			  	svg.append("g")
+			      .attr("class", "tick")
+			      .append("text", "text")
+			      .attr("x", -40)
+			      .attr("y", -8)
+			      .html("Tg CO")
+				  .style("font-size", "11px")
+				  .append("tspan")
+				    .text("2 ")
+				    .style("font-size", "11px")
+				    .attr("dx", ".01em")
+				    .attr("dy", ".4em")
+				  .append("tspan")
+				    .text("yr")
+				    .style("font-size", "11px")
+				    .attr("dx", ".01em")
+				    .attr("dy", "-.4em")
+				  .append("tspan")
+				    .text("-1")
+				    .style("font-size", "11px")
+				    .attr("dx", ".01em")
+				    .attr("dy", "-.6em");
+			  }
+
 			  svg.append("g")
 			      .attr("class", "x axis")
 			      .attr("transform", "translate(0," + height + ")")
@@ -160,6 +185,7 @@
 			      .attr("y", 6)
 			      .attr("dy", ".71em")
 			      .style("text-anchor", "end");
+			      // .text("text");
 
 			  var country = svg.selectAll(".country")
 			      .data(data)
