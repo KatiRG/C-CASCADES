@@ -71,12 +71,12 @@
         makeSankey("#chart1", jsonFile1, 1);
         makeSankey("#chart2", jsonFile2, 2);
 
-        makeStackedBar("#stackedbar_SA", "data/LOAC_budget_TgCyr181113_stackedbar_SAmer.csv", 225, 190);
-        makeStackedBar("#stackedbar_Africa", "data/LOAC_budget_TgCyr181113_stackedbar_Africa.csv", 130, 100);
-        makeStackedBar("#stackedbar_Asia", "data/LOAC_budget_TgCyr181113_stackedbar_Asia.csv", 235, 190);
-        makeStackedBar("#stackedbar_NAmer", "data/LOAC_budget_TgCyr181113_stackedbar_NAmer.csv", 195, 130);
+        makeStackedBar("#stackedbar_SA", "data/LOAC_budget_TgCyr181113_stackedbar_SAmer.csv", 225, 220);
+        makeStackedBar("#stackedbar_Africa", "data/LOAC_budget_TgCyr181113_stackedbar_Africa.csv", 135, 140);
+        makeStackedBar("#stackedbar_Asia", "data/LOAC_budget_TgCyr181113_stackedbar_Asia.csv", 245, 190);
+        makeStackedBar("#stackedbar_NAmer", "data/LOAC_budget_TgCyr181113_stackedbar_NAmer.csv", 180, 130);
         makeStackedBar("#stackedbar_Oceania", "data/LOAC_budget_TgCyr181113_stackedbar_Oceania.csv", 35, 130);
-        makeStackedBar("#stackedbar_Europe", "data/LOAC_budget_TgCyr181113_stackedbar_Europe.csv", 70, 145);
+        makeStackedBar("#stackedbar_Europe", "data/LOAC_budget_TgCyr181113_stackedbar_Europe.csv", 70, 180);
 
         function makeStackedBar(chart_id, fname, h, w) {
 	        // tooltip div
@@ -88,9 +88,9 @@
 
 		    var top_dict = {
 		    	"#stackedbar_SA": 25,
-		    	"#stackedbar_Africa": 25,
+		    	"#stackedbar_Africa": 10,
 		    	"#stackedbar_Asia": 15,
-		    	"#stackedbar_NAmer": 15,
+		    	"#stackedbar_NAmer": 5,
 		    	"#stackedbar_Oceania": 2,
 		    	"#stackedbar_Europe": 5
 		    }
