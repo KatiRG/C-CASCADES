@@ -8,7 +8,7 @@
 <script src="lib/bootstrap.min.js"></script>
 <link href="style.css" rel="stylesheet" type="text/css">
 
-<title>CO2 Fluxes</title>
+<title>Carbon Fluxes</title>
 
 <body>
 
@@ -16,22 +16,24 @@
     
     <div class="row"> <!-- header row -->
       	<div class="col-lg-12 headings">
-      		CO<sub>2</sub> fluxes across countries and regions from freshwater sources
+      		Carbon fluxes across countries and regions from inland sources
       	</div>
     </div> <!-- ./header row -->
     <div class="row"> <!-- info row -->
       	<div class="col-lg-12" id="infotext">
-      		CO<sub>2</sub> flux estimates over the period 2003&ndash;2012 from the LOAC budget showing contributions (mean [min, max] in Tg CO<sub>2</sub> yr<sup>-1</sup>) from 3 freshwater source categories (Rivers, Lakes, and Estuaries) in terms of 3 latitude bands and 6 continental regions.
+      		Carbon flux estimates for the present day from the LOAC budget showing contributions in Tg C yr<sup>-1</sup> from 3 inland source categories (Rivers, Lakes, and Estuaries) in terms of 3 latitude bands and 6 continental regions. Data sources: <a target="_blank" href="https://doi.org/10.1111/gcb.13902">Hastie et al. (2018)</a>, <a target="_blank" href="https://doi.org/10.1002/2014GB004941">Lauerwald et al. (2015)</a>, <a target="_blank" href="https://doi.org/10.5194/hess-17-2029-2013">Laruelle et al. (2013)</a>, and <a target="_blank" href="http://dx.doi.org/10.1038/nature12760">Raymond et al. (2013)</a>.
       	</div>
     </div> <!-- ./info row -->
 
     <div class="row"> <!-- row for info -->
-    	<div class="col-lg-12" id="subtitle">Total freshwater CO<sub>2</sub> fluxes: 1292.0 Tg CO<sub>2</sub> yr<sup>-1</sup></div>
+    	<div class="col-lg-12" id="subtitle">Total inland carbon fluxes: 1292.0 Tg C yr<sup>-1</sup></div>
 	</div> <!-- ./row for info -->
+
+	<div class="row"></div>
 
 	<div class="row"> <!-- row for charts -->    	
     	<div class="col-lg-5" id="chart1"></div>
-    	<div class="col-lg-5" id="chart2">sankey2</div>
+    	<div class="col-lg-5" id="chart2"></div>
     	<div class="col-lg-2">
     		<div class="row"> 
     			<div id="stackedbar_SA"></div>
@@ -58,7 +60,7 @@
 
 	<script src="sankey.js"></script>
     <script>
-    	var units = "Tg CO<sub>2</sub> yr <sup>-1</sup>";
+    	var units = "Tg C yr <sup>-1</sup>";
     	var formatNumber = d3.format(".2f"),
             format = function(d) {
               return formatNumber(d);
@@ -153,23 +155,13 @@
 			      .append("text", "text")
 			      .attr("x", -40)
 			      .attr("y", -8)
-			      .html("Tg CO")
+			      .html("Tg C yr")
 				  .style("font-size", "11px")
-				  .append("tspan")
-				    .text("2 ")
-				    .style("font-size", "11px")
-				    .attr("dx", ".01em")
-				    .attr("dy", ".4em")
-				  .append("tspan")
-				    .text("yr")
-				    .style("font-size", "11px")
-				    .attr("dx", ".01em")
-				    .attr("dy", "-.4em")
 				  .append("tspan")
 				    .text("-1")
 				    .style("font-size", "11px")
 				    .attr("dx", ".01em")
-				    .attr("dy", "-.6em");
+				    .attr("dy", "-.2em");
 			  }
 
 			  svg.append("g")
@@ -245,7 +237,7 @@
 	        };
 
 	        var width = 460 - margin.left - margin.right,
-	            height = 1500 - margin.top - margin.bottom;
+	            height = 900 - margin.top - margin.bottom;
 
 	       
 	        var color = d3.scale.category20();

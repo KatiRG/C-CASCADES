@@ -75,17 +75,6 @@
     /*width: 500px;*/
   }
 
-
-  #chart1 {
-    position: relative;
-    top: -600px;
-  }
-
-  #chart2 {
-    position: relative;
-    top: -620px;
-  }
-
   /*stacked bar chart*/
   .axis path,
   .axis line {
