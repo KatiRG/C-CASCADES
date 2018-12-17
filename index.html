@@ -466,6 +466,7 @@
 	              	if (d.name === "Tropics" || d.name === "Mid lat" || d.name === "High lat") return name_dict[d.name];
 	                else return d.name;
 	              })
+	              .style("font-weight", "bold")
 	              .filter(function(d) {
 	                return d.x < width / 2;
 	              })
