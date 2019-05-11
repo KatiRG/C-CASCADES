@@ -265,24 +265,6 @@
 	        
 	        var yshift_tooltip = 90; //amount to raise tooltip in y-dirn
 
-	        //https://www.colorcodehex.com/eff3ff/
-          	var colour_dict = {
-	            //source
-	            "Lakes": "#607890",
-	            "Rivers": "#A9C1D9",
-	            "Estuaries": "#ABBE71", //AED17E
-	            //target Sankey1
-	             "Mid lat": "#CC982A",
-	            "High lat": "#928941",
-	            "Tropics": "#FFDC68",
-	            "Europe": "#FAB491",
-	            "S America": "#0F7409",
-	            "Oceania": "#00CC99",
-	            "Africa": "#EBCD0C",
-	            "N America": "#B5B0B9",
-	            "Asia": "#C02942"
-          	};
-
           	var name_dict = {
             	//latitude bands
             	"Tropics": "Tropics (> 50 degrees)",
@@ -444,11 +426,10 @@
 	                return d.dy;
 	              })
 	              .attr("width", sankey.nodeWidth())
-	              .style("fill", function(d, idx) {
-	                return colour_dict[d.name];
-	              })
-	              .style("stroke-width", "2px")
-	              .style("stroke", "#555");
+	              .attr("class", function(d) {
+	              	console.log(d.name)
+	              	return d.name.replace(/\s/g, "");
+	              });
 
 	            //apend text to nodes
 	            node.append("text")

@@ -56,12 +56,6 @@ div.tooltip {
 }
 
 /* SANKEY */
-
-.node rect {
-  fill-opacity: 1.0;
-  shape-rendering: crispEdges;
-}
-
 .node text {
   pointer-events: none;
   fill: #555;
@@ -78,6 +72,7 @@ div.tooltip {
 }
 
 /* link colours */
+/* https://www.colorcodehex.com/eff3ff/ */
 .fromLakes1, .fromLakes2 {
   stroke: #607890;
 }
@@ -88,7 +83,48 @@ div.tooltip {
   stroke: #ABBE71;
 }
 
-
+/* rect colours */
+.node rect {
+  stroke-width: 2px;
+  stroke: #555;
+  /*shape-rendering: crispEdges;*/
+}
+.Rivers {
+  fill: #A9C1D9;
+}
+.Lakes {
+  fill: #607890;
+}
+.Estuaries {
+  fill: #ABBE71;
+}
+.Midlat {
+  fill: #CC982A;
+}
+.Highlat {
+  fill: #928941
+}
+.Tropics {
+  fill: #FFDC68;
+}
+.Europe {
+  fille: #FAB491;
+}
+.SAmerica {
+  fill: #0F7409;
+}
+.Oceania {
+  fill: #00CC99;
+}
+.Africa {
+  fill: #EBCD0C;
+}
+.NAmerica {
+  fill: #B5B0B9;
+}
+.Asia {
+  fill: #C02942;
+}
 
 
 /* STACKED BAR CHARTS */
@@ -96,7 +132,7 @@ div.tooltip {
 .axis line {
   fill: none;
   stroke: #000;
-  shape-rendering: crispEdges;
+  /*shape-rendering: crispEdges;*/
 }
 
 .bar {
