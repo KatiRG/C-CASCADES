@@ -376,10 +376,7 @@
 		                return "link-" + i;
 		              })
 				      .style("stroke-width", function(d) { return Math.max(1, d.dy); })
-				      .sort(function(a, b) { return b.dy - a.dy; })
-				      .style("stroke", function (d) {
-		                return colour_dict[d.source.name];
-		              });
+				      .sort(function(a, b) { return b.dy - a.dy; });
 
 		        //add link tooltip
 	            link.on("mouseover", function(d) {
