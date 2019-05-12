@@ -344,15 +344,27 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
 
     // add node tooltip
     node.on("mouseover", function(d) {
-      // Make all links inactive
+      var otherChart = chartNum === 1 ? 2 : 1;
+
+      // Make all links inactive and rects of other chart
       d3.selectAll(".link").classed("inactive", true);
+      d3.select("#chart" + otherChart).selectAll("rect").classed("rectInactive", true);
+
+      console.log(d)
 
       // Remove inactive class to selected links and make them active
       if (d.sourceLinks.length > 0) { // rect acts as a source to next rect
         var fromLink = d3.selectAll(".from" + d.name.replace(/\s+/g, "") + chartNum);
         fromLink.classed("inactive", !fromLink.classed("inactive"));
-
         fromLink.classed("active", true);
+
+        // rects
+        d3.select("#chart" + chartNum).selectAll("rect:not(." + d.name + ")").classed("rectInactive", true);
+        // turn on sourceLink rects
+        for (idx = 0; idx < d.sourceLinks.length; idx++) {
+          var thisName = d.sourceLinks[idx].target.name.replace(/\s+/g, "");
+          d3.select("#chart" + chartNum).select("rect." + thisName).classed("rectInactive", false);
+        }
       }
 
       if (d.targetLinks.length > 0) { // rect acts as a target from previous rect
@@ -362,6 +374,7 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
         toLink.classed("active", true);
       }
 
+      // tooltip
       var sourceName = (d.name === "Tropics" || d.name === "Mid lat" || d.name === "High lat") ?
       nameDict[d.name] : d.name;
       div.transition()
@@ -369,12 +382,12 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
       div.html(
           "<b>" + sourceName + "</b>"+ "<br><br>" +
           "<table>" +
-          "<tr>" +
-            "<td> Total flux: </td>" +
-            "<td><b>" + format(d.value) + "</td>" +
-            "<td>" + " " + units + "</td>" +
-          "</tr>" +
-        "</table>"
+            "<tr>" +
+              "<td> Total flux: </td>" +
+              "<td><b>" + format(d.value) + "</td>" +
+              "<td>" + " " + units + "</td>" +
+            "</tr>" +
+          "</table>"
       )
           .style("left", (d3.event.pageX) + "px")
           .style("top", (d3.event.pageY - yshiftTooltip) + "px");
@@ -383,6 +396,7 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
           // Remove active and inactive classes added on mouseover
           d3.selectAll(".inactive").classed("inactive", false);
           d3.selectAll(".active").classed("active", false);
+          d3.selectAll("rect").classed("rectInactive", false);
 
           div.transition()
               .style("opacity", 0);
