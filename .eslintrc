@@ -1,20 +1,10 @@
 {
    "env": {
        "jquery": true,
-       "es6": true,
        "browser": true
    },
    "globals": {
      "d3": true,
-     "i18next": true,
-     "i18n": true,
-     "getCanadaMap": true,
-     "areaChart": true,
-     "lineChart": true,
-     "barChart": true,
-     "drawMapTable": true,
-     "bubbleTable": true,
-     "drawTable": true,
      "$": true
    },
    "extends": ["eslint:recommended", "google"],
