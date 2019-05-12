@@ -252,7 +252,7 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
         .attr("d", path)
         .attr("id", function(d, i) {
           d.id = i;
-          return "link-" + i;
+          return "chart" + chartNum + "_link-" + i;
         })
         .style("stroke-width", function(d) {
           return Math.max(1, d.dy);
@@ -263,7 +263,9 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
 
     // add link tooltip
     link.on("mouseover", function(d) {
-      // Reduce opacity of all but link that is moused over
+      console.log("this: ", this)
+      console.log("d: ", d)
+      // Reduce opacity of all but link that is moused over and connected rects
       d3.selectAll(".link:not(#" + this.id + ")").style("opacity", 0.5);
 
       // Tooltip
@@ -286,7 +288,7 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
     })
         .on("mouseout", function() {
           // Restore opacity
-          d3.selectAll(".link:not(#" + this.id + ")").style("opacity", 1);
+          d3.selectAll(".link:not(#chart" + chartNum + "_" + this.id + ")").style("opacity", 1);
 
           div.transition()
               .style("opacity", 0);
