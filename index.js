@@ -350,21 +350,21 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
       d3.selectAll(".link").classed("inactive", true);
       d3.select("#chart" + otherChart).selectAll("rect").classed("rectInactive", true);
 
-      console.log(d)
-
       // Remove inactive class to selected links and make them active
       if (d.sourceLinks.length > 0) { // rect acts as a source to next rect
         var fromLink = d3.selectAll(".from" + d.name.replace(/\s+/g, "") + chartNum);
         fromLink.classed("inactive", !fromLink.classed("inactive"));
         fromLink.classed("active", true);
 
-        // rects
-        d3.select("#chart" + chartNum).selectAll("rect:not(." + d.name + ")").classed("rectInactive", true);
-        // turn on sourceLink rects
-        for (idx = 0; idx < d.sourceLinks.length; idx++) {
-          var thisName = d.sourceLinks[idx].target.name.replace(/\s+/g, "");
-          d3.select("#chart" + chartNum).select("rect." + thisName).classed("rectInactive", false);
-        }
+        rectHighlight(d, d.sourceLinks);
+
+        // // rects
+        // d3.select("#chart" + chartNum).selectAll("rect:not(." + d.name + ")").classed("rectInactive", true);
+        // // turn on sourceLink rects
+        // for (idx = 0; idx < d.sourceLinks.length; idx++) {
+        //   var thisName = d.sourceLinks[idx].target.name.replace(/\s+/g, "");
+        //   d3.select("#chart" + chartNum).select("rect." + thisName).classed("rectInactive", false);
+        // }
       }
 
       if (d.targetLinks.length > 0) { // rect acts as a target from previous rect
@@ -414,6 +414,19 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
       // move the attached links
       sankey.relayout();
       link.attr("d", path);
+    }
+
+    // selective rect highlight
+    function rectHighlight(d, childArray) {
+      console.log(d)
+      console.log(childArray)
+
+      d3.select("#chart" + chartNum).selectAll("rect:not(." + d.name + ")").classed("rectInactive", true);
+      // turn on rects belonging to selected node
+      for (var idx = 0; idx < childArray.length; idx++) {
+        var thisName = childArray[idx].target.name.replace(/\s+/g, "");
+        d3.select("#chart" + chartNum).select("rect." + thisName).classed("rectInactive", false);
+      }
     }
   } // end make()
 } // end makeSankey()
