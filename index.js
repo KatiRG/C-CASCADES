@@ -263,10 +263,11 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
 
     // add link tooltip
     link.on("mouseover", function(d) {
-      console.log("this: ", this)
-      console.log("d: ", d)
       // Reduce opacity of all but link that is moused over and connected rects
       d3.selectAll(".link:not(#" + this.id + ")").style("opacity", 0.5);
+
+      // Remove inactive class to selected links and make them active
+      rectHighlightFromLink(d, this);
 
       // Tooltip
       var sourceName = (d.source.name === "Tropics" || d.source.name === "Mid lat" || d.source.name === "High lat") ?
@@ -289,6 +290,9 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
         .on("mouseout", function() {
           // Restore opacity
           d3.selectAll(".link:not(#chart" + chartNum + "_" + this.id + ")").style("opacity", 1);
+
+          // Remove active and inactive classes added on mouseover
+          d3.selectAll("rect").classed("rectInactive", false);
 
           div.transition()
               .style("opacity", 0);
@@ -427,6 +431,23 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
         }
         d3.select("#chart" + chartNum).select("rect." + thisName).classed("rectInactive", false);
       }
+    }
+    function rectHighlightFromLink(d, thisLink) {
+      // turn off all rects
+      d3.selectAll("rect").classed("rectInactive", true);
+      // name of source rect
+      var thisName = d.source.sourceLinks.length > 0 ? d.source.name : d.target.name;
+
+      // turn on only source and its target rect
+      var targetRect = d3.select("#" + thisLink.id)
+          .attr("class").split(" ")
+          .filter(function(s) {
+            return s.includes("to"); // ES6: s.filter(s => s.includes('to'));
+          })[0]
+          .split("to")[1].slice(0, -1);
+
+      d3.select("#chart" + chartNum).select("rect." + thisName).classed("rectInactive", false);
+      d3.select("#chart" + chartNum).select("rect." + targetRect).classed("rectInactive", false);
     }
   } // end make()
 } // end makeSankey()
