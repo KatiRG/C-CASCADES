@@ -267,7 +267,7 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
       d3.selectAll(".link:not(#" + this.id + ")").style("opacity", 0.5);
 
       // Remove inactive class to selected links and make them active
-      rectHighlightFromLink(d, this);
+      highlightFromLink(d, this);
 
       // Tooltip
       var sourceName = (d.source.name === "Tropics" || d.source.name === "Mid lat" || d.source.name === "High lat") ?
@@ -428,7 +428,7 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
       thisLink.classed("inactive", !thisLink.classed("inactive"));
       thisLink.classed("active", true);
     }
-    function rectHighlightFromLink(d, thisLink) {
+    function highlightFromLink(d, thisLink) {
       // turn off all rects
       d3.selectAll("rect").classed("rectInactive", true);
       // name of source rect

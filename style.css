@@ -54,9 +54,6 @@ div.tooltip {
 .inactive {
   stroke-opacity: 0.2 !important;
 }
-/*.rectActive {
-  opacity: 1.0 !important;
-}*/
 .rectInactive {
   opacity: 0.2 !important;
 }
