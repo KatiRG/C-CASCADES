@@ -393,9 +393,8 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
 
         // store connecting links
         thisLink = d3.selectAll(".from" + d.name.replace(/\s+/g, "") + chartNum);
-
       } else if (d.targetLinks.length > 0) {
-        d.targetLinks.map(function(n) {        
+        d.targetLinks.map(function(n) {
           childName = n.source.name.replace(/\s+/g, "");
           d3.select("#chart" + chartNum).select("rect." + childName).classed("rectInactive", false);
         });
