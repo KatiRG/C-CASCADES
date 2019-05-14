@@ -4,14 +4,26 @@ const format = function(d) {
   return formatNumber(d);
 };
 
-let sankeydata1 = {};
-let sankeydata2 = {};
+// data objs
+let sankeyData1 = {};
+let sankeyData2 = {};
 
-/* -- display areaChart -- */
-function showSankey(chartDiv, graph) {
-  const chartNum =  chartDiv.split("chart")[1];
-  console.log(i18next.t("units", {ns: "constants"}))
+// Read data
+// const jsonFile1 = "data/LOAC_budget_TgCyr181113_sankey1.json";
+// const jsonFile2 = "data/LOAC_budget_TgCyr181113_sankey2.json";
 
+// makeSankey("#chart1", jsonFile1, 1);
+// makeSankey("#chart2", jsonFile2, 2);
+
+// makeStackedBar("#stackedbar_SA", "data/LOAC_budget_TgCyr181113_stackedbar_SAmer.csv", 225, 220);
+// makeStackedBar("#stackedbar_Africa", "data/LOAC_budget_TgCyr181113_stackedbar_Africa.csv", 135, 140);
+// makeStackedBar("#stackedbar_Asia", "data/LOAC_budget_TgCyr181113_stackedbar_Asia.csv", 245, 190);
+// makeStackedBar("#stackedbar_NAmer", "data/LOAC_budget_TgCyr181113_stackedbar_NAmer.csv", 180, 130);
+// makeStackedBar("#stackedbar_Oceania", "data/LOAC_budget_TgCyr181113_stackedbar_Oceania.csv", 35, 130);
+// makeStackedBar("#stackedbar_Europe", "data/LOAC_budget_TgCyr181113_stackedbar_Europe.csv", 70, 180);
+
+
+function makeSankey(chartDiv, jsonFile, chartNum) {
   const margin = {
     top: 0,
     right: 0,
@@ -40,7 +52,17 @@ function showSankey(chartDiv, graph) {
   const path = sankey.link();
   const yshiftTooltip = 90; // amount to raise tooltip in y-dirn
 
-  make(graph);
+  const nameDict = {
+    // latitude bands
+    "Tropics": "Tropics (> 50 degrees)",
+    "High lat": "High latitudes (< -50 degrees)",
+    "Mid lat": "Mid latitudes (30–50 degrees)"
+  };
+
+  // load the data
+  d3.json(jsonFile, function(error, graph) {
+    make(graph);
+  });
 
   function make(graph) {
     const nodeMap = {};
@@ -98,7 +120,8 @@ function showSankey(chartDiv, graph) {
       highlightFromLink(d, this);
 
       // Tooltip
-      const sourceName = i18next.t(d.source.name, {ns: "labels"});
+      const sourceName = (d.source.name === "Tropics" || d.source.name === "Mid lat" || d.source.name === "High lat") ?
+                      nameDict[d.source.name] : d.source.name;
       div.transition()
           .style("opacity", .9);
       div.html(
@@ -159,7 +182,8 @@ function showSankey(chartDiv, graph) {
         .attr("text-anchor", "end")
         .attr("transform", null)
         .text((d) => {
-          return i18next.t(d.name, {ns: "labels"});
+          if (d.name === "Tropics" || d.name === "Mid lat" || d.name === "High lat") return nameDict[d.name];
+          else return d.name;
         })
         .style("font-weight", "bold")
         .filter((d) => {
@@ -173,7 +197,8 @@ function showSankey(chartDiv, graph) {
       highlightFromNode(d);
 
       // tooltip
-      const sourceName = i18next.t(d.name, {ns: "labels"});
+      const sourceName = (d.name === "Tropics" || d.name === "Mid lat" || d.name === "High lat") ?
+      nameDict[d.name] : d.name;
       div.transition()
           .style("opacity", .9);
       div.html(
@@ -259,16 +284,15 @@ function showSankey(chartDiv, graph) {
 // -----------------------------------------------------------------------------
 /* Initial page load */
 i18n.load(["src/i18n"], () => {
-  // d3.queue()
-  queue()
+  d3.queue()
       .defer(d3.json, "data/LOAC_budget_TgCyr181113_sankey1.json")
       .defer(d3.json, "data/LOAC_budget_TgCyr181113_sankey2.json")
       .await(function(error, sankeyfile1, sankeyfile2) {
-        sankeydata1 = sankeyfile1;
-        sankeydata2 = sankeyfile2;
 
-        showSankey("#chart1", sankeydata1);
-        showSankey("#chart2", sankeydata2);
+        sankeyData1 = sankeyfile1;
+        sankeyData2 = sankeyfile2;
+
+        makeSankey("#chart1", sankeyData1, 1);
+        makeSankey("#chart2", sankeyData2, 2);
       });
 });
-

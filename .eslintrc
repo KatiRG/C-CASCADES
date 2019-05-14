@@ -5,6 +5,8 @@
    },
    "globals": {
      "d3": true,
+     "i18next": true,
+     "i18n": true,
      "$": true
    },
    "extends": ["eslint:recommended", "google"],

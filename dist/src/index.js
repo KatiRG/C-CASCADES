@@ -121,7 +121,7 @@
 	  return store[key] || (store[key] = value !== undefined ? value : {});
 	})('versions', []).push({
 	  version: _core.version,
-	  mode: _library ? 'pure' : 'global',
+	  mode: 'global',
 	  copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
 	});
 	});
@@ -1305,8 +1305,11 @@
 
 	var format = function format(d) {
 	  return formatNumber(d);
-	}; // Read data
+	};
 
+	i18n.load(["src/i18n"], function () {
+	  console.log("load");
+	}); // Read data
 
 	var jsonFile1 = "data/LOAC_budget_TgCyr181113_sankey1.json";
 	var jsonFile2 = "data/LOAC_budget_TgCyr181113_sankey2.json";
@@ -1320,7 +1323,10 @@
 	makeStackedBar("#stackedbar_Europe", "data/LOAC_budget_TgCyr181113_stackedbar_Europe.csv", 70, 180);
 
 	function makeStackedBar(chartId, fname, h, w) {
-	  // tooltip div
+	  console.log("i18n: ", i18next.t("01", {
+	    ns: "months"
+	  })); // tooltip div
+
 	  var div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
 	  var yshiftTooltip = 90; // amount to raise tooltip in y-dirn
 
@@ -1525,28 +1531,29 @@
 
 	      var childName;
 	      var thisLink;
+	      var childArray;
+	      var thisParent;
 
 	      if (d.sourceLinks.length > 0) {
-	        d.sourceLinks.map(function (n) {
-	          // highlight source child rects
-	          childName = n.target.name.replace(/\s+/g, "");
-	          d3.select("#chart" + chartNum).select("rect." + childName).classed("rectInactive", false);
-	        }); // store connecting links
+	        childArray = d.sourceLinks;
+	        thisParent = "target"; // store connecting links
 
 	        thisLink = d3.selectAll(".from" + d.name.replace(/\s+/g, "") + chartNum);
 	      } else if (d.targetLinks.length > 0) {
-	        // highlight target child rects
-	        d.targetLinks.map(function (n) {
-	          childName = n.source.name.replace(/\s+/g, "");
-	          d3.select("#chart".concat(chartNum)).select("rect.".concat(childName)).classed("rectInactive", false);
-	        }); // store connecting links
+	        childArray = d.targetLinks;
+	        thisParent = "source"; // store connecting links
 
 	        thisLink = d3.selectAll(".to" + d.name.replace(/\s+/g, "") + chartNum);
 	      } // highlight connecting links
 
 
 	      thisLink.classed("inactive", !thisLink.classed("inactive"));
-	      thisLink.classed("active", true);
+	      thisLink.classed("active", true); // highlight target child rects
+
+	      childArray.map(function (n) {
+	        childName = n[thisParent].name.replace(/\s+/g, "");
+	        d3.select("#chart".concat(chartNum)).select("rect.".concat(childName)).classed("rectInactive", false);
+	      });
 	    }
 
 	    function highlightFromLink(d, thisLink) {
