@@ -1,0 +1,33 @@
+{
+"nodes": [
+{"name": "Estuaries"},
+{"name": "Lakes"},
+{"name": "Rivers"},
+{"name": "N America"},
+{"name": "S America"},
+{"name": "Africa"},
+{"name": "Asia"},
+{"name": "Europe"},
+{"name": "Oceania"}
+],
+"links": [
+{"source": "Estuaries", "target": "N America", "value": "40.26"},
+{"source": "Estuaries", "target": "S America", "value": "12.47"},
+{"source": "Estuaries", "target": "Africa", "value": "14.70"},
+{"source": "Estuaries", "target": "Asia", "value": "52.30"},
+{"source": "Estuaries", "target": "Europe", "value": "23.40"},
+{"source": "Estuaries", "target": "Oceania", "value": "8.89"},
+{"source": "Lakes", "target": "N America", "value": "192.46"},
+{"source": "Lakes", "target": "S America", "value": "41.73"},
+{"source": "Lakes", "target": "Africa", "value": "37.14"},
+{"source": "Lakes", "target": "Asia", "value": "161.32"},
+{"source": "Lakes", "target": "Europe", "value": "55.00"},
+{"source": "Lakes", "target": "Oceania", "value": "2.66"},
+{"source": "Rivers", "target": "N America", "value": "46.14"},
+{"source": "Rivers", "target": "S America", "value": "270.92"},
+{"source": "Rivers", "target": "Africa", "value": "137.57"},
+{"source": "Rivers", "target": "Asia", "value": "166.42"},
+{"source": "Rivers", "target": "Europe", "value": "20.35"},
+{"source": "Rivers", "target": "Oceania", "value": "8.49"}
+]
+}

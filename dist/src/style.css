@@ -1,0 +1,164 @@
+body {
+  /*font-family: Arial;*/
+  padding-top: 10px;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 14px;
+  color: #555;
+}
+
+.container {
+  margin: 0 auto;
+  text-align: left;
+}
+
+.headings {
+  font-size: 20px;
+  padding-left: 20px;
+  color: #565656;
+  text-align: center;
+}
+
+#infotext {
+  /*position: absolute;*/
+  top: 20px;
+  /*left: 106px;*/
+  /*width: 950px;*/
+}
+
+#subtitle {
+  /*position: relative;*/
+  top: 45px;
+  /*left: 370px;*/
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  /*width: 500px;*/
+}
+
+div.tooltip {
+  position: absolute;
+  padding: 5px;
+  text-align: left;
+  font: 12px sans-serif;
+  color: #000;
+  background: #AAA;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #000;
+  border-radius: 8px;
+}
+
+.active {
+  stroke-opacity: 1.0 !important;
+}
+.inactive {
+  stroke-opacity: 0.2 !important;
+}
+.rectInactive {
+  opacity: 0.2 !important;
+}
+
+/* SANKEY */
+.node text {
+  pointer-events: none;
+  fill: #555;
+}
+
+.link {
+  fill: none;
+  stroke: #000;
+  stroke-opacity: .5;
+}
+
+.link:hover {
+  stroke-opacity: 1.0 !important;
+}
+
+/* link colours */
+/* https://www.colorcodehex.com/eff3ff/ */
+.fromLakes1, .fromLakes2 {
+  stroke: #607890;
+}
+.fromRivers1, .fromRivers2 {
+  stroke: #A9C1D9;
+}
+.fromEstuaries1, .fromEstuaries2 {
+  stroke: #ABBE71;
+}
+
+/* rect colours */
+.node rect {
+  stroke-width: 2px;
+  stroke: #555;
+  /*shape-rendering: crispEdges;*/
+}
+.Rivers {
+  fill: #A9C1D9;
+}
+.Lakes {
+  fill: #607890;
+}
+.Estuaries {
+  fill: #ABBE71;
+}
+.Midlat {
+  fill: #CC982A;
+}
+.Highlat {
+  fill: #928941
+}
+.Tropics {
+  fill: #FFDC68;
+}
+.Europe {
+  fill: #FAB491;
+}
+.SAmerica {
+  fill: #0F7409;
+}
+.Oceania {
+  fill: #00CC99;
+}
+.Africa {
+  fill: #EBCD0C;
+}
+.NAmerica {
+  fill: #B5B0B9;
+}
+.Asia {
+  fill: #C02942;
+}
+
+
+/* STACKED BAR CHARTS */
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  /*shape-rendering: crispEdges;*/
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.x.axis path {
+  display: none;
+}
+.tick {
+  fill: #565656;
+  font-size: 11px;
+}
+
+
+
+
+table, th, td {
+  border: none;
+  border-collapse: collapse;
+  width: 1*, 1*, 2*;
+}
+th, td {
+  padding: 2px;
+  text-align: left;
+}
