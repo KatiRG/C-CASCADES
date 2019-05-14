@@ -149,7 +149,7 @@ function makeStackedBar(chartId, fname, h, w) {
         });
 
     country.selectAll("rect")
-        .on("mouseover", function(d) {
+        .on("mousemove", function(d) {
           var delta = d.y1 - d.y0;
           // Tooltip
           div.transition()
@@ -262,7 +262,7 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
         });
 
     // add link tooltip
-    link.on("mouseover", function(d) {
+    link.on("mousemove", function(d) {
       // Reduce opacity of all but link that is moused over and connected rects
       d3.selectAll(".link:not(#" + this.id + ")").style("opacity", 0.5);
 
@@ -343,7 +343,7 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
         .attr("text-anchor", "start");
 
     // add node tooltip
-    node.on("mouseover", function(d) {
+    node.on("mousemove", function(d) {
       highlightFromNode(d);
 
       // tooltip
