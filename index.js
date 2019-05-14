@@ -350,31 +350,7 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
 
     // add node tooltip
     node.on("mouseover", function(d) {
-      var otherChart = chartNum === 1 ? 2 : 1;
-
-      // Make all links inactive and rects of other chart
-      d3.selectAll(".link").classed("inactive", true);
-      d3.select("#chart" + otherChart).selectAll("rect").classed("rectInactive", true);
-
-      // Remove inactive class to selected links and make them active
-      if (d.sourceLinks.length > 0) { // rect acts as a source to next rect
-        var fromLink = d3.selectAll(".from" + d.name.replace(/\s+/g, "") + chartNum);
-        fromLink.classed("inactive", !fromLink.classed("inactive"));
-        fromLink.classed("active", true);
-
-        // turn off all rects except those belonging to selected node
-        rectHighlight(d, d.sourceLinks);
-      }
-
-      if (d.targetLinks.length > 0) { // rect acts as a target from previous rect
-        var toLink = d3.selectAll(".to" + d.name.replace(/\s+/g, "") + chartNum);
-        toLink.classed("inactive", !toLink.classed("inactive"));
-
-        toLink.classed("active", true);
-
-        // turn off all rects except those belonging to selected node
-        rectHighlight(d, d.targetLinks);
-      }
+      highlightFromNode(d);
 
       // tooltip
       var sourceName = (d.name === "Tropics" || d.name === "Mid lat" || d.name === "High lat") ?
@@ -419,18 +395,38 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
     }
 
     // selective rect highlight
-    function rectHighlight(d, childArray) {
+    function highlightFromNode(d) {
+      // first deactivate all rects and links
       d3.select("#chart" + chartNum).selectAll("rect:not(." + d.name.replace(/\s+/g, "") + ")").classed("rectInactive", true);
-      // turn on rects belonging to selected node
-      var thisName;
-      for (var idx = 0; idx < childArray.length; idx++) {
-        if (d.name === childArray[idx].target.name) {
-          thisName = childArray[idx].source.name.replace(/\s+/g, "");
-        } else {
-          thisName = childArray[idx].target.name.replace(/\s+/g, "");
-        }
-        d3.select("#chart" + chartNum).select("rect." + thisName).classed("rectInactive", false);
+      d3.selectAll(".link").classed("inactive", true);
+
+      // selectively turn on child rects
+      var childName;
+      var thisLink;
+
+      if (d.sourceLinks.length > 0) {
+        d.sourceLinks.map(function(n) {
+          // highlight child rects
+          childName = n.target.name.replace(/\s+/g, "");
+          d3.select("#chart" + chartNum).select("rect." + childName).classed("rectInactive", false);
+        });
+
+        // store connecting links
+        thisLink = d3.selectAll(".from" + d.name.replace(/\s+/g, "") + chartNum);
+
+      } else if (d.targetLinks.length > 0) {
+        d.targetLinks.map(function(n) {        
+          childName = n.source.name.replace(/\s+/g, "");
+          d3.select("#chart" + chartNum).select("rect." + childName).classed("rectInactive", false);
+        });
+
+        // store connecting links
+        thisLink = d3.selectAll(".to" + d.name.replace(/\s+/g, "") + chartNum);
       }
+
+      // highlight connecting links
+      thisLink.classed("inactive", !thisLink.classed("inactive"));
+      thisLink.classed("active", true);
     }
     function rectHighlightFromLink(d, thisLink) {
       // turn off all rects
