@@ -1,12 +1,12 @@
-var units = "Tg C yr <sup>-1</sup>";
-var formatNumber = d3.format(".2f");
-var format = function(d) {
+const units = "Tg C yr <sup>-1</sup>";
+const formatNumber = d3.format(".2f");
+const format = function(d) {
   return formatNumber(d);
 };
 
 // Read data
-var jsonFile1 = "data/LOAC_budget_TgCyr181113_sankey1.json";
-var jsonFile2 = "data/LOAC_budget_TgCyr181113_sankey2.json";
+const jsonFile1 = "data/LOAC_budget_TgCyr181113_sankey1.json";
+const jsonFile2 = "data/LOAC_budget_TgCyr181113_sankey2.json";
 
 makeSankey("#chart1", jsonFile1, 1);
 makeSankey("#chart2", jsonFile2, 2);
@@ -20,13 +20,13 @@ makeStackedBar("#stackedbar_Europe", "data/LOAC_budget_TgCyr181113_stackedbar_Eu
 
 function makeStackedBar(chartId, fname, h, w) {
   // tooltip div
-  var div = d3.select("body").append("div")
+  const div = d3.select("body").append("div")
       .attr("class", "tooltip")
       .style("opacity", 0);
 
-  var yshiftTooltip = 90; // amount to raise tooltip in y-dirn
+  const yshiftTooltip = 90; // amount to raise tooltip in y-dirn
 
-  var topDict = {
+  const topDict = {
     "#stackedbar_SA": 25,
     "#stackedbar_Africa": 10,
     "#stackedbar_Asia": 15,
@@ -34,31 +34,31 @@ function makeStackedBar(chartId, fname, h, w) {
     "#stackedbar_Oceania": 2,
     "#stackedbar_Europe": 5
   };
-  var margin = {top: topDict[chartId], right: 20, bottom: 17, left: 40};
-  var width = w - margin.left - margin.right;
-  var height = h - margin.top - margin.bottom;
+  const margin = {top: topDict[chartId], right: 20, bottom: 17, left: 40};
+  const width = w - margin.left - margin.right;
+  const height = h - margin.top - margin.bottom;
 
-  var x = d3.scale.ordinal()
+  const x = d3.scale.ordinal()
       .rangeRoundBands([0, width], .1);
 
-  var y = d3.scale.linear()
+  const y = d3.scale.linear()
       .rangeRound([height, 0]);
 
-  var color = d3.scale.ordinal()
+  const color = d3.scale.ordinal()
       .range(["#A9C1D9", "#607890", "#ABBE71"]);
 
-  var xAxis = d3.svg.axis()
+  const xAxis = d3.svg.axis()
       .scale(x)
       .orient("bottom");
 
-  var numTicks = (chartId === "#stackedbar_Oceania") ? 1 : 3;
-  var yAxis = d3.svg.axis()
+  const numTicks = (chartId === "#stackedbar_Oceania") ? 1 : 3;
+  const yAxis = d3.svg.axis()
       .scale(y)
       .orient("left")
       .tickFormat(d3.format(".2s"))
       .ticks(numTicks);
 
-  var svg = d3.select(chartId).append("div")
+  const svg = d3.select(chartId).append("div")
       .append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
@@ -68,27 +68,27 @@ function makeStackedBar(chartId, fname, h, w) {
   d3.csv(fname, function(error, data) {
     if (error) throw error;
 
-    color.domain(d3.keys(data[0]).filter(function(key) {
+    color.domain(d3.keys(data[0]).filter((key) => {
       return key !== "country";
     }));
 
-    data.forEach(function(d) {
-      var country = d.country;
-      var y0 = 0;
-      d.flux = color.domain().map(function(name) {
+    data.forEach((d) => {
+      const country = d.country;
+      let y0 = 0;
+      d.flux = color.domain().map((name) => {
         return {country: country, loac: name, y0: y0, y1: y0 += +d[name]};
       });
       d.total = d.flux[d.flux.length - 1].y1;
     });
 
-    data.sort(function(a, b) {
+    data.sort((a, b) => {
       return b.total - a.total;
     });
 
-    x.domain(data.map(function(d) {
+    x.domain(data.map((d) => {
       return d.country;
     }));
-    y.domain([0, d3.max(data, function(d) {
+    y.domain([0, d3.max(data, (d) => {
       return d.total;
     })]);
 
@@ -121,36 +121,36 @@ function makeStackedBar(chartId, fname, h, w) {
         .attr("dy", ".71em")
         .style("text-anchor", "end");
 
-    var country = svg.selectAll(".country")
+    const country = svg.selectAll(".country")
         .data(data)
         .enter().append("g")
         .attr("class", "g")
-        .attr("transform", function() {
+        .attr("transform", () => {
           return "translate(" + "0" + ",0)";
         });
 
     country.selectAll("rect")
-        .data(function(d) {
+        .data((d) => {
           return d.flux;
         })
         .enter().append("rect")
         .attr("width", x.rangeBand())
-        .attr("y", function(d) {
+        .attr("y", (d) => {
           return y(d.y1);
         })
-        .attr("x", function(d) {
+        .attr("x", (d) => {
           return x(d.country);
         })
-        .attr("height", function(d) {
+        .attr("height", (d) => {
           return y(d.y0) - y(d.y1);
         })
-        .style("fill", function(d) {
+        .style("fill", (d) => {
           return color(d.loac);
         });
 
     country.selectAll("rect")
-        .on("mousemove", function(d) {
-          var delta = d.y1 - d.y0;
+        .on("mousemove", (d) => {
+          const delta = d.y1 - d.y0;
           // Tooltip
           div.transition()
               .style("opacity", .9);
@@ -166,7 +166,7 @@ function makeStackedBar(chartId, fname, h, w) {
               .style("left", (d3.event.pageX) + "px")
               .style("top", (d3.event.pageY - yshiftTooltip) + "px");
         })
-        .on("mouseout", function() {
+        .on("mouseout", () => {
           div.transition()
               .style("opacity", 0);
         });
@@ -174,18 +174,18 @@ function makeStackedBar(chartId, fname, h, w) {
 } // .makeStackedBar
 
 function makeSankey(chartDiv, jsonFile, chartNum) {
-  var margin = {
+  const margin = {
     top: 0,
     right: 0,
     bottom: 0,
     left: 0
   };
 
-  var width = 460 - margin.left - margin.right;
-  var height = 900 - margin.top - margin.bottom;
+  const width = 460 - margin.left - margin.right;
+  const height = 900 - margin.top - margin.bottom;
 
   // append the svg canvas to the page
-  var svg = d3.select(chartDiv).append("svg")
+  const svg = d3.select(chartDiv).append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
@@ -194,15 +194,15 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
       );
 
   // set the sankey diagram properties
-  var sankey = d3.sankey()
+  const sankey = d3.sankey()
       .nodeWidth(30)
       .nodePadding(20)
       .size([width, height]);
 
-  var path = sankey.link();
-  var yshiftTooltip = 90; // amount to raise tooltip in y-dirn
+  const path = sankey.link();
+  const yshiftTooltip = 90; // amount to raise tooltip in y-dirn
 
-  var nameDict = {
+  const nameDict = {
     // latitude bands
     "Tropics": "Tropics (> 50 degrees)",
     "High lat": "High latitudes (< -50 degrees)",
@@ -215,11 +215,11 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
   });
 
   function make(graph) {
-    var nodeMap = {};
-    graph.nodes.forEach(function(x) {
+    const nodeMap = {};
+    graph.nodes.forEach((x) => {
       nodeMap[x.name] = x;
     });
-    graph.links = graph.links.map(function(x) {
+    graph.links = graph.links.map((x) => {
       return {
         source: nodeMap[x.source],
         target: nodeMap[x.target],
@@ -227,7 +227,7 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
       };
     });
 
-    graph.nodes.sort(function(a, b) {
+    graph.nodes.sort((a, b) => {
       return d3.descending(a.value, b.value);
     });
 
@@ -237,27 +237,27 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
         .layout(32);
 
     // tooltip div
-    var div = d3.select("body").append("div")
+    const div = d3.select("body").append("div")
         .attr("class", "tooltip")
         .style("opacity", 0);
 
-    var link = svg.append("g").selectAll(".link")
+    const link = svg.append("g").selectAll(".link")
         .data(graph.links)
         .enter().append("path")
-        .attr("class", function(d) {
-          var fromName = "from" + d.source.name.replace(/\s+/g, "") + chartNum;
-          var toName = "to" + d.target.name.replace(/\s+/g, "") + chartNum;
+        .attr("class", (d) => {
+          const fromName = "from" + d.source.name.replace(/\s+/g, "") + chartNum;
+          const toName = "to" + d.target.name.replace(/\s+/g, "") + chartNum;
           return "link" + " " + fromName + " " + toName;
         })
         .attr("d", path)
-        .attr("id", function(d, i) {
+        .attr("id", (d, i) => {
           d.id = i;
           return "chart" + chartNum + "_link-" + i;
         })
-        .style("stroke-width", function(d) {
+        .style("stroke-width", (d) => {
           return Math.max(1, d.dy);
         })
-        .sort(function(a, b) {
+        .sort((a, b) => {
           return b.dy - a.dy;
         });
 
@@ -270,7 +270,7 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
       highlightFromLink(d, this);
 
       // Tooltip
-      var sourceName = (d.source.name === "Tropics" || d.source.name === "Mid lat" || d.source.name === "High lat") ?
+      const sourceName = (d.source.name === "Tropics" || d.source.name === "Mid lat" || d.source.name === "High lat") ?
                       nameDict[d.source.name] : d.source.name;
       div.transition()
           .style("opacity", .9);
@@ -299,55 +299,55 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
         });
 
     // add in the nodes
-    var node = svg.append("g").selectAll(".node")
+    const node = svg.append("g").selectAll(".node")
         .data(graph.nodes)
         .enter().append("g")
-        .attr("class", function() {
+        .attr("class", () => {
           return "node regions";
         })
-        .attr("transform", function(d) {
+        .attr("transform", (d) => {
           return "translate(" + d.x + "," + d.y + ")";
         })
-        .style("cursor", function() {
+        .style("cursor", () => {
           return "crosshair";
         });
 
     // apend rects to the nodes
     node.append("rect")
-        .attr("height", function(d) {
+        .attr("height", (d) => {
           return d.dy;
         })
         .attr("width", sankey.nodeWidth())
-        .attr("class", function(d) {
+        .attr("class", (d) => {
           return d.name.replace(/\s/g, "");
         });
 
     // apend text to nodes
     node.append("text")
         .attr("x", -6)
-        .attr("y", function(d) {
+        .attr("y", (d) => {
           return d.dy / 2;
         })
         .attr("dy", ".35em")
         .attr("text-anchor", "end")
         .attr("transform", null)
-        .text(function(d) {
+        .text((d) => {
           if (d.name === "Tropics" || d.name === "Mid lat" || d.name === "High lat") return nameDict[d.name];
           else return d.name;
         })
         .style("font-weight", "bold")
-        .filter(function(d) {
+        .filter((d) => {
           return d.x < width / 2;
         })
         .attr("x", 6 + sankey.nodeWidth())
         .attr("text-anchor", "start");
 
     // add node tooltip
-    node.on("mousemove", function(d) {
+    node.on("mousemove", (d) => {
       highlightFromNode(d);
 
       // tooltip
-      var sourceName = (d.name === "Tropics" || d.name === "Mid lat" || d.name === "High lat") ?
+      const sourceName = (d.name === "Tropics" || d.name === "Mid lat" || d.name === "High lat") ?
       nameDict[d.name] : d.name;
       div.transition()
           .style("opacity", .9);
@@ -364,7 +364,7 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
           .style("left", (d3.event.pageX) + "px")
           .style("top", (d3.event.pageY - yshiftTooltip) + "px");
     })
-        .on("mouseout", function() {
+        .on("mouseout", () => {
           // Remove active and inactive classes added on mouseover
           d3.selectAll(".inactive").classed("inactive", false);
           d3.selectAll(".active").classed("active", false);
@@ -381,22 +381,27 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
       d3.selectAll(".link").classed("inactive", true);
 
       // selectively turn on child rects
-      var childName;
-      var thisLink;
+      let childName;
+      let thisLink;
 
       if (d.sourceLinks.length > 0) {
-        d.sourceLinks.map(function(n) {
-          // highlight child rects
+        d.sourceLinks.map((n) => {
+          // highlight source child rects
           childName = n.target.name.replace(/\s+/g, "");
-          d3.select("#chart" + chartNum).select("rect." + childName).classed("rectInactive", false);
+          d3.select("#chart" + chartNum)
+              .select("rect." + childName)
+              .classed("rectInactive", false);
         });
 
         // store connecting links
         thisLink = d3.selectAll(".from" + d.name.replace(/\s+/g, "") + chartNum);
       } else if (d.targetLinks.length > 0) {
-        d.targetLinks.map(function(n) {
+        // highlight target child rects
+        d.targetLinks.map((n) => {
           childName = n.source.name.replace(/\s+/g, "");
-          d3.select("#chart" + chartNum).select("rect." + childName).classed("rectInactive", false);
+          d3.select(`#chart${chartNum}`)
+              .select(`rect.${childName}`)
+              .classed("rectInactive", false);
         });
 
         // store connecting links
@@ -411,14 +416,12 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
       // turn off all rects
       d3.selectAll("rect").classed("rectInactive", true);
       // name of source rect
-      var thisName = d.source.sourceLinks.length > 0 ? d.source.name : d.target.name;
+      const thisName = d.source.sourceLinks.length > 0 ? d.source.name : d.target.name;
 
       // turn on only source and its target rect
-      var targetRect = d3.select("#" + thisLink.id)
+      const targetRect = d3.select("#" + thisLink.id)
           .attr("class").split(" ")
-          .filter(function(s) {
-            return s.includes("to"); // ES6: s.filter(s => s.includes('to'));
-          })[0]
+          .filter((s) => s.includes("to"))[0]
           .split("to")[1].slice(0, -1);
 
       d3.select("#chart" + chartNum).select("rect." + thisName).classed("rectInactive", false);
