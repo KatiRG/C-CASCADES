@@ -1528,16 +1528,17 @@
 
 	      if (d.sourceLinks.length > 0) {
 	        d.sourceLinks.map(function (n) {
-	          // highlight child rects
+	          // highlight source child rects
 	          childName = n.target.name.replace(/\s+/g, "");
 	          d3.select("#chart" + chartNum).select("rect." + childName).classed("rectInactive", false);
 	        }); // store connecting links
 
 	        thisLink = d3.selectAll(".from" + d.name.replace(/\s+/g, "") + chartNum);
 	      } else if (d.targetLinks.length > 0) {
+	        // highlight target child rects
 	        d.targetLinks.map(function (n) {
 	          childName = n.source.name.replace(/\s+/g, "");
-	          d3.select("#chart" + chartNum).select("rect." + childName).classed("rectInactive", false);
+	          d3.select("#chart".concat(chartNum)).select("rect.".concat(childName)).classed("rectInactive", false);
 	        }); // store connecting links
 
 	        thisLink = d3.selectAll(".to" + d.name.replace(/\s+/g, "") + chartNum);
@@ -1555,7 +1556,7 @@
 	      var thisName = d.source.sourceLinks.length > 0 ? d.source.name : d.target.name; // turn on only source and its target rect
 
 	      var targetRect = d3.select("#" + thisLink.id).attr("class").split(" ").filter(function (s) {
-	        return s.includes("to"); // ES6: s.filter(s => s.includes('to'));
+	        return s.includes("to");
 	      })[0].split("to")[1].slice(0, -1);
 	      d3.select("#chart" + chartNum).select("rect." + thisName).classed("rectInactive", false);
 	      d3.select("#chart" + chartNum).select("rect." + targetRect).classed("rectInactive", false);

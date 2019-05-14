@@ -383,26 +383,18 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
       // selectively turn on child rects
       let childName;
       let thisLink;
+      let childArray;
+      let thisParent;
 
       if (d.sourceLinks.length > 0) {
-        d.sourceLinks.map((n) => {
-          // highlight source child rects
-          childName = n.target.name.replace(/\s+/g, "");
-          d3.select("#chart" + chartNum)
-              .select("rect." + childName)
-              .classed("rectInactive", false);
-        });
+        childArray = d.sourceLinks;
+        thisParent = "target";
 
         // store connecting links
         thisLink = d3.selectAll(".from" + d.name.replace(/\s+/g, "") + chartNum);
       } else if (d.targetLinks.length > 0) {
-        // highlight target child rects
-        d.targetLinks.map((n) => {
-          childName = n.source.name.replace(/\s+/g, "");
-          d3.select(`#chart${chartNum}`)
-              .select(`rect.${childName}`)
-              .classed("rectInactive", false);
-        });
+        childArray = d.targetLinks;
+        thisParent = "source";
 
         // store connecting links
         thisLink = d3.selectAll(".to" + d.name.replace(/\s+/g, "") + chartNum);
@@ -411,6 +403,14 @@ function makeSankey(chartDiv, jsonFile, chartNum) {
       // highlight connecting links
       thisLink.classed("inactive", !thisLink.classed("inactive"));
       thisLink.classed("active", true);
+
+      // highlight target child rects
+      childArray.map((n) => {
+        childName = n[thisParent].name.replace(/\s+/g, "");
+        d3.select(`#chart${chartNum}`)
+            .select(`rect.${childName}`)
+            .classed("rectInactive", false);
+      });
     }
     function highlightFromLink(d, thisLink) {
       // turn off all rects
