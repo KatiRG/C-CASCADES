@@ -7,10 +7,21 @@ const format = function(d) {
 let sankeydata1 = {};
 let sankeydata2 = {};
 
+let stackedSA = {};
+let stackedAfrica = {};
+let stackedAsia = {};
+let stackedNAmer = {};
+let stackedOceania = {};
+let stackedEurope = {};
+
+/* -- info text on top of page -- */
+function pageText() {
+  d3.select("#pageTitle").text(i18next.t("title", {ns: "pageText"}));
+}
+
 /* -- display areaChart -- */
 function showSankey(chartDiv, graph) {
-  const chartNum =  chartDiv.split("chart")[1];
-  console.log(i18next.t("units", {ns: "constants"}))
+  const chartNum = chartDiv.split("chart")[1];
 
   const margin = {
     top: 0,
@@ -255,6 +266,156 @@ function showSankey(chartDiv, graph) {
   } // end make()
 } // end makeSankey()
 
+// ----------------------------------------------------------------------------
+// STACKED BARS
+function makeStackedBar(chartId, data, h, w) {
+  // tooltip div
+  const div = d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
+
+  const yshiftTooltip = 90; // amount to raise tooltip in y-dirn
+
+  const topDict = {
+    "#stackedbar_SA": 25,
+    "#stackedbar_Africa": 10,
+    "#stackedbar_Asia": 15,
+    "#stackedbar_NAmer": 5,
+    "#stackedbar_Oceania": 2,
+    "#stackedbar_Europe": 5
+  };
+  const margin = {top: topDict[chartId], right: 20, bottom: 17, left: 40};
+  const width = w - margin.left - margin.right;
+  const height = h - margin.top - margin.bottom;
+
+  const x = d3.scale.ordinal()
+      .rangeRoundBands([0, width], .1);
+
+  const y = d3.scale.linear()
+      .rangeRound([height, 0]);
+
+  const color = d3.scale.ordinal()
+      .range(["#A9C1D9", "#607890", "#ABBE71"]);
+
+  const xAxis = d3.svg.axis()
+      .scale(x)
+      .orient("bottom");
+
+  const numTicks = (chartId === "#stackedbar_Oceania") ? 1 : 3;
+  const yAxis = d3.svg.axis()
+      .scale(y)
+      .orient("left")
+      .tickFormat(d3.format(".2s"))
+      .ticks(numTicks);
+
+  const svg = d3.select(chartId).append("div")
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  color.domain(d3.keys(data[0]).filter((key) => {
+    return key !== "country";
+  }));
+
+  data.forEach((d) => {
+    const country = d.country;
+    let y0 = 0;
+    d.flux = color.domain().map((name) => {
+      return {country: country, loac: name, y0: y0, y1: y0 += +d[name]};
+    });
+    d.total = d.flux[d.flux.length - 1].y1;
+  });
+
+  data.sort((a, b) => {
+    return b.total - a.total;
+  });
+
+  x.domain(data.map((d) => {
+    return d.country;
+  }));
+  y.domain([0, d3.max(data, (d) => {
+    return d.total;
+  })]);
+
+  if (chartId === "#stackedbar_SA") {
+    svg.append("g")
+        .attr("class", "tick")
+        .append("text", "text")
+        .attr("x", -40)
+        .attr("y", -8)
+        .html("Tg C yr")
+        .style("font-size", "11px")
+        .append("tspan")
+        .text("-1")
+        .style("font-size", "11px")
+        .attr("dx", ".01em")
+        .attr("dy", "-.2em");
+  }
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+      .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end");
+
+  const country = svg.selectAll(".country")
+      .data(data)
+      .enter().append("g")
+      .attr("class", "g");
+
+  country.selectAll("rect")
+      .data((d) => {
+        return d.flux;
+      })
+      .enter().append("rect")
+      .attr("class", function(d) {
+        return d.loac;
+      })
+      .attr("width", x.rangeBand())
+      .attr("y", (d) => {
+        return y(d.y1);
+      })
+      .attr("x", (d) => {
+        return x(d.country);
+      })
+      .attr("height", (d) => {
+        return y(d.y0) - y(d.y1);
+      });
+
+  country.selectAll("rect")
+      .on("mousemove", (d) => {
+        const delta = d.y1 - d.y0;
+        // Tooltip
+        div.transition()
+            .style("opacity", .9);
+        div.html(
+            `<b> ${d.loac} </b><br><br>
+              <table>
+                <tr>
+                  <td><b>${format(delta)} </td>
+                  <td> ${units} </td>
+                </tr>
+              </table>`
+        )
+            .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY - yshiftTooltip) + "px");
+      })
+      .on("mouseout", () => {
+        div.transition()
+            .style("opacity", 0);
+      });
+} // .makeStackedBar
+
 
 // -----------------------------------------------------------------------------
 /* Initial page load */
@@ -263,12 +424,37 @@ i18n.load(["src/i18n"], () => {
   queue()
       .defer(d3.json, "data/LOAC_budget_TgCyr181113_sankey1.json")
       .defer(d3.json, "data/LOAC_budget_TgCyr181113_sankey2.json")
-      .await(function(error, sankeyfile1, sankeyfile2) {
+      .defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_SAmer.csv")
+      .defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_Africa.csv")
+      .defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_Asia.csv")
+      .defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_NAmer.csv")
+      .defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_Oceania.csv")
+      .defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_Europe.csv")
+      .await(function(error, sankeyfile1, sankeyfile2, stackedfileSA, stackedfileAfrica,
+          stackedfileAsia, stackedfileNAmer, stackedfileOceania, stackedfileEurope) {
         sankeydata1 = sankeyfile1;
         sankeydata2 = sankeyfile2;
 
+        stackedSA = stackedfileSA;
+        stackedAfrica = stackedfileAfrica;
+        stackedAsia = stackedfileAsia;
+        stackedNAmer = stackedfileNAmer;
+        stackedOceania = stackedfileOceania;
+        stackedEurope = stackedfileEurope;
+
+        // Page text
+        pageText();
+
+        // Draw graphs
         showSankey("#chart1", sankeydata1);
         showSankey("#chart2", sankeydata2);
+
+        makeStackedBar("#stackedbar_SA", stackedSA, 225, 220);
+        makeStackedBar("#stackedbar_Africa", stackedAfrica, 135, 140);
+        makeStackedBar("#stackedbar_Asia", stackedAsia, 245, 190);
+        makeStackedBar("#stackedbar_NAmer", stackedNAmer, 180, 130);
+        makeStackedBar("#stackedbar_Oceania", stackedOceania, 35, 130);
+        makeStackedBar("#stackedbar_Europe", stackedEurope, 70, 180);
       });
 });
 

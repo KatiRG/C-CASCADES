@@ -1,22 +1,23 @@
 {
   "en": {
-    "symbolLink": {
-      "linkText": "Standard table symbols",
+    "constants": {
+      "units": "Tg C yr <sup>-1</sup>",
       "linkURL": "https://www.statcan.gc.ca/eng/concepts/definitions/guide-symbol"
     },
-    "months": {
-      "01": "January",
-      "02": "February",
-      "03": "March",
-      "04": "April",
-      "05": "May",
-      "06": "June",
-      "07": "July",
-      "08": "August",
-      "09": "September",
-      "10": "October",
-      "11": "November",
-      "12": "December"
+     "pageText": {
+      "title": "Carbon fluxes across countries and regions from inland water sources"
+    },
+    "labels": {
+      "Tropics": "Tropics (> 50 degrees)",
+      "High lat": "High latitudes (< -50 degrees)",
+      "Mid lat": "Mid latitudes (30–50 degrees)",
+      "S America": "South America",
+      "N America": "North America"
+    },
+    "loac": {
+      "Rivers": "January",
+      "Lakes": "February",
+      "Estuaries": "December"
     }
    
   }
