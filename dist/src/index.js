@@ -1336,7 +1336,7 @@
 	  var width = 460 - margin.left - margin.right;
 	  var height = 900 - margin.top - margin.bottom; // append the svg canvas to the page
 
-	  var svg = d3.select(chartDiv).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")"); // set the sankey diagram properties
+	  var svg = d3.select(chartDiv).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(".concat(margin.left, ", ").concat(margin.top, ")")); // set the sankey diagram properties
 
 	  var sankey = d3.sankey().nodeWidth(30).nodePadding(20).size([width, height]);
 	  var path = sankey.link();
@@ -1363,12 +1363,12 @@
 
 	    var div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
 	    var link = svg.append("g").selectAll(".link").data(graph.links).enter().append("path").attr("class", function (d) {
-	      var fromName = "from" + d.source.name.replace(/\s+/g, "") + chartNum;
-	      var toName = "to" + d.target.name.replace(/\s+/g, "") + chartNum;
-	      return "link" + " " + fromName + " " + toName;
+	      var fromName = "from".concat(d.source.name.replace(/\s+/g, "")).concat(chartNum);
+	      var toName = "to".concat(d.target.name.replace(/\s+/g, "")).concat(chartNum);
+	      return "link ".concat(fromName, " ").concat(toName);
 	    }).attr("d", path).attr("id", function (d, i) {
 	      d.id = i;
-	      return "chart" + chartNum + "_link-" + i;
+	      return "chart".concat(chartNum, "_link-").concat(i);
 	    }).style("stroke-width", function (d) {
 	      return Math.max(1, d.dy);
 	    }).sort(function (a, b) {
@@ -1377,7 +1377,7 @@
 
 	    link.on("mousemove", function (d) {
 	      // Reduce opacity of all but link that is moused over and connected rects
-	      d3.selectAll(".link:not(#" + this.id + ")").style("opacity", 0.5); // Remove inactive class to selected links and make them active
+	      d3.selectAll(".link:not(#".concat(this.id, ")")).style("opacity", 0.5); // Remove inactive class to selected links and make them active
 
 	      highlightFromLink(d, this); // Tooltip
 
@@ -1385,10 +1385,10 @@
 	        ns: "labels"
 	      });
 	      div.transition().style("opacity", .9);
-	      div.html("<b>" + sourceName + "</b>" + "<br><br>" + "<table>" + "<tr>" + "<td>" + d.target.name + " flux: </td>" + "<td><b>" + format(d.value) + "</td>" + "<td>" + " " + units + "</td>" + "</tr>" + "</table>").style("left", d3.event.pageX + "px").style("top", d3.event.pageY - yshiftTooltip + "px");
+	      div.html("<b>".concat(sourceName, "</b><br><br>\n          <table>\n              <tr>\n                <td>").concat(d.target.name, " flux: </td>\n                <td><b>").concat(format(d.value), "</td>\n                <td> ").concat(units, " </td>\n            </tr>\n          </table>")).style("left", d3.event.pageX + "px").style("top", d3.event.pageY - yshiftTooltip + "px");
 	    }).on("mouseout", function () {
 	      // Restore opacity
-	      d3.selectAll(".link:not(#chart" + chartNum + "_" + this.id + ")").style("opacity", 1); // Remove active and inactive classes added on mouseover
+	      d3.selectAll(".link:not(#chart".concat(chartNum, "_").concat(this.id, ")")).style("opacity", 1); // Remove active and inactive classes added on mouseover
 
 	      d3.selectAll("rect").classed("rectInactive", false);
 	      div.transition().style("opacity", 0);
@@ -1397,7 +1397,7 @@
 	    var node = svg.append("g").selectAll(".node").data(graph.nodes).enter().append("g").attr("class", function () {
 	      return "node regions";
 	    }).attr("transform", function (d) {
-	      return "translate(" + d.x + "," + d.y + ")";
+	      return "translate(".concat(d.x, ",").concat(d.y, ")");
 	    }).style("cursor", function () {
 	      return "crosshair";
 	    }); // apend rects to the nodes
@@ -1414,7 +1414,7 @@
 	      return i18next.t(d.name, {
 	        ns: "labels"
 	      });
-	    }).style("font-weight", "bold").filter(function (d) {
+	    }).filter(function (d) {
 	      return d.x < width / 2;
 	    }).attr("x", 6 + sankey.nodeWidth()).attr("text-anchor", "start"); // add node tooltip
 
@@ -1425,7 +1425,7 @@
 	        ns: "labels"
 	      });
 	      div.transition().style("opacity", .9);
-	      div.html("<b>" + sourceName + "</b>" + "<br><br>" + "<table>" + "<tr>" + "<td> Total flux: </td>" + "<td><b>" + format(d.value) + "</td>" + "<td>" + " " + units + "</td>" + "</tr>" + "</table>").style("left", d3.event.pageX + "px").style("top", d3.event.pageY - yshiftTooltip + "px");
+	      div.html("<b>".concat(sourceName, "</b><br><br>\n          <table>\n            <tr>\n              <td> Total flux: </td>\n              <td><b>").concat(format(d.value), "</td>\n              <td>  ").concat(units, " </td>\n            </tr>\n          </table>")).style("left", d3.event.pageX + "px").style("top", d3.event.pageY - yshiftTooltip + "px");
 	    }).on("mouseout", function () {
 	      // Remove active and inactive classes added on mouseover
 	      d3.selectAll(".inactive").classed("inactive", false);
@@ -1436,7 +1436,7 @@
 
 	    function highlightFromNode(d) {
 	      // first deactivate all rects and links
-	      d3.select("#chart" + chartNum).selectAll("rect:not(." + d.name.replace(/\s+/g, "") + ")").classed("rectInactive", true);
+	      d3.select("#chart" + chartNum).selectAll("rect:not(.".concat(d.name.replace(/\s+/g, ""), ")")).classed("rectInactive", true);
 	      d3.selectAll(".link").classed("inactive", true); // selectively turn on child rects
 
 	      var childName;
@@ -1448,12 +1448,12 @@
 	        childArray = d.sourceLinks;
 	        thisParent = "target"; // store connecting links
 
-	        thisLink = d3.selectAll(".from" + d.name.replace(/\s+/g, "") + chartNum);
+	        thisLink = d3.selectAll(".from".concat(d.name.replace(/\s+/g, "")).concat(chartNum));
 	      } else if (d.targetLinks.length > 0) {
 	        childArray = d.targetLinks;
 	        thisParent = "source"; // store connecting links
 
-	        thisLink = d3.selectAll(".to" + d.name.replace(/\s+/g, "") + chartNum);
+	        thisLink = d3.selectAll(".to".concat(d.name.replace(/\s+/g, "")).concat(chartNum));
 	      } // highlight connecting links
 
 
@@ -1475,8 +1475,8 @@
 	      var targetRect = d3.select("#" + thisLink.id).attr("class").split(" ").filter(function (s) {
 	        return s.includes("to");
 	      })[0].split("to")[1].slice(0, -1);
-	      d3.select("#chart" + chartNum).select("rect." + thisName).classed("rectInactive", false);
-	      d3.select("#chart" + chartNum).select("rect." + targetRect).classed("rectInactive", false);
+	      d3.select("#chart".concat(chartNum)).select("rect.".concat(thisName)).classed("rectInactive", false);
+	      d3.select("#chart".concat(chartNum)).select("rect.".concat(targetRect)).classed("rectInactive", false);
 	    }
 	  } // end make()
 
@@ -1512,7 +1512,7 @@
 	  var xAxis = d3.svg.axis().scale(x).orient("bottom");
 	  var numTicks = chartId === "#stackedbar_Oceania" ? 1 : 3;
 	  var yAxis = d3.svg.axis().scale(y).orient("left").tickFormat(d3.format(".2s")).ticks(numTicks);
-	  var svg = d3.select(chartId).append("div").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+	  var svg = d3.select(chartId).append("div").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(".concat(margin.left, ", ").concat(margin.top, ")"));
 	  color.domain(d3.keys(data[0]).filter(function (key) {
 	    return key !== "country";
 	  }));
@@ -1543,7 +1543,7 @@
 	    svg.append("g").attr("class", "tick").append("text", "text").attr("x", -40).attr("y", -8).html("Tg C yr").style("font-size", "11px").append("tspan").text("-1").style("font-size", "11px").attr("dx", ".01em").attr("dy", "-.2em");
 	  }
 
-	  svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis);
+	  svg.append("g").attr("class", "x axis").attr("transform", "translate(0, ".concat(height, ")")).call(xAxis);
 	  svg.append("g").attr("class", "y axis").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end");
 	  var country = svg.selectAll(".country").data(data).enter().append("g").attr("class", "g");
 	  country.selectAll("rect").data(function (d) {
