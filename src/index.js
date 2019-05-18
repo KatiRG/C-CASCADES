@@ -130,7 +130,6 @@ function showSankey(chartDiv, graph) {
           // Restore opacity
           d3.selectAll(`.link:not(#chart${chartNum}_${this.id})`).style("opacity", 1);
 
-
           // Remove active and inactive classes added on mouseover
           d3.selectAll("rect").classed("rectInactive", false);
 
@@ -342,17 +341,17 @@ function makeStackedBar(chartId, data, h, w) {
     return d.total;
   })]);
 
+  // display y-axis units only for first chart
   if (chartId === "#stackedbar_SA") {
     svg.append("g")
         .attr("class", "tick")
-        .append("text", "text")
+        .attr("id", "yaxisUnits")
+        .append("text")
         .attr("x", -40)
         .attr("y", -8)
         .html(`${i18next.t("units", {ns: "constants"})}`)
-        .style("font-size", "11px")
         .append("tspan")
         .text("-1")
-        .style("font-size", "11px")
         .attr("dx", ".01em")
         .attr("dy", "-.2em");
   }
