@@ -38,9 +38,7 @@ function showSankey(chartDiv, graph) {
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
-      .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")"
-      );
+      .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
   // set the sankey diagram properties
   const sankey = d3.sankey()
@@ -84,14 +82,14 @@ function showSankey(chartDiv, graph) {
         .data(graph.links)
         .enter().append("path")
         .attr("class", (d) => {
-          const fromName = "from" + d.source.name.replace(/\s+/g, "") + chartNum;
-          const toName = "to" + d.target.name.replace(/\s+/g, "") + chartNum;
-          return "link" + " " + fromName + " " + toName;
+          const fromName = `from${d.source.name.replace(/\s+/g, "")}${chartNum}`;
+          const toName = `to${d.target.name.replace(/\s+/g, "")}${chartNum}`;
+          return `link ${fromName} ${toName}`;
         })
         .attr("d", path)
         .attr("id", (d, i) => {
           d.id = i;
-          return "chart" + chartNum + "_link-" + i;
+          return `chart${chartNum}_link-${i}`;
         })
         .style("stroke-width", (d) => {
           return Math.max(1, d.dy);
@@ -103,7 +101,7 @@ function showSankey(chartDiv, graph) {
     // add link tooltip
     link.on("mousemove", function(d) {
       // Reduce opacity of all but link that is moused over and connected rects
-      d3.selectAll(".link:not(#" + this.id + ")").style("opacity", 0.5);
+      d3.selectAll(`.link:not(#${this.id})`).style("opacity", 0.5);
 
       // Remove inactive class to selected links and make them active
       highlightFromLink(d, this);
@@ -113,21 +111,22 @@ function showSankey(chartDiv, graph) {
       div.transition()
           .style("opacity", .9);
       div.html(
-          "<b>" + sourceName + "</b>"+ "<br><br>" +
-          "<table>" +
-            "<tr>" +
-                "<td>" + d.target.name + " flux: </td>" +
-                "<td><b>" + format(d.value) + "</td>" +
-                "<td>" + " " + units + "</td>" +
-            "</tr>" +
-        "</table>"
+          `<b>${sourceName}</b><br><br>
+          <table>
+              <tr>
+                <td>${d.target.name} flux: </td>
+                <td><b>${format(d.value)}</td>
+                <td> ${units} </td>
+            </tr>
+          </table>`
       )
           .style("left", (d3.event.pageX) + "px")
           .style("top", (d3.event.pageY - yshiftTooltip) + "px");
     })
         .on("mouseout", function() {
           // Restore opacity
-          d3.selectAll(".link:not(#chart" + chartNum + "_" + this.id + ")").style("opacity", 1);
+          d3.selectAll(`.link:not(#chart${chartNum}_${this.id})`).style("opacity", 1);
+
 
           // Remove active and inactive classes added on mouseover
           d3.selectAll("rect").classed("rectInactive", false);
@@ -144,7 +143,7 @@ function showSankey(chartDiv, graph) {
           return "node regions";
         })
         .attr("transform", (d) => {
-          return "translate(" + d.x + "," + d.y + ")";
+          return `translate(${d.x},${d.y})`;
         })
         .style("cursor", () => {
           return "crosshair";
@@ -172,7 +171,6 @@ function showSankey(chartDiv, graph) {
         .text((d) => {
           return i18next.t(d.name, {ns: "labels"});
         })
-        .style("font-weight", "bold")
         .filter((d) => {
           return d.x < width / 2;
         })
@@ -188,14 +186,14 @@ function showSankey(chartDiv, graph) {
       div.transition()
           .style("opacity", .9);
       div.html(
-          "<b>" + sourceName + "</b>"+ "<br><br>" +
-          "<table>" +
-            "<tr>" +
-              "<td> Total flux: </td>" +
-              "<td><b>" + format(d.value) + "</td>" +
-              "<td>" + " " + units + "</td>" +
-            "</tr>" +
-          "</table>"
+          `<b>${sourceName}</b><br><br>
+          <table>
+            <tr>
+              <td> Total flux: </td>
+              <td><b>${format(d.value)}</td>
+              <td>  ${units} </td>
+            </tr>
+          </table>`
       )
           .style("left", (d3.event.pageX) + "px")
           .style("top", (d3.event.pageY - yshiftTooltip) + "px");
@@ -213,7 +211,9 @@ function showSankey(chartDiv, graph) {
     // selective rect highlight
     function highlightFromNode(d) {
       // first deactivate all rects and links
-      d3.select("#chart" + chartNum).selectAll("rect:not(." + d.name.replace(/\s+/g, "") + ")").classed("rectInactive", true);
+      d3.select("#chart" + chartNum)
+          .selectAll(`rect:not(.${d.name.replace(/\s+/g, "")})`)
+          .classed("rectInactive", true);
       d3.selectAll(".link").classed("inactive", true);
 
       // selectively turn on child rects
@@ -227,13 +227,13 @@ function showSankey(chartDiv, graph) {
         thisParent = "target";
 
         // store connecting links
-        thisLink = d3.selectAll(".from" + d.name.replace(/\s+/g, "") + chartNum);
+        thisLink = d3.selectAll(`.from${d.name.replace(/\s+/g, "")}${chartNum}`);
       } else if (d.targetLinks.length > 0) {
         childArray = d.targetLinks;
         thisParent = "source";
 
         // store connecting links
-        thisLink = d3.selectAll(".to" + d.name.replace(/\s+/g, "") + chartNum);
+        thisLink = d3.selectAll(`.to${d.name.replace(/\s+/g, "")}${chartNum}`);
       }
 
       // highlight connecting links
@@ -260,8 +260,8 @@ function showSankey(chartDiv, graph) {
           .filter((s) => s.includes("to"))[0]
           .split("to")[1].slice(0, -1);
 
-      d3.select("#chart" + chartNum).select("rect." + thisName).classed("rectInactive", false);
-      d3.select("#chart" + chartNum).select("rect." + targetRect).classed("rectInactive", false);
+      d3.select(`#chart${chartNum}`).select(`rect.${thisName}`).classed("rectInactive", false);
+      d3.select(`#chart${chartNum}`).select(`rect.${targetRect}`).classed("rectInactive", false);
     }
   } // end make()
 } // end makeSankey()
@@ -313,7 +313,7 @@ function makeStackedBar(chartId, data, h, w) {
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
   color.domain(d3.keys(data[0]).filter((key) => {
     return key !== "country";
@@ -356,7 +356,7 @@ function makeStackedBar(chartId, data, h, w) {
 
   svg.append("g")
       .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
+      .attr("transform", `translate(0, ${height})`)
       .call(xAxis);
 
   svg.append("g")

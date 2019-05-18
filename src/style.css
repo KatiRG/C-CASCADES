@@ -79,11 +79,14 @@ div.tooltip {
   stroke: #ABBE71;
 }
 
-/* rect colours */
+/* rect colours and text */
 .node rect {
   stroke-width: 2px;
   stroke: #555;
   /*shape-rendering: crispEdges;*/
+}
+.node text {
+  font-weight: bold;
 }
 .Rivers {
   fill: #A9C1D9;
