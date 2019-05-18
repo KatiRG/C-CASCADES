@@ -14,9 +14,12 @@ let stackedNAmer = {};
 let stackedOceania = {};
 let stackedEurope = {};
 
-/* -- info text on top of page -- */
+/* -- page texts -- */
 function pageText() {
-  d3.select("#pageTitle").text(i18next.t("title", {ns: "pageText"}));
+  d3.select("#titletag").html(i18next.t("titletag", {ns: "pageText"}));
+  d3.select("#pageTitle").html(i18next.t("title", {ns: "pageText"}));
+  d3.select("#infotext").html(i18next.t("infotext", {ns: "pageText"}));
+  d3.select("#subtitle").html(i18next.t("subtitle", {ns: "pageText"}));
 }
 
 /* -- display areaChart -- */
@@ -345,7 +348,7 @@ function makeStackedBar(chartId, data, h, w) {
         .append("text", "text")
         .attr("x", -40)
         .attr("y", -8)
-        .html("Tg C yr")
+        .html(`${i18next.t("units", {ns: "constants"})}`)
         .style("font-size", "11px")
         .append("tspan")
         .text("-1")
