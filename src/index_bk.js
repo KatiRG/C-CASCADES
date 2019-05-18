@@ -1,5 +1,3 @@
-import settingsSA from "./settingsSA.js";
-
 const units = "Tg C yr <sup>-1</sup>";
 const formatNumber = d3.format(".2f");
 const format = function(d) {
@@ -16,18 +14,6 @@ let stackedNAmer = {};
 let stackedOceania = {};
 let stackedEurope = {};
 
-// -----------------------------------------------------------------------------
-// SVGs
-// Stacked bar chart - S Amer
-const chartSA = d3.select(".data.SAdata")
-    .append("svg")
-    .attr("id", "stackedbar_SA");
-
-// shim all the SVGs
-// d3.stcExt.addIEShim(svgCB, height, width);
-
-// -----------------------------------------------------------------------------
-// FNS
 /* -- page texts -- */
 function pageText() {
   d3.select("#titletag").html(i18next.t("titletag", {ns: "pageText"}));
@@ -284,107 +270,6 @@ function showSankey(chartDiv, graph) {
 
 // ----------------------------------------------------------------------------
 // STACKED BARS
-function showStackedBar(svg, settings, data) {
-  const outerWidth = settings.width;
-  const outerHeight = Math.ceil(outerWidth / settings.aspectRatio);
-  const innerHeight = settings.innerHeight = outerHeight - settings.margin.top - settings.margin.bottom;
-  const innerWidth = settings.innerWidth = outerWidth - settings.margin.left - settings.margin.right;
-  let chartInner = svg.select("g.margin-offset");
-  const dataLayer = chartInner.select(".data");
-
-  svg
-      .attr("viewBox", "0 0 " + outerWidth + " " + outerHeight)
-      .attr("preserveAspectRatio", "xMidYMid meet")
-      .attr("role", "img");
-
-  const xAxisObj = chartInner.select(".x.axis");
-  const yAxisObj = chartInner.select(".y.axis");
-
-  if (chartInner.empty()) {
-    chartInner = svg.append("g")
-        .attr("class", "margin-offset")
-        .attr("transform", "translate(" + settings.margin.left + "," + settings.margin.top + ")");
-  }
-
-  const x = d3.scale.ordinal()
-      .rangeRoundBands([0, innerWidth], .1);
-
-  const y = d3.scale.linear()
-      .rangeRound([innerHeight, 0]);
-
-  const color = d3.scale.ordinal()
-      .range(["#A9C1D9", "#607890", "#ABBE71"]);
-
-  const xAxis = d3.svg.axis()
-      .scale(x)
-      .orient("bottom");
-
-  const numTicks = settings.numTicks;
-  const yAxis = d3.svg.axis()
-      .scale(y)
-      .orient("left")
-      .tickFormat(d3.format(".2s"))
-      .ticks(numTicks);
-
-  color.domain(d3.keys(data[0]).filter((key) => {
-    return key !== "country";
-  }));
-
-  data.forEach((d) => {
-    const country = d.country;
-    let y0 = 0;
-    d.flux = color.domain().map((name) => {
-      return {country: country, loac: name, y0: y0, y1: y0 += +d[name]};
-    });
-    d.total = d.flux[d.flux.length - 1].y1;
-  });
-
-  data.sort((a, b) => {
-    return b.total - a.total;
-  });
-
-  x.domain(data.map((d) => {
-    return d.country;
-  }));
-  y.domain([0, d3.max(data, (d) => {
-    return d.total;
-  })]);
-
-  // display y-axis units only for first chart
-  if (settings.showUnits) {
-    chartInner.append("g")
-        .attr("class", "tick")
-        .attr("id", "yaxisUnits")
-        .append("text")
-        .attr("x", 0)
-        .attr("y", -8)
-        .html(`${i18next.t("units", {ns: "constants"})}`)
-        .append("tspan")
-        .text("-1")
-        .attr("dx", ".01em")
-        .attr("dy", "-.2em");
-  }
-
-  chartInner.append("g")
-      .attr("class", "x axis")
-      .attr("aria-hidden", "true")
-      .attr("transform", "translate(0," + innerHeight + ")")
-      .call(xAxis);
-
-  chartInner.append("g")
-      .attr("class", "y axis")
-      .attr("aria-hidden", "true")
-      .call(yAxis)
-      .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end");
-
-
-}
-
-
 function makeStackedBar(chartId, data, h, w) {
   // tooltip div
   const div = d3.select("body").append("div")
@@ -430,7 +315,7 @@ function makeStackedBar(chartId, data, h, w) {
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
-      .attr("transform", `translate(${margin.left}, ${margin.top})`); 
+      .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
   color.domain(d3.keys(data[0]).filter((key) => {
     return key !== "country";
@@ -566,9 +451,7 @@ i18n.load(["src/i18n"], () => {
         showSankey("#chart1", sankeydata1);
         showSankey("#chart2", sankeydata2);
 
-        showStackedBar(chartSA, settingsSA, stackedSA);
-
-        // makeStackedBar("#stackedbar_SA", stackedSA, 225, 220);
+        makeStackedBar("#stackedbar_SA", stackedSA, 225, 220);
         makeStackedBar("#stackedbar_Africa", stackedAfrica, 135, 140);
         makeStackedBar("#stackedbar_Asia", stackedAsia, 245, 190);
         makeStackedBar("#stackedbar_NAmer", stackedNAmer, 180, 130);
