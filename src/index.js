@@ -4,6 +4,7 @@ import settingsAF from "./settingsAF.js"; // Africa
 import settingsAS from "./settingsAS.js"; // Asia
 import settingsNA from "./settingsNA.js"; // North America
 import settingsOC from "./settingsOC.js"; // Oceania
+import settingsEU from "./settingsEU.js"; // Europe
 
 const units = "Tg C yr <sup>-1</sup>";
 const formatNumber = d3.format(".2f");
@@ -43,6 +44,10 @@ const chartNA = d3.select(".data.NAdata")
 const chartOC = d3.select(".data.OCdata")
     .append("svg")
     .attr("id", "stackedbar_Oceania");
+
+const chartEU = d3.select(".data.EUdata")
+    .append("svg")
+    .attr("id", "stackedbar_Europe");
 
 // shim all the SVGs
 // d3.stcExt.addIEShim(svgCB, height, width);
@@ -519,8 +524,8 @@ i18n.load(["src/i18n"], () => {
         showStackedBar(chartAS, settingsAS, stackedAsia);
         showStackedBar(chartNA, settingsNA, stackedNAmer);
         showStackedBar(chartOC, settingsOC, stackedOceania);
+        showStackedBar(chartEU, settingsEU, stackedEurope);
 
-        // makeStackedBar("#stackedbar_Oceania", stackedOceania, 35, 130);
         // makeStackedBar("#stackedbar_Europe", stackedEurope, 70, 180);
       });
 });

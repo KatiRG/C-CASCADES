@@ -1,11 +1,11 @@
 export default {
   margin: {
     top: 0,
-    right: 70,
+    right: 0,
     left: 50,
-    bottom: 22
+    bottom: 19
   },
-  aspectRatio: 4, // 16 / 9,  // width/height
+  aspectRatio: 3.4, // width/height
   width: 220,
   barWidth: 0.1,
   showUnits: false,
@@ -13,10 +13,10 @@ export default {
     ticks: 8
   },
   y: {
-    ticks: 1
+    ticks: 3
   },
   viewBox: {
     x: 0,
-    y: 2
+    y: 0
   }
 };
