@@ -1,7 +1,9 @@
+// settings for stacked bar charts
 import settingsSA from "./settingsSA.js"; // South America
 import settingsAF from "./settingsAF.js"; // Africa
 import settingsAS from "./settingsAS.js"; // Asia
 import settingsNA from "./settingsNA.js"; // North America
+import settingsOC from "./settingsOC.js"; // Oceania
 
 const units = "Tg C yr <sup>-1</sup>";
 const formatNumber = d3.format(".2f");
@@ -37,6 +39,10 @@ const chartAS = d3.select(".data.ASdata")
 const chartNA = d3.select(".data.NAdata")
     .append("svg")
     .attr("id", "stackedbar_NAmer");
+
+const chartOC = d3.select(".data.OCdata")
+    .append("svg")
+    .attr("id", "stackedbar_Oceania");
 
 // shim all the SVGs
 // d3.stcExt.addIEShim(svgCB, height, width);
@@ -512,8 +518,8 @@ i18n.load(["src/i18n"], () => {
         showStackedBar(chartAF, settingsAF, stackedAfrica);
         showStackedBar(chartAS, settingsAS, stackedAsia);
         showStackedBar(chartNA, settingsNA, stackedNAmer);
+        showStackedBar(chartOC, settingsOC, stackedOceania);
 
-        // makeStackedBar("#stackedbar_NAmer", stackedNAmer, 180, 130);
         // makeStackedBar("#stackedbar_Oceania", stackedOceania, 35, 130);
         // makeStackedBar("#stackedbar_Europe", stackedEurope, 70, 180);
       });
