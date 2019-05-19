@@ -127,8 +127,9 @@ div.tooltip {
 
 
 /* STACKED BAR CHARTS */
-#yaxisUnits {
+.yaxisUnits {
   font-size: 12px;
+  fill: #555;
 }
 .axis path,
 .axis line {
@@ -145,8 +146,8 @@ div.tooltip {
   display: none;
 }
 .tick {
-  fill: #565656;
-  font-size: 12px;
+  fill: #555;
+  font-size: 13px;
 }
 
 
