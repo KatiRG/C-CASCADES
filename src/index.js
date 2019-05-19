@@ -505,7 +505,7 @@ i18n.load(["src/i18n"], () => {
 
         showStackedBar(chartSA, settingsSA, stackedSA);
         showStackedBar(chartAF, settingsAF, stackedAfrica);
-        // showStackedBar(chartAS, settingsAS, stackedAsia);
+        showStackedBar(chartAS, settingsAS, stackedAsia);
 
         // makeStackedBar("#stackedbar_Asia", stackedAsia, 245, 190);
         // makeStackedBar("#stackedbar_NAmer", stackedNAmer, 180, 130);

@@ -5,10 +5,10 @@ export default {
     left: 25,
     bottom: 47
   },
-  aspectRatio: 0.86, // 16 / 9,  // width/height
+  aspectRatio: 0.8, // 16 / 9,  // width/height
   width: 220,
   barWidth: 0.1,
-  showUnits: true,
+  showUnits: false,
   x: {
     ticks: 8
   },
@@ -17,6 +17,6 @@ export default {
   },
   viewBox: {
     x: -25,
-    y: -28
+    y: -10
   }
 };
