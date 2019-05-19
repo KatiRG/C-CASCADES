@@ -285,20 +285,27 @@ function showSankey(chartDiv, graph) {
 // ----------------------------------------------------------------------------
 // STACKED BARS
 function showStackedBar(svg, settings, data) {
+  // tooltip div
+  const div = d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
+  const yshiftTooltip = 90; // amount to raise tooltip in y-dirn
+
   const outerWidth = settings.width;
   const outerHeight = Math.ceil(outerWidth / settings.aspectRatio);
-  const innerHeight = settings.innerHeight = outerHeight - settings.margin.top - settings.margin.bottom;
-  const innerWidth = settings.innerWidth = outerWidth - settings.margin.left - settings.margin.right;
+  const innerHeight = outerHeight - settings.margin.top - settings.margin.bottom;
+  const innerWidth = outerWidth - settings.margin.left - settings.margin.right;
   let chartInner = svg.select("g.margin-offset");
   const dataLayer = chartInner.select(".data");
 
   svg
-      .attr("viewBox", "0 0 " + outerWidth + " " + outerHeight)
+      // .attr("viewBox", "0 0 " + outerWidth + " " + outerHeight)
+      .attr("viewBox", `-25 -28 ${outerWidth} ${outerHeight}`)
       .attr("preserveAspectRatio", "xMidYMid meet")
       .attr("role", "img");
 
-  const xAxisObj = chartInner.select(".x.axis");
-  const yAxisObj = chartInner.select(".y.axis");
+  let xAxisObj = chartInner.select(".x.axis");
+  let yAxisObj = chartInner.select(".y.axis");
 
   if (chartInner.empty()) {
     chartInner = svg.append("g")
@@ -307,7 +314,7 @@ function showStackedBar(svg, settings, data) {
   }
 
   const x = d3.scale.ordinal()
-      .rangeRoundBands([0, innerWidth], .1);
+      .rangeRoundBands([0, innerWidth], .1); // last param controls bar width
 
   const y = d3.scale.linear()
       .rangeRound([innerHeight, 0]);
@@ -319,12 +326,11 @@ function showStackedBar(svg, settings, data) {
       .scale(x)
       .orient("bottom");
 
-  const numTicks = settings.numTicks;
   const yAxis = d3.svg.axis()
       .scale(y)
       .orient("left")
       .tickFormat(d3.format(".2s"))
-      .ticks(numTicks);
+      .ticks(settings.y.ticks);
 
   color.domain(d3.keys(data[0]).filter((key) => {
     return key !== "country";
@@ -356,7 +362,7 @@ function showStackedBar(svg, settings, data) {
         .attr("class", "tick")
         .attr("id", "yaxisUnits")
         .append("text")
-        .attr("x", 0)
+        .attr("x", -45)
         .attr("y", -8)
         .html(`${i18next.t("units", {ns: "constants"})}`)
         .append("tspan")
@@ -365,11 +371,15 @@ function showStackedBar(svg, settings, data) {
         .attr("dy", "-.2em");
   }
 
-  chartInner.append("g")
-      .attr("class", "x axis")
-      .attr("aria-hidden", "true")
-      .attr("transform", "translate(0," + innerHeight + ")")
-      .call(xAxis);
+  // X-AXIS
+  xAxisObj = chartInner.select(".x.axis");
+  if (xAxisObj.empty()) {
+    xAxisObj = chartInner.append("g")
+        .attr("class", "x axis")
+        .attr("aria-hidden", "true")
+        .attr("transform", `translate(0, ${innerHeight})`);
+  }
+  xAxisObj.call(xAxis);
 
   chartInner.append("g")
       .attr("class", "y axis")
@@ -381,7 +391,52 @@ function showStackedBar(svg, settings, data) {
       .attr("dy", ".71em")
       .style("text-anchor", "end");
 
+  const country = svg.selectAll(".country")
+      .data(data)
+      .enter().append("g")
+      .attr("class", "g");
 
+  country.selectAll("rect")
+      .data((d) => {
+        return d.flux;
+      })
+      .enter().append("rect")
+      .attr("class", function(d) {
+        return d.loac;
+      })
+      .attr("width", x.rangeBand())
+      .attr("y", (d) => {
+        return y(d.y1);
+      })
+      .attr("x", (d) => {
+        return x(d.country) + settings.margin.left; // NB: NEED TO ADD THE LEFT MARGIN...WHY????
+      })
+      .attr("height", (d) => {
+        return y(d.y0) - y(d.y1);
+      });
+
+  country.selectAll("rect")
+      .on("mousemove", (d) => {
+        const delta = d.y1 - d.y0;
+        // Tooltip
+        div.transition()
+            .style("opacity", .9);
+        div.html(
+            `<b> ${d.loac} </b><br><br>
+              <table>
+                <tr>
+                  <td><b>${format(delta)} </td>
+                  <td> ${units} </td>
+                </tr>
+              </table>`
+        )
+            .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY - yshiftTooltip) + "px");
+      })
+      .on("mouseout", () => {
+        div.transition()
+            .style("opacity", 0);
+      });
 }
 
 
@@ -569,11 +624,11 @@ i18n.load(["src/i18n"], () => {
         showStackedBar(chartSA, settingsSA, stackedSA);
 
         // makeStackedBar("#stackedbar_SA", stackedSA, 225, 220);
-        makeStackedBar("#stackedbar_Africa", stackedAfrica, 135, 140);
-        makeStackedBar("#stackedbar_Asia", stackedAsia, 245, 190);
-        makeStackedBar("#stackedbar_NAmer", stackedNAmer, 180, 130);
-        makeStackedBar("#stackedbar_Oceania", stackedOceania, 35, 130);
-        makeStackedBar("#stackedbar_Europe", stackedEurope, 70, 180);
+        // makeStackedBar("#stackedbar_Africa", stackedAfrica, 135, 140);
+        // makeStackedBar("#stackedbar_Asia", stackedAsia, 245, 190);
+        // makeStackedBar("#stackedbar_NAmer", stackedNAmer, 180, 130);
+        // makeStackedBar("#stackedbar_Oceania", stackedOceania, 35, 130);
+        // makeStackedBar("#stackedbar_Europe", stackedEurope, 70, 180);
       });
 });
 
