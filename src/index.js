@@ -6,7 +6,6 @@ import settingsNA from "./settingsNA.js"; // North America
 import settingsOC from "./settingsOC.js"; // Oceania
 import settingsEU from "./settingsEU.js"; // Europe
 
-const units = "Tg C yr <sup>-1</sup>";
 const formatNumber = d3.format(".2f");
 const format = function(d) {
   return formatNumber(d);
@@ -48,9 +47,6 @@ const chartOC = d3.select(".data.OCdata")
 const chartEU = d3.select(".data.EUdata")
     .append("svg")
     .attr("id", "stackedbar_Europe");
-
-// shim all the SVGs
-// d3.stcExt.addIEShim(svgCB, height, width);
 
 // -----------------------------------------------------------------------------
 // FNS
@@ -159,7 +155,7 @@ function showSankey(chartDiv, graph) {
               <tr>
                 <td>${d.target.name} flux: </td>
                 <td><b>${format(d.value)}</td>
-                <td> ${units} </td>
+                <td> ${i18next.t("units", {ns: "constants"})} </td>
             </tr>
           </table>`
       )
@@ -233,7 +229,7 @@ function showSankey(chartDiv, graph) {
             <tr>
               <td> Total flux: </td>
               <td><b>${format(d.value)}</td>
-              <td>  ${units} </td>
+              <td> ${i18next.t("units", {ns: "constants"})} </td>
             </tr>
           </table>`
       )
@@ -382,21 +378,6 @@ function showStackedBar(svg, settings, data) {
     return d.total;
   })]);
 
-  // display y-axis units only for first chart
-  if (settings.showUnits) {
-    chartInner.append("g")
-        .attr("class", "tick")
-        .attr("class", "yaxisUnits")
-        .append("text")
-        .attr("x", -45)
-        .attr("y", -8)
-        .html(`${i18next.t("units", {ns: "constants"})}`)
-        .append("tspan")
-        .text("-1")
-        .attr("dx", ".01em")
-        .attr("dy", "-.2em");
-  }
-
   // X-AXIS
   xAxisObj = chartInner.select(".x.axis");
   if (xAxisObj.empty()) {
@@ -413,6 +394,22 @@ function showStackedBar(svg, settings, data) {
     yAxisObj = chartInner.append("g")
         .attr("class", "y axis")
         .attr("aria-hidden", "true");
+
+    // display y-axis units only for first chart
+    if (settings.showUnits) {
+      yAxisObj
+          .append("text")
+          .attr("class", "chart-label")
+          .attr("x", -50)
+          .attr("y", 0)
+          .attr("dy", "-0.5em")
+          .attr("text-anchor", "start")
+          .html(`${i18next.t("units", {ns: "constants"})}`)
+          .append("tspan")
+          .text("-1")
+          .attr("dx", ".01em")
+          .attr("dy", "-.2em");
+    }
   }
   yAxisObj.call(yAxis);
 
@@ -451,7 +448,7 @@ function showStackedBar(svg, settings, data) {
               <table>
                 <tr>
                   <td><b>${format(delta)} </td>
-                  <td> ${units} </td>
+                  <td> ${i18next.t("units", {ns: "constants"})} </td>
                 </tr>
               </table>`
         )
@@ -465,29 +462,6 @@ function showStackedBar(svg, settings, data) {
 
   d3.stcExt.addIEShim(svg, outerHeight, outerWidth);
 }
-
-
-function makeStackedBar(chartId, data, h, w) {
-  // tooltip div
-  const div = d3.select("body").append("div")
-      .attr("class", "tooltip")
-      .style("opacity", 0);
-
-  const yshiftTooltip = 90; // amount to raise tooltip in y-dirn
-
-  const topDict = {
-    "#stackedbar_SA": 25,
-    "#stackedbar_Africa": 10,
-    "#stackedbar_Asia": 15,
-    "#stackedbar_NAmer": 5,
-    "#stackedbar_Oceania": 2,
-    "#stackedbar_Europe": 5
-  };
-  const margin = {top: topDict[chartId], right: 20, bottom: 17, left: 40};
-  const width = w - margin.left - margin.right;
-  const height = h - margin.top - margin.bottom;
-} // .makeStackedBar
-
 
 // -----------------------------------------------------------------------------
 /* Initial page load */

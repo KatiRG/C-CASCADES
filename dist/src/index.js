@@ -1300,6 +1300,144 @@
 	  ];
 	});
 
+	var settingsSA = {
+	  margin: {
+	    top: 0,
+	    right: 20,
+	    left: 25,
+	    bottom: 47
+	  },
+	  aspectRatio: 0.86,
+	  // 16 / 9,  // width/height
+	  width: 220,
+	  showUnits: true,
+	  x: {
+	    ticks: 8
+	  },
+	  y: {
+	    ticks: 3
+	  },
+	  viewBox: {
+	    x: -25,
+	    y: -28
+	  }
+	};
+
+	var settingsAF = {
+	  margin: {
+	    top: 0,
+	    right: 60,
+	    left: 50,
+	    bottom: 40
+	  },
+	  aspectRatio: 1.4,
+	  // 16 / 9,  // width/height
+	  width: 220,
+	  showUnits: false,
+	  x: {
+	    ticks: 8
+	  },
+	  y: {
+	    ticks: 3
+	  },
+	  viewBox: {
+	    x: 0,
+	    y: -15
+	  }
+	};
+
+	var settingsAS = {
+	  margin: {
+	    top: 0,
+	    right: 20,
+	    left: 25,
+	    bottom: 47
+	  },
+	  aspectRatio: 0.8,
+	  // 16 / 9,  // width/height
+	  width: 220,
+	  showUnits: false,
+	  x: {
+	    ticks: 8
+	  },
+	  y: {
+	    ticks: 3
+	  },
+	  viewBox: {
+	    x: -25,
+	    y: -10
+	  }
+	};
+
+	var settingsNA = {
+	  margin: {
+	    top: 0,
+	    right: 60,
+	    left: 50,
+	    bottom: 20
+	  },
+	  aspectRatio: 1.2,
+	  // 16 / 9,  // width/height
+	  width: 220,
+	  showUnits: false,
+	  x: {
+	    ticks: 8
+	  },
+	  y: {
+	    ticks: 3
+	  },
+	  viewBox: {
+	    x: 0,
+	    y: 0
+	  }
+	};
+
+	var settingsOC = {
+	  margin: {
+	    top: 0,
+	    right: 70,
+	    left: 50,
+	    bottom: 22
+	  },
+	  aspectRatio: 4,
+	  // 16 / 9,  // width/height
+	  width: 220,
+	  showUnits: false,
+	  x: {
+	    ticks: 8
+	  },
+	  y: {
+	    ticks: 1
+	  },
+	  viewBox: {
+	    x: 0,
+	    y: 2
+	  }
+	};
+
+	var settingsEU = {
+	  margin: {
+	    top: 0,
+	    right: 0,
+	    left: 50,
+	    bottom: 19
+	  },
+	  aspectRatio: 3.4,
+	  // width/height
+	  width: 220,
+	  showUnits: false,
+	  x: {
+	    ticks: 8
+	  },
+	  y: {
+	    ticks: 3
+	  },
+	  viewBox: {
+	    x: 0,
+	    y: 0
+	  }
+	};
+
 	var units = "Tg C yr <sup>-1</sup>";
 	var formatNumber = d3.format(".2f");
 
@@ -1314,11 +1452,31 @@
 	var stackedAsia = {};
 	var stackedNAmer = {};
 	var stackedOceania = {};
-	var stackedEurope = {};
-	/* -- info text on top of page -- */
+	var stackedEurope = {}; // -----------------------------------------------------------------------------
+	// SVGs
+	// Stacked bar chart - S Amer
+
+	var chartSA = d3.select(".data.SAdata").append("svg").attr("id", "stackedbar_SA");
+	var chartAF = d3.select(".data.AFdata").append("svg").attr("id", "stackedbar_Africa");
+	var chartAS = d3.select(".data.ASdata").append("svg").attr("id", "stackedbar_Asia");
+	var chartNA = d3.select(".data.NAdata").append("svg").attr("id", "stackedbar_NAmer");
+	var chartOC = d3.select(".data.OCdata").append("svg").attr("id", "stackedbar_Oceania");
+	var chartEU = d3.select(".data.EUdata").append("svg").attr("id", "stackedbar_Europe"); // -----------------------------------------------------------------------------
+	// FNS
+
+	/* -- page texts -- */
 
 	function pageText() {
-	  d3.select("#pageTitle").text(i18next.t("title", {
+	  d3.select("#titletag").html(i18next.t("titletag", {
+	    ns: "pageText"
+	  }));
+	  d3.select("#pageTitle").html(i18next.t("title", {
+	    ns: "pageText"
+	  }));
+	  d3.select("#infotext").html(i18next.t("infotext", {
+	    ns: "pageText"
+	  }));
+	  d3.select("#subtitle").html(i18next.t("subtitle", {
 	    ns: "pageText"
 	  }));
 	}
@@ -1485,34 +1643,32 @@
 	// STACKED BARS
 
 
-	function makeStackedBar(chartId, data, h, w) {
+	function showStackedBar(svg, settings, data) {
 	  // tooltip div
 	  var div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
 	  var yshiftTooltip = 90; // amount to raise tooltip in y-dirn
 
-	  var topDict = {
-	    "#stackedbar_SA": 25,
-	    "#stackedbar_Africa": 10,
-	    "#stackedbar_Asia": 15,
-	    "#stackedbar_NAmer": 5,
-	    "#stackedbar_Oceania": 2,
-	    "#stackedbar_Europe": 5
-	  };
-	  var margin = {
-	    top: topDict[chartId],
-	    right: 20,
-	    bottom: 17,
-	    left: 40
-	  };
-	  var width = w - margin.left - margin.right;
-	  var height = h - margin.top - margin.bottom;
-	  var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
-	  var y = d3.scale.linear().rangeRound([height, 0]);
+	  var outerWidth = settings.width;
+	  var outerHeight = Math.ceil(outerWidth / settings.aspectRatio);
+	  var innerHeight = outerHeight - settings.margin.top - settings.margin.bottom;
+	  var innerWidth = outerWidth - settings.margin.left - settings.margin.right;
+	  var chartInner = svg.select("g.margin-offset");
+	  var dataLayer = chartInner.select(".data");
+	  svg // .attr("viewBox", "0 0 " + outerWidth + " " + outerHeight)
+	  .attr("viewBox", "".concat(settings.viewBox.x, " ").concat(settings.viewBox.y, " ").concat(outerWidth, " ").concat(outerHeight)).attr("preserveAspectRatio", "xMidYMid meet").attr("role", "img");
+	  var xAxisObj = chartInner.select(".x.axis");
+	  var yAxisObj = chartInner.select(".y.axis");
+
+	  if (chartInner.empty()) {
+	    chartInner = svg.append("g").attr("class", "margin-offset").attr("transform", "translate(" + settings.margin.left + "," + settings.margin.top + ")");
+	  }
+
+	  var x = d3.scale.ordinal().rangeRoundBands([0, innerWidth], settings.barWidth ? settings.barWidth : 0.1); // last param controls bar width
+
+	  var y = d3.scale.linear().rangeRound([innerHeight, 0]);
 	  var color = d3.scale.ordinal().range(["#A9C1D9", "#607890", "#ABBE71"]);
 	  var xAxis = d3.svg.axis().scale(x).orient("bottom");
-	  var numTicks = chartId === "#stackedbar_Oceania" ? 1 : 3;
-	  var yAxis = d3.svg.axis().scale(y).orient("left").tickFormat(d3.format(".2s")).ticks(numTicks);
-	  var svg = d3.select(chartId).append("div").append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(".concat(margin.left, ", ").concat(margin.top, ")"));
+	  var yAxis = d3.svg.axis().scale(y).orient("left").tickFormat(d3.format(".2s")).ticks(settings.y.ticks);
 	  color.domain(d3.keys(data[0]).filter(function (key) {
 	    return key !== "country";
 	  }));
@@ -1537,14 +1693,30 @@
 	  }));
 	  y.domain([0, d3.max(data, function (d) {
 	    return d.total;
-	  })]);
+	  })]); // display y-axis units only for first chart
 
-	  if (chartId === "#stackedbar_SA") {
-	    svg.append("g").attr("class", "tick").append("text", "text").attr("x", -40).attr("y", -8).html("Tg C yr").style("font-size", "11px").append("tspan").text("-1").style("font-size", "11px").attr("dx", ".01em").attr("dy", "-.2em");
+	  if (settings.showUnits) {
+	    chartInner.append("g").attr("class", "tick").attr("class", "yaxisUnits").append("text").attr("x", -45).attr("y", -8).html("".concat(i18next.t("units", {
+	      ns: "constants"
+	    }))).append("tspan").text("-1").attr("dx", ".01em").attr("dy", "-.2em");
+	  } // X-AXIS
+
+
+	  xAxisObj = chartInner.select(".x.axis");
+
+	  if (xAxisObj.empty()) {
+	    xAxisObj = chartInner.append("g").attr("class", "x axis").attr("aria-hidden", "true").attr("transform", "translate(0, ".concat(innerHeight, ")"));
 	  }
 
-	  svg.append("g").attr("class", "x axis").attr("transform", "translate(0, ".concat(height, ")")).call(xAxis);
-	  svg.append("g").attr("class", "y axis").call(yAxis).append("text").attr("transform", "rotate(-90)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end");
+	  xAxisObj.call(xAxis); // Y-AXIS
+
+	  yAxisObj = chartInner.select(".y.axis");
+
+	  if (yAxisObj.empty()) {
+	    yAxisObj = chartInner.append("g").attr("class", "y axis").attr("aria-hidden", "true");
+	  }
+
+	  yAxisObj.call(yAxis);
 	  var country = svg.selectAll(".country").data(data).enter().append("g").attr("class", "g");
 	  country.selectAll("rect").data(function (d) {
 	    return d.flux;
@@ -1553,7 +1725,7 @@
 	  }).attr("width", x.rangeBand()).attr("y", function (d) {
 	    return y(d.y1);
 	  }).attr("x", function (d) {
-	    return x(d.country);
+	    return x(d.country) + settings.margin.left; // NB: NEED TO ADD THE LEFT MARGIN...WHY????
 	  }).attr("height", function (d) {
 	    return y(d.y0) - y(d.y1);
 	  });
@@ -1565,8 +1737,8 @@
 	  }).on("mouseout", function () {
 	    div.transition().style("opacity", 0);
 	  });
-	} // .makeStackedBar
-	// -----------------------------------------------------------------------------
+	  d3.stcExt.addIEShim(svg, outerHeight, outerWidth);
+	} // -----------------------------------------------------------------------------
 
 	/* Initial page load */
 
@@ -1587,12 +1759,12 @@
 
 	    showSankey("#chart1", sankeydata1);
 	    showSankey("#chart2", sankeydata2);
-	    makeStackedBar("#stackedbar_SA", stackedSA, 225, 220);
-	    makeStackedBar("#stackedbar_Africa", stackedAfrica, 135, 140);
-	    makeStackedBar("#stackedbar_Asia", stackedAsia, 245, 190);
-	    makeStackedBar("#stackedbar_NAmer", stackedNAmer, 180, 130);
-	    makeStackedBar("#stackedbar_Oceania", stackedOceania, 35, 130);
-	    makeStackedBar("#stackedbar_Europe", stackedEurope, 70, 180);
+	    showStackedBar(chartSA, settingsSA, stackedSA);
+	    showStackedBar(chartAF, settingsAF, stackedAfrica);
+	    showStackedBar(chartAS, settingsAS, stackedAsia);
+	    showStackedBar(chartNA, settingsNA, stackedNAmer);
+	    showStackedBar(chartOC, settingsOC, stackedOceania);
+	    showStackedBar(chartEU, settingsEU, stackedEurope);
 	  });
 	});
 

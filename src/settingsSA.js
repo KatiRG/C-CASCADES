@@ -7,7 +7,6 @@ export default {
   },
   aspectRatio: 0.86, // 16 / 9,  // width/height
   width: 220,
-  barWidth: 0.1,
   showUnits: true,
   x: {
     ticks: 8
