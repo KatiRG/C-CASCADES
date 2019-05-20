@@ -6,9 +6,12 @@ import settingsNA from "./settingsNA.js"; // North America
 import settingsOC from "./settingsOC.js"; // Oceania
 import settingsEU from "./settingsEU.js"; // Europe
 
-const formatNumber = d3.format(".2f");
-const format = function(d) {
-  return formatNumber(d);
+// Define number format (2 decimal places) from utils.js
+const globalSettings = {
+  _selfFormatter: i18n.getNumberFormatter(2),
+  formatNum: function(...args) {
+    return this._selfFormatter.format(args);
+  }
 };
 
 let sankeydata1 = {};
@@ -154,7 +157,7 @@ function showSankey(chartDiv, graph) {
           <table>
               <tr>
                 <td>${d.target.name} flux: </td>
-                <td><b>${format(d.value)}</td>
+                <td><b>${globalSettings.formatNum(d.value)}</td>
                 <td> ${i18next.t("units", {ns: "constants"})} </td>
             </tr>
           </table>`
@@ -228,7 +231,7 @@ function showSankey(chartDiv, graph) {
           <table>
             <tr>
               <td> Total flux: </td>
-              <td><b>${format(d.value)}</td>
+              <td><b>${globalSettings.formatNum(d.value)}</td>
               <td> ${i18next.t("units", {ns: "constants"})} </td>
             </tr>
           </table>`
@@ -447,7 +450,7 @@ function showStackedBar(svg, settings, data) {
             `<b> ${d.loac} </b><br><br>
               <table>
                 <tr>
-                  <td><b>${format(delta)} </td>
+                  <td><b>${globalSettings.formatNum(delta)} </td>
                   <td> ${i18next.t("units", {ns: "constants"})} </td>
                 </tr>
               </table>`
