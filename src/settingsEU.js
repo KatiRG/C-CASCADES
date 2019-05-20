@@ -3,9 +3,9 @@ export default {
     top: 0,
     right: 0,
     left: 50,
-    bottom: 19
+    bottom: 40
   },
-  aspectRatio: 3.4, // width/height
+  aspectRatio: 2.1, // width/height
   width: 220,
   showUnits: false,
   x: {

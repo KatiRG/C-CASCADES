@@ -1,3 +1,6 @@
+// settings for Sankey
+import settingsSankey from "./settingsSankey.js";
+
 // settings for stacked bar charts
 import settingsSA from "./settingsSA.js"; // South America
 import settingsAF from "./settingsAF.js"; // Africa
@@ -26,7 +29,15 @@ let stackedEurope = {};
 
 // -----------------------------------------------------------------------------
 // SVGs
-// Stacked bar chart - S Amer
+// Sankeys
+const chartSankey1 = d3.select(".data.sankey1")
+    .append("svg")
+    .attr("id", "chart1");
+const chartSankey2 = d3.select(".data.sankey2")
+    .append("svg")
+    .attr("id", "chart2");
+
+// Stacked bar charts
 const chartSA = d3.select(".data.SAdata")
     .append("svg")
     .attr("id", "stackedbar_SA");
@@ -62,31 +73,33 @@ function pageText() {
 }
 
 /* -- display areaChart -- */
-function showSankey(chartDiv, graph) {
-  const chartNum = chartDiv.split("chart")[1];
+function showSankey(svg, settings, graph) {
+  const chartNum = d3.select(".data.sankey1").select("svg").attr("id").split("chart")[1];
 
-  const margin = {
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0
-  };
+  const outerWidth = settings.width;
+  const outerHeight = Math.ceil(outerWidth / settings.aspectRatio);
+  const innerHeight = outerHeight - settings.margin.top - settings.margin.bottom;
+  const innerWidth = outerWidth - settings.margin.left - settings.margin.right;
+  let chartInner = svg.select("g.margin-offset");
+  let dataLayer = chartInner.select(".data");
 
-  const width = 460 - margin.left - margin.right;
-  const height = 900 - margin.top - margin.bottom;
+  svg
+      .attr("viewBox", `${settings.viewBox.x} ${settings.viewBox.y} ${outerWidth} ${outerHeight}`)
+      .attr("preserveAspectRatio", "xMidYMid meet")
+      .attr("role", "img");
 
-  // append the svg canvas to the page
-  const svg = d3.select(chartDiv).append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform", `translate(${margin.left}, ${margin.top})`);
+  if (chartInner.empty()) {
+    chartInner = svg.append("g")
+        .attr("class", "margin-offset")
+        .attr("transform", "translate(" + settings.margin.left + "," + settings.margin.top + ")");
+  }
+  d3.stcExt.addIEShim(svg, outerHeight, outerWidth);
 
   // set the sankey diagram properties
   const sankey = d3.sankey()
       .nodeWidth(30)
       .nodePadding(20)
-      .size([width, height]);
+      .size([innerWidth, innerHeight]);
 
   const path = sankey.link();
   const yshiftTooltip = 90; // amount to raise tooltip in y-dirn
@@ -120,7 +133,12 @@ function showSankey(chartDiv, graph) {
         .attr("class", "tooltip")
         .style("opacity", 0);
 
-    const link = svg.append("g").selectAll(".link")
+    if (dataLayer.empty()) {
+      dataLayer = chartInner.append("g")
+          .attr("class", "data");
+    }
+
+    const link = dataLayer.append("g").selectAll(".link")
         .data(graph.links)
         .enter().append("path")
         .attr("class", (d) => {
@@ -177,7 +195,7 @@ function showSankey(chartDiv, graph) {
         });
 
     // add in the nodes
-    const node = svg.append("g").selectAll(".node")
+    const node = dataLayer.append("g").selectAll(".node")
         .data(graph.nodes)
         .enter().append("g")
         .attr("class", () => {
@@ -213,7 +231,7 @@ function showSankey(chartDiv, graph) {
           return i18next.t(d.name, {ns: "labels"});
         })
         .filter((d) => {
-          return d.x < width / 2;
+          return d.x < innerWidth / 2;
         })
         .attr("x", 6 + sankey.nodeWidth())
         .attr("text-anchor", "start");
@@ -323,7 +341,6 @@ function showStackedBar(svg, settings, data) {
   let chartInner = svg.select("g.margin-offset");
 
   svg
-      // .attr("viewBox", "0 0 " + outerWidth + " " + outerHeight)
       .attr("viewBox", `${settings.viewBox.x} ${settings.viewBox.y} ${outerWidth} ${outerHeight}`)
       .attr("preserveAspectRatio", "xMidYMid meet")
       .attr("role", "img");
@@ -494,8 +511,8 @@ i18n.load(["src/i18n"], () => {
         pageText();
 
         // Draw graphs
-        showSankey("#chart1", sankeydata1);
-        showSankey("#chart2", sankeydata2);
+        showSankey(chartSankey1, settingsSankey, sankeydata1);
+        showSankey(chartSankey2, settingsSankey, sankeydata2);
 
         showStackedBar(chartSA, settingsSA, stackedSA);
         showStackedBar(chartAF, settingsAF, stackedAfrica);
