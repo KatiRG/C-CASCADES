@@ -340,7 +340,7 @@ function showStackedBar(svg, settings, data) {
   }
 
   const x = d3.scale.ordinal()
-      .rangeRoundBands([0, innerWidth], settings.barWidth); // last param controls bar width
+      .rangeRoundBands([0, innerWidth], settings.barWidth ? settings.barWidth : 0.1); // last param controls bar width
 
   const y = d3.scale.linear()
       .rangeRound([innerHeight, 0]);
@@ -462,6 +462,8 @@ function showStackedBar(svg, settings, data) {
         div.transition()
             .style("opacity", 0);
       });
+
+  d3.stcExt.addIEShim(svg, outerHeight, outerWidth);
 }
 
 
@@ -525,8 +527,6 @@ i18n.load(["src/i18n"], () => {
         showStackedBar(chartNA, settingsNA, stackedNAmer);
         showStackedBar(chartOC, settingsOC, stackedOceania);
         showStackedBar(chartEU, settingsEU, stackedEurope);
-
-        // makeStackedBar("#stackedbar_Europe", stackedEurope, 70, 180);
       });
 });
 
