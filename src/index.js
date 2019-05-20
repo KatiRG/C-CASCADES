@@ -321,7 +321,6 @@ function showStackedBar(svg, settings, data) {
   const innerHeight = outerHeight - settings.margin.top - settings.margin.bottom;
   const innerWidth = outerWidth - settings.margin.left - settings.margin.right;
   let chartInner = svg.select("g.margin-offset");
-  const dataLayer = chartInner.select(".data");
 
   svg
       // .attr("viewBox", "0 0 " + outerWidth + " " + outerHeight)
