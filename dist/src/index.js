@@ -1300,6 +1300,23 @@
 	  ];
 	});
 
+	var settingsSankey = {
+	  margin: {
+	    top: 0,
+	    right: 0,
+	    left: 2,
+	    bottom: 0
+	  },
+	  aspectRatio: 16 / 33,
+	  // ......16 / 9,  // width/height
+	  width: 455,
+	  // 480,
+	  viewBox: {
+	    x: 0,
+	    y: 40
+	  }
+	};
+
 	var settingsSA = {
 	  margin: {
 	    top: 0,
@@ -1420,9 +1437,9 @@
 	    top: 0,
 	    right: 0,
 	    left: 50,
-	    bottom: 19
+	    bottom: 40
 	  },
-	  aspectRatio: 3.4,
+	  aspectRatio: 2.1,
 	  // width/height
 	  width: 220,
 	  showUnits: false,
@@ -1438,13 +1455,18 @@
 	  }
 	};
 
-	var units = "Tg C yr <sup>-1</sup>";
-	var formatNumber = d3.format(".2f");
+	// Define number format (2 decimal places) from utils.js
 
-	var format = function format(d) {
-	  return formatNumber(d);
+	var globalSettings = {
+	  _selfFormatter: i18n.getNumberFormatter(2),
+	  formatNum: function formatNum() {
+	    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return this._selfFormatter.format(args);
+	  }
 	};
-
 	var sankeydata1 = {};
 	var sankeydata2 = {};
 	var stackedSA = {};
@@ -1454,7 +1476,10 @@
 	var stackedOceania = {};
 	var stackedEurope = {}; // -----------------------------------------------------------------------------
 	// SVGs
-	// Stacked bar chart - S Amer
+	// Sankeys
+
+	var chartSankey1 = d3.select(".data.sankey1").append("svg").attr("id", "chart1");
+	var chartSankey2 = d3.select(".data.sankey2").append("svg").attr("id", "chart2"); // Stacked bar charts
 
 	var chartSA = d3.select(".data.SAdata").append("svg").attr("id", "stackedbar_SA");
 	var chartAF = d3.select(".data.AFdata").append("svg").attr("id", "stackedbar_Africa");
@@ -1483,20 +1508,23 @@
 	/* -- display areaChart -- */
 
 
-	function showSankey(chartDiv, graph) {
-	  var chartNum = chartDiv.split("chart")[1];
-	  var margin = {
-	    top: 0,
-	    right: 0,
-	    bottom: 0,
-	    left: 0
-	  };
-	  var width = 460 - margin.left - margin.right;
-	  var height = 900 - margin.top - margin.bottom; // append the svg canvas to the page
+	function showSankey(svg, settings, graph) {
+	  var chartNum = d3.select(".data.sankey1").select("svg").attr("id").split("chart")[1];
+	  var outerWidth = settings.width;
+	  var outerHeight = Math.ceil(outerWidth / settings.aspectRatio);
+	  var innerHeight = outerHeight - settings.margin.top - settings.margin.bottom;
+	  var innerWidth = outerWidth - settings.margin.left - settings.margin.right;
+	  var chartInner = svg.select("g.margin-offset");
+	  var dataLayer = chartInner.select(".data");
+	  svg.attr("viewBox", "".concat(settings.viewBox.x, " ").concat(settings.viewBox.y, " ").concat(outerWidth, " ").concat(outerHeight)).attr("preserveAspectRatio", "xMidYMid meet").attr("role", "img");
 
-	  var svg = d3.select(chartDiv).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(".concat(margin.left, ", ").concat(margin.top, ")")); // set the sankey diagram properties
+	  if (chartInner.empty()) {
+	    chartInner = svg.append("g").attr("class", "margin-offset").attr("transform", "translate(" + settings.margin.left + "," + settings.margin.top + ")");
+	  }
 
-	  var sankey = d3.sankey().nodeWidth(30).nodePadding(20).size([width, height]);
+	  d3.stcExt.addIEShim(svg, outerHeight, outerWidth); // set the sankey diagram properties
+
+	  var sankey = d3.sankey().nodeWidth(30).nodePadding(20).size([innerWidth, innerHeight]);
 	  var path = sankey.link();
 	  var yshiftTooltip = 90; // amount to raise tooltip in y-dirn
 
@@ -1520,7 +1548,12 @@
 	    sankey.nodes(graph.nodes).links(graph.links).layout(32); // tooltip div
 
 	    var div = d3.select("body").append("div").attr("class", "tooltip").style("opacity", 0);
-	    var link = svg.append("g").selectAll(".link").data(graph.links).enter().append("path").attr("class", function (d) {
+
+	    if (dataLayer.empty()) {
+	      dataLayer = chartInner.append("g").attr("class", "data");
+	    }
+
+	    var link = dataLayer.append("g").selectAll(".link").data(graph.links).enter().append("path").attr("class", function (d) {
 	      var fromName = "from".concat(d.source.name.replace(/\s+/g, "")).concat(chartNum);
 	      var toName = "to".concat(d.target.name.replace(/\s+/g, "")).concat(chartNum);
 	      return "link ".concat(fromName, " ").concat(toName);
@@ -1543,7 +1576,9 @@
 	        ns: "labels"
 	      });
 	      div.transition().style("opacity", .9);
-	      div.html("<b>".concat(sourceName, "</b><br><br>\n          <table>\n              <tr>\n                <td>").concat(d.target.name, " flux: </td>\n                <td><b>").concat(format(d.value), "</td>\n                <td> ").concat(units, " </td>\n            </tr>\n          </table>")).style("left", d3.event.pageX + "px").style("top", d3.event.pageY - yshiftTooltip + "px");
+	      div.html("<b>".concat(sourceName, "</b><br><br>\n          <table>\n              <tr>\n                <td>").concat(d.target.name, " flux: </td>\n                <td><b>").concat(globalSettings.formatNum(d.value), "</td>\n                <td> ").concat(i18next.t("units", {
+	        ns: "constants"
+	      }), " </td>\n            </tr>\n          </table>")).style("left", d3.event.pageX + "px").style("top", d3.event.pageY - yshiftTooltip + "px");
 	    }).on("mouseout", function () {
 	      // Restore opacity
 	      d3.selectAll(".link:not(#chart".concat(chartNum, "_").concat(this.id, ")")).style("opacity", 1); // Remove active and inactive classes added on mouseover
@@ -1552,7 +1587,7 @@
 	      div.transition().style("opacity", 0);
 	    }); // add in the nodes
 
-	    var node = svg.append("g").selectAll(".node").data(graph.nodes).enter().append("g").attr("class", function () {
+	    var node = dataLayer.append("g").selectAll(".node").data(graph.nodes).enter().append("g").attr("class", function () {
 	      return "node regions";
 	    }).attr("transform", function (d) {
 	      return "translate(".concat(d.x, ",").concat(d.y, ")");
@@ -1573,7 +1608,7 @@
 	        ns: "labels"
 	      });
 	    }).filter(function (d) {
-	      return d.x < width / 2;
+	      return d.x < innerWidth / 2;
 	    }).attr("x", 6 + sankey.nodeWidth()).attr("text-anchor", "start"); // add node tooltip
 
 	    node.on("mousemove", function (d) {
@@ -1583,7 +1618,9 @@
 	        ns: "labels"
 	      });
 	      div.transition().style("opacity", .9);
-	      div.html("<b>".concat(sourceName, "</b><br><br>\n          <table>\n            <tr>\n              <td> Total flux: </td>\n              <td><b>").concat(format(d.value), "</td>\n              <td>  ").concat(units, " </td>\n            </tr>\n          </table>")).style("left", d3.event.pageX + "px").style("top", d3.event.pageY - yshiftTooltip + "px");
+	      div.html("<b>".concat(sourceName, "</b><br><br>\n          <table>\n            <tr>\n              <td> Total flux: </td>\n              <td><b>").concat(globalSettings.formatNum(d.value), "</td>\n              <td> ").concat(i18next.t("units", {
+	        ns: "constants"
+	      }), " </td>\n            </tr>\n          </table>")).style("left", d3.event.pageX + "px").style("top", d3.event.pageY - yshiftTooltip + "px");
 	    }).on("mouseout", function () {
 	      // Remove active and inactive classes added on mouseover
 	      d3.selectAll(".inactive").classed("inactive", false);
@@ -1653,9 +1690,7 @@
 	  var innerHeight = outerHeight - settings.margin.top - settings.margin.bottom;
 	  var innerWidth = outerWidth - settings.margin.left - settings.margin.right;
 	  var chartInner = svg.select("g.margin-offset");
-	  var dataLayer = chartInner.select(".data");
-	  svg // .attr("viewBox", "0 0 " + outerWidth + " " + outerHeight)
-	  .attr("viewBox", "".concat(settings.viewBox.x, " ").concat(settings.viewBox.y, " ").concat(outerWidth, " ").concat(outerHeight)).attr("preserveAspectRatio", "xMidYMid meet").attr("role", "img");
+	  svg.attr("viewBox", "".concat(settings.viewBox.x, " ").concat(settings.viewBox.y, " ").concat(outerWidth, " ").concat(outerHeight)).attr("preserveAspectRatio", "xMidYMid meet").attr("role", "img");
 	  var xAxisObj = chartInner.select(".x.axis");
 	  var yAxisObj = chartInner.select(".y.axis");
 
@@ -1693,14 +1728,7 @@
 	  }));
 	  y.domain([0, d3.max(data, function (d) {
 	    return d.total;
-	  })]); // display y-axis units only for first chart
-
-	  if (settings.showUnits) {
-	    chartInner.append("g").attr("class", "tick").attr("class", "yaxisUnits").append("text").attr("x", -45).attr("y", -8).html("".concat(i18next.t("units", {
-	      ns: "constants"
-	    }))).append("tspan").text("-1").attr("dx", ".01em").attr("dy", "-.2em");
-	  } // X-AXIS
-
+	  })]); // X-AXIS
 
 	  xAxisObj = chartInner.select(".x.axis");
 
@@ -1713,7 +1741,13 @@
 	  yAxisObj = chartInner.select(".y.axis");
 
 	  if (yAxisObj.empty()) {
-	    yAxisObj = chartInner.append("g").attr("class", "y axis").attr("aria-hidden", "true");
+	    yAxisObj = chartInner.append("g").attr("class", "y axis").attr("aria-hidden", "true"); // display y-axis units only for first chart
+
+	    if (settings.showUnits) {
+	      yAxisObj.append("text").attr("class", "chart-label").attr("x", -50).attr("y", 0).attr("dy", "-0.5em").attr("text-anchor", "start").html("".concat(i18next.t("units", {
+	        ns: "constants"
+	      }))).append("tspan").text("-1").attr("dx", ".01em").attr("dy", "-.2em");
+	    }
 	  }
 
 	  yAxisObj.call(yAxis);
@@ -1733,7 +1767,9 @@
 	    var delta = d.y1 - d.y0; // Tooltip
 
 	    div.transition().style("opacity", .9);
-	    div.html("<b> ".concat(d.loac, " </b><br><br>\n              <table>\n                <tr>\n                  <td><b>").concat(format(delta), " </td>\n                  <td> ").concat(units, " </td>\n                </tr>\n              </table>")).style("left", d3.event.pageX + "px").style("top", d3.event.pageY - yshiftTooltip + "px");
+	    div.html("<b> ".concat(d.loac, " </b><br><br>\n              <table>\n                <tr>\n                  <td><b>").concat(globalSettings.formatNum(delta), " </td>\n                  <td> ").concat(i18next.t("units", {
+	      ns: "constants"
+	    }), " </td>\n                </tr>\n              </table>")).style("left", d3.event.pageX + "px").style("top", d3.event.pageY - yshiftTooltip + "px");
 	  }).on("mouseout", function () {
 	    div.transition().style("opacity", 0);
 	  });
@@ -1757,8 +1793,8 @@
 
 	    pageText(); // Draw graphs
 
-	    showSankey("#chart1", sankeydata1);
-	    showSankey("#chart2", sankeydata2);
+	    showSankey(chartSankey1, settingsSankey, sankeydata1);
+	    showSankey(chartSankey2, settingsSankey, sankeydata2);
 	    showStackedBar(chartSA, settingsSA, stackedSA);
 	    showStackedBar(chartAF, settingsAF, stackedAfrica);
 	    showStackedBar(chartAS, settingsAS, stackedAsia);

@@ -354,22 +354,23 @@ function showStackedBar(svg, settings, data) {
         .attr("transform", "translate(" + settings.margin.left + "," + settings.margin.top + ")");
   }
 
-  const x = d3.scale.ordinal()
-      .rangeRoundBands([0, innerWidth], settings.barWidth ? settings.barWidth : 0.1); // last param controls bar width
+  // https://anthonyskelton.com/2016/d3-js-version-4/
+  const x = d3.scaleBand() // d3.scaleOrdinal()
+      // .rangeRoundBands([0, innerWidth], settings.barWidth ? settings.barWidth : 0.1); // last param controls bar width
+      // .rangeRound([0, innerWidth], settings.barWidth ? settings.barWidth : 0.1)
+      .range([settings.margin.left, settings.width - settings.margin.right])
+      .paddingInner(0.05);
 
-  const y = d3.scale.linear()
-      .rangeRound([innerHeight, 0]);
+  const y = d3.scaleLinear()
+      .range([innerHeight, 0]);
 
-  const color = d3.scale.ordinal()
+  const color = d3.scaleOrdinal()
       .range(["#A9C1D9", "#607890", "#ABBE71"]);
 
-  const xAxis = d3.svg.axis()
-      .scale(x)
-      .orient("bottom");
+  const xAxis = d3.axisBottom(x);
+      // .scale(x);
 
-  const yAxis = d3.svg.axis()
-      .scale(y)
-      .orient("left")
+  const yAxis = d3.axisLeft(y)
       .tickFormat(d3.format(".2s"))
       .ticks(settings.y.ticks);
 
@@ -445,13 +446,15 @@ function showStackedBar(svg, settings, data) {
       .attr("class", function(d) {
         return d.loac;
       })
-      .attr("width", x.rangeBand())
-      .attr("y", (d) => {
-        return y(d.y1);
-      })
       .attr("x", (d) => {
         return x(d.country) + settings.margin.left; // NB: NEED TO ADD THE LEFT MARGIN...WHY????
+        // return x(d.country);
       })
+       .attr("y", (d) => {
+        return y(d.y1);
+      })
+      // .attr("width", x.rangeBand())
+      .attr("width", x.bandwidth()) 
       .attr("height", (d) => {
         return y(d.y0) - y(d.y1);
       });
