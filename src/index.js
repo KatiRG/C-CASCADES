@@ -354,12 +354,10 @@ function showStackedBar(svg, settings, data) {
         .attr("transform", "translate(" + settings.margin.left + "," + settings.margin.top + ")");
   }
 
-  // https://anthonyskelton.com/2016/d3-js-version-4/
-  const x = d3.scaleBand() // d3.scaleOrdinal()
-      // .rangeRoundBands([0, innerWidth], settings.barWidth ? settings.barWidth : 0.1); // last param controls bar width
-      // .rangeRound([0, innerWidth], settings.barWidth ? settings.barWidth : 0.1)
-      .range([settings.margin.left, settings.width - settings.margin.right])
+  const x = d3.scaleBand()
+      .rangeRound([5, innerWidth], settings.barWidth ? settings.barWidth : 0.1)
       .paddingInner(0.05);
+
 
   const y = d3.scaleLinear()
       .range([innerHeight, 0]);
