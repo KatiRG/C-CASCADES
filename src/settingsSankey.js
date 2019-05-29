@@ -1,6 +1,6 @@
 export default {
   margin: {
-    top: 0,
+    top: 40,
     right: 0,
     left: 2,
     bottom: 0
@@ -9,6 +9,6 @@ export default {
   width: 455, // 480,
   viewBox: {
     x: 0,
-    y: 40
+    y: 0
   }
 };
