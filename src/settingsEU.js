@@ -5,14 +5,14 @@ export default {
     left: 50,
     bottom: 40
   },
-  aspectRatio: 2.1, // width/height
+  aspectRatio: 2.3, // width/height
   width: 220,
   showUnits: false,
   x: {
     ticks: 8
   },
   y: {
-    ticks: 3
+    ticks: 2
   },
   viewBox: {
     x: 0,

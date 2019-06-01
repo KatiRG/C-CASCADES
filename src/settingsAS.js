@@ -3,9 +3,9 @@ export default {
     top: 0,
     right: 20,
     left: 25,
-    bottom: 47
+    bottom: 19
   },
-  aspectRatio: 0.8, // 16 / 9,  // width/height
+  aspectRatio: 0.88, // 16 / 9,  // width/height
   width: 220,
   showUnits: false,
   x: {
@@ -16,6 +16,6 @@ export default {
   },
   viewBox: {
     x: -25,
-    y: -10
+    y: 0
   }
 };

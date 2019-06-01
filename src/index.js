@@ -20,6 +20,12 @@ const globalSettings = {
 let sankeydata1 = {};
 let sankeydata2 = {};
 
+let stackedSA = {};
+let stackedAfrica = {};
+let stackedAsia = {};
+let stackedNAmer = {};
+let stackedOceania = {};
+let stackedEurope = {};
 
 // -----------------------------------------------------------------------------
 // SVGs
@@ -31,6 +37,30 @@ const chartSankey2 = d3.select(".data.sankey2")
     .append("svg")
     .attr("id", "chart2");
 
+// Stacked bar charts
+const chartSA = d3.select(".data.SAdata")
+    .append("svg")
+    .attr("id", "stackedbar_SA");
+
+const chartAF = d3.select(".data.AFdata")
+    .append("svg")
+    .attr("id", "stackedbar_Africa");
+
+const chartAS = d3.select(".data.ASdata")
+    .append("svg")
+    .attr("id", "stackedbar_Asia");
+
+const chartNA = d3.select(".data.NAdata")
+    .append("svg")
+    .attr("id", "stackedbar_NAmer");
+
+const chartOC = d3.select(".data.OCdata")
+    .append("svg")
+    .attr("id", "stackedbar_Oceania");
+
+const chartEU = d3.select(".data.EUdata")
+    .append("svg")
+    .attr("id", "stackedbar_Europe");
 
 // -----------------------------------------------------------------------------
 // FNS
@@ -294,7 +324,164 @@ function showSankey(chartNum, svg, settings, graph) {
 } // end makeSankey()
 
 // ----------------------------------------------------------------------------
+// STACKED BARS
+function showStackedBar(svg, settings, data) {
+  // tooltip div
+  const div = d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
+  const yshiftTooltip = 90; // amount to raise tooltip in y-dirn
 
+  const outerWidth = settings.width;
+  const outerHeight = Math.ceil(outerWidth / settings.aspectRatio);
+  const innerHeight = outerHeight - settings.margin.top - settings.margin.bottom;
+  const innerWidth = outerWidth - settings.margin.left - settings.margin.right;
+  let chartInner = svg.select("g.margin-offset");
+
+  svg
+      .attr("viewBox", `${settings.viewBox.x} ${settings.viewBox.y} ${outerWidth} ${outerHeight}`)
+      .attr("preserveAspectRatio", "xMidYMid meet")
+      .attr("role", "img");
+
+  let xAxisObj = chartInner.select(".x.axis");
+  let yAxisObj = chartInner.select(".y.axis");
+
+  if (chartInner.empty()) {
+    chartInner = svg.append("g")
+        .attr("class", "margin-offset")
+        .attr("transform", "translate(" + settings.margin.left + "," + settings.margin.top + ")");
+  }
+
+  const x = d3.scaleBand()
+      .rangeRound([5, innerWidth], settings.barWidth ? settings.barWidth : 0.1)
+      .paddingInner(0.05);
+
+
+  const y = d3.scaleLinear()
+      .range([innerHeight, 0]);
+
+  const color = d3.scaleOrdinal()
+      .range(["#A9C1D9", "#607890", "#ABBE71"]);
+
+  const xAxis = d3.axisBottom(x);
+  // .scale(x);
+
+  const yAxis = d3.axisLeft(y)
+      .tickFormat(d3.format(".2s"))
+      .ticks(settings.y.ticks);
+
+  color.domain(d3.keys(data[0]).filter((key) => {
+    return key !== "country";
+  }));
+
+  data.forEach((d) => {
+    const country = d.country;
+    let y0 = 0;
+    d.flux = color.domain().map((name) => {
+      return {country: country, loac: name, y0: y0, y1: y0 += +d[name]};
+    });
+    d.total = d.flux[d.flux.length - 1].y1;
+  });
+
+  data.sort((a, b) => {
+    return b.total - a.total;
+  });
+
+  x.domain(data.map((d) => {
+    return d.country;
+  }));
+  y.domain([0, d3.max(data, (d) => {
+    return d.total;
+  })]);
+
+  // X-AXIS
+  xAxisObj = chartInner.select(".x.axis");
+  if (xAxisObj.empty()) {
+    xAxisObj = chartInner.append("g")
+        .attr("class", "x axis")
+        .attr("aria-hidden", "true")
+        .attr("transform", `translate(0, ${innerHeight})`);
+  }
+  xAxisObj.call(xAxis);
+
+  // Y-AXIS
+  yAxisObj = chartInner.select(".y.axis");
+  if (yAxisObj.empty()) {
+    yAxisObj = chartInner.append("g")
+        .attr("class", "y axis")
+        .attr("aria-hidden", "true");
+
+    // display y-axis units only for first chart
+    if (settings.showUnits) {
+      yAxisObj
+          .append("text")
+          .attr("class", "chart-label")
+          .attr("x", -50)
+          .attr("y", 0)
+          .attr("dy", "-0.5em")
+          .attr("text-anchor", "start")
+          .html(`${i18next.t("units", {ns: "constants"})}`)
+          .append("tspan")
+          .text("-1")
+          .style("font-size", "9px")
+          .attr("y", -11)
+          .attr("dx", ".01em")
+          .attr("dy", "-.2em");
+    }
+  }
+  yAxisObj.call(yAxis);
+
+  const country = svg.selectAll(".country")
+      .data(data)
+      .enter().append("g")
+      .attr("class", "g");
+
+  country.selectAll("rect")
+      .data((d) => {
+        return d.flux;
+      })
+      .enter().append("rect")
+      .attr("class", function(d) {
+        return d.loac;
+      })
+      .attr("x", (d) => {
+        return x(d.country) + settings.margin.left; // NB: NEED TO ADD THE LEFT MARGIN...WHY????
+        // return x(d.country);
+      })
+      .attr("y", (d) => {
+        return y(d.y1);
+      })
+      // .attr("width", x.rangeBand())
+      .attr("width", x.bandwidth()) 
+      .attr("height", (d) => {
+        return y(d.y0) - y(d.y1);
+      });
+
+  country.selectAll("rect")
+      .on("mousemove", (d) => {
+        const delta = d.y1 - d.y0;
+        // Tooltip
+        div.transition()
+            .style("opacity", .9);
+        div.html(
+            `<b> ${d.loac} </b><br><br>
+              <table>
+                <tr>
+                  <td><b>${globalSettings.formatNum(delta)} </td>
+                  <td> ${i18next.t("units", {ns: "constants"})} </td>
+                </tr>
+              </table>`
+        )
+            .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY - yshiftTooltip) + "px");
+      })
+      .on("mouseout", () => {
+        div.transition()
+            .style("opacity", 0);
+      });
+
+  d3.stcExt.addIEShim(svg, outerHeight, outerWidth);
+}
 
 // -----------------------------------------------------------------------------
 /* Initial page load */
@@ -302,9 +489,23 @@ i18n.load(["src/i18n"], () => {
   d3.queue()
       .defer(d3.json, "data/LOAC_budget_TgCyr181113_sankey1.json")
       .defer(d3.json, "data/LOAC_budget_TgCyr181113_sankey2.json")
-      .await(function(error, sankeyfile1, sankeyfile2) {
+      .defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_SAmer.csv")
+      .defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_Africa.csv")
+      .defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_Asia.csv")
+      .defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_NAmer.csv")
+      .defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_Oceania.csv")
+      .defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_Europe.csv")
+      .await(function(error, sankeyfile1, sankeyfile2, stackedfileSA, stackedfileAfrica,
+          stackedfileAsia, stackedfileNAmer, stackedfileOceania, stackedfileEurope) {
         sankeydata1 = sankeyfile1;
         sankeydata2 = sankeyfile2;
+
+        stackedSA = stackedfileSA;
+        stackedAfrica = stackedfileAfrica;
+        stackedAsia = stackedfileAsia;
+        stackedNAmer = stackedfileNAmer;
+        stackedOceania = stackedfileOceania;
+        stackedEurope = stackedfileEurope;
 
         // Page text
         pageText();
@@ -312,6 +513,13 @@ i18n.load(["src/i18n"], () => {
         // Draw graphs
         showSankey(1, chartSankey1, settingsSankey, sankeydata1);
         showSankey(2, chartSankey2, settingsSankey, sankeydata2);
+
+        showStackedBar(chartSA, settingsSA, stackedSA);
+        showStackedBar(chartAF, settingsAF, stackedAfrica);
+        showStackedBar(chartAS, settingsAS, stackedAsia);
+        showStackedBar(chartNA, settingsNA, stackedNAmer);
+        showStackedBar(chartOC, settingsOC, stackedOceania);
+        showStackedBar(chartEU, settingsEU, stackedEurope);
       });
 });
 
