@@ -1488,8 +1488,7 @@
 	var chartOC = d3.select(".data.OCdata").append("svg").attr("id", "stackedbar_Oceania");
 	var chartEU = d3.select(".data.EUdata").append("svg").attr("id", "stackedbar_Europe"); // -----------------------------------------------------------------------------
 	// FNS
-
-	/* -- page texts -- */
+	// page texts
 
 	function pageText() {
 	  d3.select("#titletag").html(i18next.t("titletag", {
@@ -1504,8 +1503,7 @@
 	  d3.select("#subtitle").html(i18next.t("subtitle", {
 	    ns: "pageText"
 	  }));
-	}
-	/* -- display areaChart -- */
+	} // display areaChart
 
 
 	function showSankey(chartNum, svg, settings, graph) {
@@ -1700,8 +1698,7 @@
 	  var x = d3.scaleBand().rangeRound([5, innerWidth], settings.barWidth ? settings.barWidth : 0.1).paddingInner(0.05);
 	  var y = d3.scaleLinear().range([innerHeight, 0]);
 	  var color = d3.scaleOrdinal().range(["#A9C1D9", "#607890", "#ABBE71"]);
-	  var xAxis = d3.axisBottom(x); // .scale(x);
-
+	  var xAxis = d3.axisBottom(x);
 	  var yAxis = d3.axisLeft(y).tickFormat(d3.format(".2s")).ticks(settings.y.ticks);
 	  color.domain(d3.keys(data[0]).filter(function (key) {
 	    return key !== "country";
@@ -1727,16 +1724,14 @@
 	  }));
 	  y.domain([0, d3.max(data, function (d) {
 	    return d.total;
-	  })]); // X-AXIS
-
+	  })]);
 	  xAxisObj = chartInner.select(".x.axis");
 
 	  if (xAxisObj.empty()) {
 	    xAxisObj = chartInner.append("g").attr("class", "x axis").attr("aria-hidden", "true").attr("transform", "translate(0, ".concat(innerHeight, ")"));
 	  }
 
-	  xAxisObj.call(xAxis); // Y-AXIS
-
+	  xAxisObj.call(xAxis);
 	  yAxisObj = chartInner.select(".y.axis");
 
 	  if (yAxisObj.empty()) {
@@ -1756,12 +1751,11 @@
 	  }).enter().append("rect").attr("class", function (d) {
 	    return d.loac;
 	  }).attr("x", function (d) {
-	    return x(d.country) + settings.margin.left; // NB: NEED TO ADD THE LEFT MARGIN...WHY????
+	    return x(d.country) + settings.margin.left; // NB: NEED TO ADD THE LEFT MARGIN
 	    // return x(d.country);
 	  }).attr("y", function (d) {
 	    return y(d.y1);
-	  }) // .attr("width", x.rangeBand())
-	  .attr("width", x.bandwidth()).attr("height", function (d) {
+	  }).attr("width", x.bandwidth()).attr("height", function (d) {
 	    return y(d.y0) - y(d.y1);
 	  });
 	  country.selectAll("rect").on("mousemove", function (d) {
@@ -1776,8 +1770,7 @@
 	  });
 	  d3.stcExt.addIEShim(svg, outerHeight, outerWidth);
 	} // -----------------------------------------------------------------------------
-
-	/* Initial page load */
+	// Initial page load
 
 
 	i18n.load(["src/i18n"], function () {

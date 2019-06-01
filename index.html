@@ -2,8 +2,9 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-
         <title id="titletag"></title>
+        <link rel="stylesheet" href="src/style.css" type="text/css">
+        <link href="lib/bootstrap_v3.0.2.min.css" rel="stylesheet">
     </head>
 
     <body>
@@ -16,14 +17,13 @@
             <div class="row">
                   <div class="col-lg-12" id="infotext"></div>
             </div>
-
             <div class="row">
                 <div class="col-lg-10" id="subtitle"></div>
             </div>
 
             <div class="row"></div>
 
-            <div class="row"> <!-- row for charts -->
+            <div class="row">
                 <div class="col-lg-5">
                     <div class="data sankey1"></div>
                 </div>
@@ -51,20 +51,14 @@
                         <div class="data EUdata"></div>
                     </div>
                 </div>
-            </div> <!-- ./row for charts -->
+            </div>
 
+            <script src="lib/jquery-1.10.2.min.js"></script>
+            <script src="lib/bootstrap_v3.0.2.min.js"></script>
             <script src="lib/i18next.min.js"></script>
             <script src="lib/d3.v4.4.min.js"></script>
-            <!-- <script src="https://cdn.jsdelivr.net/g/i18next@7.1.3,d3js@4.7.4,i18next@8.1.0,jquery@3.2.1(jquery.slim.min.js)"></script> -->
             <script src="lib/queue.v1.min.js"></script>
-
-        	<script src="lib/jquery-1.10.2.min.js"></script>
-        	<link href="lib/bootstrap.css" rel="stylesheet"> <!--bootstrap 3.0.2 -->
-        	<script src="lib/bootstrap.min.js"></script>
-        	<link href="src/style.css" rel="stylesheet" type="text/css">
-
-            <script src="lib/stc_visualization_components/utils.js"></script>
-
+            <script src="lib/stc_visualization_components/utils.min.js"></script>
             <script src="lib/sankey_v0.4.1_sameScaleFactor.js"></script>
             <script type="module" src="src/index.js"></script>
 

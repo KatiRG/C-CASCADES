@@ -64,7 +64,7 @@ const chartEU = d3.select(".data.EUdata")
 
 // -----------------------------------------------------------------------------
 // FNS
-/* -- page texts -- */
+// page texts
 function pageText() {
   d3.select("#titletag").html(i18next.t("titletag", {ns: "pageText"}));
   d3.select("#pageTitle").html(i18next.t("title", {ns: "pageText"}));
@@ -72,7 +72,7 @@ function pageText() {
   d3.select("#subtitle").html(i18next.t("subtitle", {ns: "pageText"}));
 }
 
-/* -- display areaChart -- */
+// display areaChart
 function showSankey(chartNum, svg, settings, graph) {
   const outerWidth = settings.width;
   const outerHeight = Math.ceil(outerWidth / settings.aspectRatio);
@@ -364,7 +364,6 @@ function showStackedBar(svg, settings, data) {
       .range(["#A9C1D9", "#607890", "#ABBE71"]);
 
   const xAxis = d3.axisBottom(x);
-  // .scale(x);
 
   const yAxis = d3.axisLeft(y)
       .tickFormat(d3.format(".2s"))
@@ -394,7 +393,6 @@ function showStackedBar(svg, settings, data) {
     return d.total;
   })]);
 
-  // X-AXIS
   xAxisObj = chartInner.select(".x.axis");
   if (xAxisObj.empty()) {
     xAxisObj = chartInner.append("g")
@@ -404,7 +402,6 @@ function showStackedBar(svg, settings, data) {
   }
   xAxisObj.call(xAxis);
 
-  // Y-AXIS
   yAxisObj = chartInner.select(".y.axis");
   if (yAxisObj.empty()) {
     yAxisObj = chartInner.append("g")
@@ -445,14 +442,13 @@ function showStackedBar(svg, settings, data) {
         return d.loac;
       })
       .attr("x", (d) => {
-        return x(d.country) + settings.margin.left; // NB: NEED TO ADD THE LEFT MARGIN...WHY????
+        return x(d.country) + settings.margin.left; // NB: NEED TO ADD THE LEFT MARGIN
         // return x(d.country);
       })
       .attr("y", (d) => {
         return y(d.y1);
       })
-      // .attr("width", x.rangeBand())
-      .attr("width", x.bandwidth()) 
+      .attr("width", x.bandwidth())
       .attr("height", (d) => {
         return y(d.y0) - y(d.y1);
       });
@@ -484,7 +480,7 @@ function showStackedBar(svg, settings, data) {
 }
 
 // -----------------------------------------------------------------------------
-/* Initial page load */
+// Initial page load
 i18n.load(["src/i18n"], () => {
   d3.queue()
       .defer(d3.json, "data/LOAC_budget_TgCyr181113_sankey1.json")
@@ -522,4 +518,3 @@ i18n.load(["src/i18n"], () => {
         showStackedBar(chartEU, settingsEU, stackedEurope);
       });
 });
-
