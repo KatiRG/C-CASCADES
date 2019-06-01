@@ -1,7 +1,20 @@
-const units = "Tg C yr <sup>-1</sup>";
-const formatNumber = d3.format(".2f");
-const format = function(d) {
-  return formatNumber(d);
+// settings for Sankey
+import settingsSankey from "./settingsSankey.js";
+
+// settings for stacked bar charts
+import settingsSA from "./settingsSA.js"; // South America
+import settingsAF from "./settingsAF.js"; // Africa
+import settingsAS from "./settingsAS.js"; // Asia
+import settingsNA from "./settingsNA.js"; // North America
+import settingsOC from "./settingsOC.js"; // Oceania
+import settingsEU from "./settingsEU.js"; // Europe
+
+// Define number format (2 decimal places) from utils.js
+const globalSettings = {
+  _selfFormatter: i18n.getNumberFormatter(2),
+  formatNum: function(...args) {
+    return this._selfFormatter.format(args);
+  }
 };
 
 let sankeydata1 = {};
@@ -14,6 +27,43 @@ let stackedNAmer = {};
 let stackedOceania = {};
 let stackedEurope = {};
 
+// -----------------------------------------------------------------------------
+// SVGs
+// Sankeys
+const chartSankey1 = d3.select(".data.sankey1")
+    .append("svg")
+    .attr("id", "chart1");
+const chartSankey2 = d3.select(".data.sankey2")
+    .append("svg")
+    .attr("id", "chart2");
+
+// Stacked bar charts
+const chartSA = d3.select(".data.SAdata")
+    .append("svg")
+    .attr("id", "stackedbar_SA");
+
+const chartAF = d3.select(".data.AFdata")
+    .append("svg")
+    .attr("id", "stackedbar_Africa");
+
+const chartAS = d3.select(".data.ASdata")
+    .append("svg")
+    .attr("id", "stackedbar_Asia");
+
+const chartNA = d3.select(".data.NAdata")
+    .append("svg")
+    .attr("id", "stackedbar_NAmer");
+
+const chartOC = d3.select(".data.OCdata")
+    .append("svg")
+    .attr("id", "stackedbar_Oceania");
+
+const chartEU = d3.select(".data.EUdata")
+    .append("svg")
+    .attr("id", "stackedbar_Europe");
+
+// -----------------------------------------------------------------------------
+// FNS
 /* -- page texts -- */
 function pageText() {
   d3.select("#titletag").html(i18next.t("titletag", {ns: "pageText"}));
@@ -23,31 +73,33 @@ function pageText() {
 }
 
 /* -- display areaChart -- */
-function showSankey(chartDiv, graph) {
-  const chartNum = chartDiv.split("chart")[1];
+function showSankey(svg, settings, graph) {
+  const chartNum = d3.select(".data.sankey1").select("svg").attr("id").split("chart")[1];
 
-  const margin = {
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0
-  };
+  const outerWidth = settings.width;
+  const outerHeight = Math.ceil(outerWidth / settings.aspectRatio);
+  const innerHeight = outerHeight - settings.margin.top - settings.margin.bottom;
+  const innerWidth = outerWidth - settings.margin.left - settings.margin.right;
+  let chartInner = svg.select("g.margin-offset");
+  let dataLayer = chartInner.select(".data");
 
-  const width = 460 - margin.left - margin.right;
-  const height = 900 - margin.top - margin.bottom;
+  svg
+      .attr("viewBox", `${settings.viewBox.x} ${settings.viewBox.y} ${outerWidth} ${outerHeight}`)
+      .attr("preserveAspectRatio", "xMidYMid meet")
+      .attr("role", "img");
 
-  // append the svg canvas to the page
-  const svg = d3.select(chartDiv).append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform", `translate(${margin.left}, ${margin.top})`);
+  if (chartInner.empty()) {
+    chartInner = svg.append("g")
+        .attr("class", "margin-offset")
+        .attr("transform", "translate(" + settings.margin.left + "," + settings.margin.top + ")");
+  }
+  d3.stcExt.addIEShim(svg, outerHeight, outerWidth);
 
   // set the sankey diagram properties
   const sankey = d3.sankey()
       .nodeWidth(30)
       .nodePadding(20)
-      .size([width, height]);
+      .size([innerWidth, innerHeight]);
 
   const path = sankey.link();
   const yshiftTooltip = 90; // amount to raise tooltip in y-dirn
@@ -81,7 +133,12 @@ function showSankey(chartDiv, graph) {
         .attr("class", "tooltip")
         .style("opacity", 0);
 
-    const link = svg.append("g").selectAll(".link")
+    if (dataLayer.empty()) {
+      dataLayer = chartInner.append("g")
+          .attr("class", "data");
+    }
+
+    const link = dataLayer.append("g").selectAll(".link")
         .data(graph.links)
         .enter().append("path")
         .attr("class", (d) => {
@@ -118,8 +175,8 @@ function showSankey(chartDiv, graph) {
           <table>
               <tr>
                 <td>${d.target.name} flux: </td>
-                <td><b>${format(d.value)}</td>
-                <td> ${units} </td>
+                <td><b>${globalSettings.formatNum(d.value)}</td>
+                <td> ${i18next.t("units", {ns: "constants"})} </td>
             </tr>
           </table>`
       )
@@ -138,7 +195,7 @@ function showSankey(chartDiv, graph) {
         });
 
     // add in the nodes
-    const node = svg.append("g").selectAll(".node")
+    const node = dataLayer.append("g").selectAll(".node")
         .data(graph.nodes)
         .enter().append("g")
         .attr("class", () => {
@@ -174,7 +231,7 @@ function showSankey(chartDiv, graph) {
           return i18next.t(d.name, {ns: "labels"});
         })
         .filter((d) => {
-          return d.x < width / 2;
+          return d.x < innerWidth / 2;
         })
         .attr("x", 6 + sankey.nodeWidth())
         .attr("text-anchor", "start");
@@ -192,8 +249,8 @@ function showSankey(chartDiv, graph) {
           <table>
             <tr>
               <td> Total flux: </td>
-              <td><b>${format(d.value)}</td>
-              <td>  ${units} </td>
+              <td><b>${globalSettings.formatNum(d.value)}</td>
+              <td> ${i18next.t("units", {ns: "constants"})} </td>
             </tr>
           </table>`
       )
@@ -270,52 +327,50 @@ function showSankey(chartDiv, graph) {
 
 // ----------------------------------------------------------------------------
 // STACKED BARS
-function makeStackedBar(chartId, data, h, w) {
+function showStackedBar(svg, settings, data) {
   // tooltip div
   const div = d3.select("body").append("div")
       .attr("class", "tooltip")
       .style("opacity", 0);
-
   const yshiftTooltip = 90; // amount to raise tooltip in y-dirn
 
-  const topDict = {
-    "#stackedbar_SA": 25,
-    "#stackedbar_Africa": 10,
-    "#stackedbar_Asia": 15,
-    "#stackedbar_NAmer": 5,
-    "#stackedbar_Oceania": 2,
-    "#stackedbar_Europe": 5
-  };
-  const margin = {top: topDict[chartId], right: 20, bottom: 17, left: 40};
-  const width = w - margin.left - margin.right;
-  const height = h - margin.top - margin.bottom;
+  const outerWidth = settings.width;
+  const outerHeight = Math.ceil(outerWidth / settings.aspectRatio);
+  const innerHeight = outerHeight - settings.margin.top - settings.margin.bottom;
+  const innerWidth = outerWidth - settings.margin.left - settings.margin.right;
+  let chartInner = svg.select("g.margin-offset");
 
-  const x = d3.scale.ordinal()
-      .rangeRoundBands([0, width], .1);
+  svg
+      .attr("viewBox", `${settings.viewBox.x} ${settings.viewBox.y} ${outerWidth} ${outerHeight}`)
+      .attr("preserveAspectRatio", "xMidYMid meet")
+      .attr("role", "img");
 
-  const y = d3.scale.linear()
-      .rangeRound([height, 0]);
+  let xAxisObj = chartInner.select(".x.axis");
+  let yAxisObj = chartInner.select(".y.axis");
 
-  const color = d3.scale.ordinal()
+  if (chartInner.empty()) {
+    chartInner = svg.append("g")
+        .attr("class", "margin-offset")
+        .attr("transform", "translate(" + settings.margin.left + "," + settings.margin.top + ")");
+  }
+
+  const x = d3.scaleBand()
+      .rangeRound([5, innerWidth], settings.barWidth ? settings.barWidth : 0.1)
+      .paddingInner(0.05);
+
+
+  const y = d3.scaleLinear()
+      .range([innerHeight, 0]);
+
+  const color = d3.scaleOrdinal()
       .range(["#A9C1D9", "#607890", "#ABBE71"]);
 
-  const xAxis = d3.svg.axis()
-      .scale(x)
-      .orient("bottom");
+  const xAxis = d3.axisBottom(x);
+      // .scale(x);
 
-  const numTicks = (chartId === "#stackedbar_Oceania") ? 1 : 3;
-  const yAxis = d3.svg.axis()
-      .scale(y)
-      .orient("left")
+  const yAxis = d3.axisLeft(y)
       .tickFormat(d3.format(".2s"))
-      .ticks(numTicks);
-
-  const svg = d3.select(chartId).append("div")
-      .append("svg")
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-      .attr("transform", `translate(${margin.left}, ${margin.top})`);
+      .ticks(settings.y.ticks);
 
   color.domain(d3.keys(data[0]).filter((key) => {
     return key !== "country";
@@ -341,34 +396,40 @@ function makeStackedBar(chartId, data, h, w) {
     return d.total;
   })]);
 
-  // display y-axis units only for first chart
-  if (chartId === "#stackedbar_SA") {
-    svg.append("g")
-        .attr("class", "tick")
-        .attr("id", "yaxisUnits")
-        .append("text")
-        .attr("x", -40)
-        .attr("y", -8)
-        .html(`${i18next.t("units", {ns: "constants"})}`)
-        .append("tspan")
-        .text("-1")
-        .attr("dx", ".01em")
-        .attr("dy", "-.2em");
+  // X-AXIS
+  xAxisObj = chartInner.select(".x.axis");
+  if (xAxisObj.empty()) {
+    xAxisObj = chartInner.append("g")
+        .attr("class", "x axis")
+        .attr("aria-hidden", "true")
+        .attr("transform", `translate(0, ${innerHeight})`);
   }
+  xAxisObj.call(xAxis);
 
-  svg.append("g")
-      .attr("class", "x axis")
-      .attr("transform", `translate(0, ${height})`)
-      .call(xAxis);
+  // Y-AXIS
+  yAxisObj = chartInner.select(".y.axis");
+  if (yAxisObj.empty()) {
+    yAxisObj = chartInner.append("g")
+        .attr("class", "y axis")
+        .attr("aria-hidden", "true");
 
-  svg.append("g")
-      .attr("class", "y axis")
-      .call(yAxis)
-      .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 6)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end");
+    // display y-axis units only for first chart
+    if (settings.showUnits) {
+      yAxisObj
+          .append("text")
+          .attr("class", "chart-label")
+          .attr("x", -50)
+          .attr("y", 0)
+          .attr("dy", "-0.5em")
+          .attr("text-anchor", "start")
+          .html(`${i18next.t("units", {ns: "constants"})}`)
+          .append("tspan")
+          .text("-1")
+          .attr("dx", ".01em")
+          .attr("dy", "-.2em");
+    }
+  }
+  yAxisObj.call(yAxis);
 
   const country = svg.selectAll(".country")
       .data(data)
@@ -383,13 +444,15 @@ function makeStackedBar(chartId, data, h, w) {
       .attr("class", function(d) {
         return d.loac;
       })
-      .attr("width", x.rangeBand())
-      .attr("y", (d) => {
+      .attr("x", (d) => {
+        return x(d.country) + settings.margin.left; // NB: NEED TO ADD THE LEFT MARGIN...WHY????
+        // return x(d.country);
+      })
+       .attr("y", (d) => {
         return y(d.y1);
       })
-      .attr("x", (d) => {
-        return x(d.country);
-      })
+      // .attr("width", x.rangeBand())
+      .attr("width", x.bandwidth()) 
       .attr("height", (d) => {
         return y(d.y0) - y(d.y1);
       });
@@ -404,8 +467,8 @@ function makeStackedBar(chartId, data, h, w) {
             `<b> ${d.loac} </b><br><br>
               <table>
                 <tr>
-                  <td><b>${format(delta)} </td>
-                  <td> ${units} </td>
+                  <td><b>${globalSettings.formatNum(delta)} </td>
+                  <td> ${i18next.t("units", {ns: "constants"})} </td>
                 </tr>
               </table>`
         )
@@ -416,14 +479,14 @@ function makeStackedBar(chartId, data, h, w) {
         div.transition()
             .style("opacity", 0);
       });
-} // .makeStackedBar
 
+  d3.stcExt.addIEShim(svg, outerHeight, outerWidth);
+}
 
 // -----------------------------------------------------------------------------
 /* Initial page load */
 i18n.load(["src/i18n"], () => {
-  // d3.queue()
-  queue()
+  d3.queue()
       .defer(d3.json, "data/LOAC_budget_TgCyr181113_sankey1.json")
       .defer(d3.json, "data/LOAC_budget_TgCyr181113_sankey2.json")
       .defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_SAmer.csv")
@@ -448,15 +511,15 @@ i18n.load(["src/i18n"], () => {
         pageText();
 
         // Draw graphs
-        showSankey("#chart1", sankeydata1);
-        showSankey("#chart2", sankeydata2);
+        showSankey(chartSankey1, settingsSankey, sankeydata1);
+        showSankey(chartSankey2, settingsSankey, sankeydata2);
 
-        makeStackedBar("#stackedbar_SA", stackedSA, 225, 220);
-        makeStackedBar("#stackedbar_Africa", stackedAfrica, 135, 140);
-        makeStackedBar("#stackedbar_Asia", stackedAsia, 245, 190);
-        makeStackedBar("#stackedbar_NAmer", stackedNAmer, 180, 130);
-        makeStackedBar("#stackedbar_Oceania", stackedOceania, 35, 130);
-        makeStackedBar("#stackedbar_Europe", stackedEurope, 70, 180);
+        showStackedBar(chartSA, settingsSA, stackedSA);
+        showStackedBar(chartAF, settingsAF, stackedAfrica);
+        showStackedBar(chartAS, settingsAS, stackedAsia);
+        showStackedBar(chartNA, settingsNA, stackedNAmer);
+        showStackedBar(chartOC, settingsOC, stackedOceania);
+        showStackedBar(chartEU, settingsEU, stackedEurope);
       });
 });
 
