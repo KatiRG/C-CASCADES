@@ -43,7 +43,7 @@ function pageText() {
 }
 
 /* -- display areaChart -- */
-function showSankey(svg, settings, graph) {
+function showSankey(chartNum, svg, settings, graph) {
   const outerWidth = settings.width;
   const outerHeight = Math.ceil(outerWidth / settings.aspectRatio);
   const innerHeight = outerHeight - settings.margin.top - settings.margin.bottom;
@@ -55,9 +55,6 @@ function showSankey(svg, settings, graph) {
       .attr("viewBox", `${settings.viewBox.x} ${settings.viewBox.y} ${outerWidth} ${outerHeight}`)
       .attr("preserveAspectRatio", "xMidYMid meet")
       .attr("role", "img");
-
-  const chartNum = d3.select(svg._groups[0][0]).attr("id").split("chart")[1];
-  console.log("chartNum: ", chartNum)
 
   if (chartInner.empty()) {
     chartInner = svg.append("g")
@@ -313,8 +310,8 @@ i18n.load(["src/i18n"], () => {
         pageText();
 
         // Draw graphs
-        showSankey(chartSankey1, settingsSankey, sankeydata1);
-        showSankey(chartSankey2, settingsSankey, sankeydata2);
+        showSankey(1, chartSankey1, settingsSankey, sankeydata1);
+        showSankey(2, chartSankey2, settingsSankey, sankeydata2);
       });
 });
 
