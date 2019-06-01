@@ -679,94 +679,15 @@
 	  }
 	});
 
-	// 7.2.2 IsArray(argument)
+	// 7.3.20 SpeciesConstructor(O, defaultConstructor)
 
-	var _isArray = Array.isArray || function isArray(arg) {
-	  return _cof(arg) == 'Array';
-	};
 
 	var SPECIES = _wks('species');
-
-	var _arraySpeciesConstructor = function (original) {
-	  var C;
-	  if (_isArray(original)) {
-	    C = original.constructor;
-	    // cross-realm fallback
-	    if (typeof C == 'function' && (C === Array || _isArray(C.prototype))) C = undefined;
-	    if (_isObject(C)) {
-	      C = C[SPECIES];
-	      if (C === null) C = undefined;
-	    }
-	  } return C === undefined ? Array : C;
+	var _speciesConstructor = function (O, D) {
+	  var C = _anObject(O).constructor;
+	  var S;
+	  return C === undefined || (S = _anObject(C)[SPECIES]) == undefined ? D : _aFunction(S);
 	};
-
-	// 9.4.2.3 ArraySpeciesCreate(originalArray, length)
-
-
-	var _arraySpeciesCreate = function (original, length) {
-	  return new (_arraySpeciesConstructor(original))(length);
-	};
-
-	// 0 -> Array#forEach
-	// 1 -> Array#map
-	// 2 -> Array#filter
-	// 3 -> Array#some
-	// 4 -> Array#every
-	// 5 -> Array#find
-	// 6 -> Array#findIndex
-
-
-
-
-
-	var _arrayMethods = function (TYPE, $create) {
-	  var IS_MAP = TYPE == 1;
-	  var IS_FILTER = TYPE == 2;
-	  var IS_SOME = TYPE == 3;
-	  var IS_EVERY = TYPE == 4;
-	  var IS_FIND_INDEX = TYPE == 6;
-	  var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
-	  var create = $create || _arraySpeciesCreate;
-	  return function ($this, callbackfn, that) {
-	    var O = _toObject($this);
-	    var self = _iobject(O);
-	    var f = _ctx(callbackfn, that, 3);
-	    var length = _toLength(self.length);
-	    var index = 0;
-	    var result = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined;
-	    var val, res;
-	    for (;length > index; index++) if (NO_HOLES || index in self) {
-	      val = self[index];
-	      res = f(val, index, O);
-	      if (TYPE) {
-	        if (IS_MAP) result[index] = res;   // map
-	        else if (res) switch (TYPE) {
-	          case 3: return true;             // some
-	          case 5: return val;              // find
-	          case 6: return index;            // findIndex
-	          case 2: result.push(val);        // filter
-	        } else if (IS_EVERY) return false; // every
-	      }
-	    }
-	    return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : result;
-	  };
-	};
-
-	var _strictMethod = function (method, arg) {
-	  return !!method && _fails(function () {
-	    // eslint-disable-next-line no-useless-call
-	    arg ? method.call(null, function () { /* empty */ }, 1) : method.call(null);
-	  });
-	};
-
-	var $filter = _arrayMethods(2);
-
-	_export(_export.P + _export.F * !_strictMethod([].filter, true), 'Array', {
-	  // 22.1.3.7 / 15.4.4.20 Array.prototype.filter(callbackfn [, thisArg])
-	  filter: function filter(callbackfn /* , thisArg */) {
-	    return $filter(this, callbackfn, arguments[1]);
-	  }
-	});
 
 	// true  -> String#at
 	// false -> String#codePointAt
@@ -975,6 +896,220 @@
 	  }
 	};
 
+	var $min = Math.min;
+	var $push = [].push;
+	var $SPLIT = 'split';
+	var LENGTH = 'length';
+	var LAST_INDEX$1 = 'lastIndex';
+	var MAX_UINT32 = 0xffffffff;
+
+	// babel-minify transpiles RegExp('x', 'y') -> /x/y and it causes SyntaxError
+	var SUPPORTS_Y = !_fails(function () { });
+
+	// @@split logic
+	_fixReWks('split', 2, function (defined, SPLIT, $split, maybeCallNative) {
+	  var internalSplit;
+	  if (
+	    'abbc'[$SPLIT](/(b)*/)[1] == 'c' ||
+	    'test'[$SPLIT](/(?:)/, -1)[LENGTH] != 4 ||
+	    'ab'[$SPLIT](/(?:ab)*/)[LENGTH] != 2 ||
+	    '.'[$SPLIT](/(.?)(.?)/)[LENGTH] != 4 ||
+	    '.'[$SPLIT](/()()/)[LENGTH] > 1 ||
+	    ''[$SPLIT](/.?/)[LENGTH]
+	  ) {
+	    // based on es5-shim implementation, need to rework it
+	    internalSplit = function (separator, limit) {
+	      var string = String(this);
+	      if (separator === undefined && limit === 0) return [];
+	      // If `separator` is not a regex, use native split
+	      if (!_isRegexp(separator)) return $split.call(string, separator, limit);
+	      var output = [];
+	      var flags = (separator.ignoreCase ? 'i' : '') +
+	                  (separator.multiline ? 'm' : '') +
+	                  (separator.unicode ? 'u' : '') +
+	                  (separator.sticky ? 'y' : '');
+	      var lastLastIndex = 0;
+	      var splitLimit = limit === undefined ? MAX_UINT32 : limit >>> 0;
+	      // Make `global` and avoid `lastIndex` issues by working with a copy
+	      var separatorCopy = new RegExp(separator.source, flags + 'g');
+	      var match, lastIndex, lastLength;
+	      while (match = _regexpExec.call(separatorCopy, string)) {
+	        lastIndex = separatorCopy[LAST_INDEX$1];
+	        if (lastIndex > lastLastIndex) {
+	          output.push(string.slice(lastLastIndex, match.index));
+	          if (match[LENGTH] > 1 && match.index < string[LENGTH]) $push.apply(output, match.slice(1));
+	          lastLength = match[0][LENGTH];
+	          lastLastIndex = lastIndex;
+	          if (output[LENGTH] >= splitLimit) break;
+	        }
+	        if (separatorCopy[LAST_INDEX$1] === match.index) separatorCopy[LAST_INDEX$1]++; // Avoid an infinite loop
+	      }
+	      if (lastLastIndex === string[LENGTH]) {
+	        if (lastLength || !separatorCopy.test('')) output.push('');
+	      } else output.push(string.slice(lastLastIndex));
+	      return output[LENGTH] > splitLimit ? output.slice(0, splitLimit) : output;
+	    };
+	  // Chakra, V8
+	  } else if ('0'[$SPLIT](undefined, 0)[LENGTH]) {
+	    internalSplit = function (separator, limit) {
+	      return separator === undefined && limit === 0 ? [] : $split.call(this, separator, limit);
+	    };
+	  } else {
+	    internalSplit = $split;
+	  }
+
+	  return [
+	    // `String.prototype.split` method
+	    // https://tc39.github.io/ecma262/#sec-string.prototype.split
+	    function split(separator, limit) {
+	      var O = defined(this);
+	      var splitter = separator == undefined ? undefined : separator[SPLIT];
+	      return splitter !== undefined
+	        ? splitter.call(separator, O, limit)
+	        : internalSplit.call(String(O), separator, limit);
+	    },
+	    // `RegExp.prototype[@@split]` method
+	    // https://tc39.github.io/ecma262/#sec-regexp.prototype-@@split
+	    //
+	    // NOTE: This cannot be properly polyfilled in engines that don't support
+	    // the 'y' flag.
+	    function (regexp, limit) {
+	      var res = maybeCallNative(internalSplit, regexp, this, limit, internalSplit !== $split);
+	      if (res.done) return res.value;
+
+	      var rx = _anObject(regexp);
+	      var S = String(this);
+	      var C = _speciesConstructor(rx, RegExp);
+
+	      var unicodeMatching = rx.unicode;
+	      var flags = (rx.ignoreCase ? 'i' : '') +
+	                  (rx.multiline ? 'm' : '') +
+	                  (rx.unicode ? 'u' : '') +
+	                  (SUPPORTS_Y ? 'y' : 'g');
+
+	      // ^(? + rx + ) is needed, in combination with some S slicing, to
+	      // simulate the 'y' flag.
+	      var splitter = new C(SUPPORTS_Y ? rx : '^(?:' + rx.source + ')', flags);
+	      var lim = limit === undefined ? MAX_UINT32 : limit >>> 0;
+	      if (lim === 0) return [];
+	      if (S.length === 0) return _regexpExecAbstract(splitter, S) === null ? [S] : [];
+	      var p = 0;
+	      var q = 0;
+	      var A = [];
+	      while (q < S.length) {
+	        splitter.lastIndex = SUPPORTS_Y ? q : 0;
+	        var z = _regexpExecAbstract(splitter, SUPPORTS_Y ? S : S.slice(q));
+	        var e;
+	        if (
+	          z === null ||
+	          (e = $min(_toLength(splitter.lastIndex + (SUPPORTS_Y ? 0 : q)), S.length)) === p
+	        ) {
+	          q = _advanceStringIndex(S, q, unicodeMatching);
+	        } else {
+	          A.push(S.slice(p, q));
+	          if (A.length === lim) return A;
+	          for (var i = 1; i <= z.length - 1; i++) {
+	            A.push(z[i]);
+	            if (A.length === lim) return A;
+	          }
+	          q = p = e;
+	        }
+	      }
+	      A.push(S.slice(p));
+	      return A;
+	    }
+	  ];
+	});
+
+	// 7.2.2 IsArray(argument)
+
+	var _isArray = Array.isArray || function isArray(arg) {
+	  return _cof(arg) == 'Array';
+	};
+
+	var SPECIES$2 = _wks('species');
+
+	var _arraySpeciesConstructor = function (original) {
+	  var C;
+	  if (_isArray(original)) {
+	    C = original.constructor;
+	    // cross-realm fallback
+	    if (typeof C == 'function' && (C === Array || _isArray(C.prototype))) C = undefined;
+	    if (_isObject(C)) {
+	      C = C[SPECIES$2];
+	      if (C === null) C = undefined;
+	    }
+	  } return C === undefined ? Array : C;
+	};
+
+	// 9.4.2.3 ArraySpeciesCreate(originalArray, length)
+
+
+	var _arraySpeciesCreate = function (original, length) {
+	  return new (_arraySpeciesConstructor(original))(length);
+	};
+
+	// 0 -> Array#forEach
+	// 1 -> Array#map
+	// 2 -> Array#filter
+	// 3 -> Array#some
+	// 4 -> Array#every
+	// 5 -> Array#find
+	// 6 -> Array#findIndex
+
+
+
+
+
+	var _arrayMethods = function (TYPE, $create) {
+	  var IS_MAP = TYPE == 1;
+	  var IS_FILTER = TYPE == 2;
+	  var IS_SOME = TYPE == 3;
+	  var IS_EVERY = TYPE == 4;
+	  var IS_FIND_INDEX = TYPE == 6;
+	  var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
+	  var create = $create || _arraySpeciesCreate;
+	  return function ($this, callbackfn, that) {
+	    var O = _toObject($this);
+	    var self = _iobject(O);
+	    var f = _ctx(callbackfn, that, 3);
+	    var length = _toLength(self.length);
+	    var index = 0;
+	    var result = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined;
+	    var val, res;
+	    for (;length > index; index++) if (NO_HOLES || index in self) {
+	      val = self[index];
+	      res = f(val, index, O);
+	      if (TYPE) {
+	        if (IS_MAP) result[index] = res;   // map
+	        else if (res) switch (TYPE) {
+	          case 3: return true;             // some
+	          case 5: return val;              // find
+	          case 6: return index;            // findIndex
+	          case 2: result.push(val);        // filter
+	        } else if (IS_EVERY) return false; // every
+	      }
+	    }
+	    return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : result;
+	  };
+	};
+
+	var _strictMethod = function (method, arg) {
+	  return !!method && _fails(function () {
+	    // eslint-disable-next-line no-useless-call
+	    arg ? method.call(null, function () { /* empty */ }, 1) : method.call(null);
+	  });
+	};
+
+	var $filter = _arrayMethods(2);
+
+	_export(_export.P + _export.F * !_strictMethod([].filter, true), 'Array', {
+	  // 22.1.3.7 / 15.4.4.20 Array.prototype.filter(callbackfn [, thisArg])
+	  filter: function filter(callbackfn /* , thisArg */) {
+	    return $filter(this, callbackfn, arguments[1]);
+	  }
+	});
+
 	var max$1 = Math.max;
 	var min$2 = Math.min;
 	var floor$1 = Math.floor;
@@ -1165,155 +1300,20 @@
 	  };
 	});
 
-	// 7.3.20 SpeciesConstructor(O, defaultConstructor)
-
-
-	var SPECIES$2 = _wks('species');
-	var _speciesConstructor = function (O, D) {
-	  var C = _anObject(O).constructor;
-	  var S;
-	  return C === undefined || (S = _anObject(C)[SPECIES$2]) == undefined ? D : _aFunction(S);
-	};
-
-	var $min = Math.min;
-	var $push = [].push;
-	var $SPLIT = 'split';
-	var LENGTH = 'length';
-	var LAST_INDEX$1 = 'lastIndex';
-	var MAX_UINT32 = 0xffffffff;
-
-	// babel-minify transpiles RegExp('x', 'y') -> /x/y and it causes SyntaxError
-	var SUPPORTS_Y = !_fails(function () { });
-
-	// @@split logic
-	_fixReWks('split', 2, function (defined, SPLIT, $split, maybeCallNative) {
-	  var internalSplit;
-	  if (
-	    'abbc'[$SPLIT](/(b)*/)[1] == 'c' ||
-	    'test'[$SPLIT](/(?:)/, -1)[LENGTH] != 4 ||
-	    'ab'[$SPLIT](/(?:ab)*/)[LENGTH] != 2 ||
-	    '.'[$SPLIT](/(.?)(.?)/)[LENGTH] != 4 ||
-	    '.'[$SPLIT](/()()/)[LENGTH] > 1 ||
-	    ''[$SPLIT](/.?/)[LENGTH]
-	  ) {
-	    // based on es5-shim implementation, need to rework it
-	    internalSplit = function (separator, limit) {
-	      var string = String(this);
-	      if (separator === undefined && limit === 0) return [];
-	      // If `separator` is not a regex, use native split
-	      if (!_isRegexp(separator)) return $split.call(string, separator, limit);
-	      var output = [];
-	      var flags = (separator.ignoreCase ? 'i' : '') +
-	                  (separator.multiline ? 'm' : '') +
-	                  (separator.unicode ? 'u' : '') +
-	                  (separator.sticky ? 'y' : '');
-	      var lastLastIndex = 0;
-	      var splitLimit = limit === undefined ? MAX_UINT32 : limit >>> 0;
-	      // Make `global` and avoid `lastIndex` issues by working with a copy
-	      var separatorCopy = new RegExp(separator.source, flags + 'g');
-	      var match, lastIndex, lastLength;
-	      while (match = _regexpExec.call(separatorCopy, string)) {
-	        lastIndex = separatorCopy[LAST_INDEX$1];
-	        if (lastIndex > lastLastIndex) {
-	          output.push(string.slice(lastLastIndex, match.index));
-	          if (match[LENGTH] > 1 && match.index < string[LENGTH]) $push.apply(output, match.slice(1));
-	          lastLength = match[0][LENGTH];
-	          lastLastIndex = lastIndex;
-	          if (output[LENGTH] >= splitLimit) break;
-	        }
-	        if (separatorCopy[LAST_INDEX$1] === match.index) separatorCopy[LAST_INDEX$1]++; // Avoid an infinite loop
-	      }
-	      if (lastLastIndex === string[LENGTH]) {
-	        if (lastLength || !separatorCopy.test('')) output.push('');
-	      } else output.push(string.slice(lastLastIndex));
-	      return output[LENGTH] > splitLimit ? output.slice(0, splitLimit) : output;
-	    };
-	  // Chakra, V8
-	  } else if ('0'[$SPLIT](undefined, 0)[LENGTH]) {
-	    internalSplit = function (separator, limit) {
-	      return separator === undefined && limit === 0 ? [] : $split.call(this, separator, limit);
-	    };
-	  } else {
-	    internalSplit = $split;
-	  }
-
-	  return [
-	    // `String.prototype.split` method
-	    // https://tc39.github.io/ecma262/#sec-string.prototype.split
-	    function split(separator, limit) {
-	      var O = defined(this);
-	      var splitter = separator == undefined ? undefined : separator[SPLIT];
-	      return splitter !== undefined
-	        ? splitter.call(separator, O, limit)
-	        : internalSplit.call(String(O), separator, limit);
-	    },
-	    // `RegExp.prototype[@@split]` method
-	    // https://tc39.github.io/ecma262/#sec-regexp.prototype-@@split
-	    //
-	    // NOTE: This cannot be properly polyfilled in engines that don't support
-	    // the 'y' flag.
-	    function (regexp, limit) {
-	      var res = maybeCallNative(internalSplit, regexp, this, limit, internalSplit !== $split);
-	      if (res.done) return res.value;
-
-	      var rx = _anObject(regexp);
-	      var S = String(this);
-	      var C = _speciesConstructor(rx, RegExp);
-
-	      var unicodeMatching = rx.unicode;
-	      var flags = (rx.ignoreCase ? 'i' : '') +
-	                  (rx.multiline ? 'm' : '') +
-	                  (rx.unicode ? 'u' : '') +
-	                  (SUPPORTS_Y ? 'y' : 'g');
-
-	      // ^(? + rx + ) is needed, in combination with some S slicing, to
-	      // simulate the 'y' flag.
-	      var splitter = new C(SUPPORTS_Y ? rx : '^(?:' + rx.source + ')', flags);
-	      var lim = limit === undefined ? MAX_UINT32 : limit >>> 0;
-	      if (lim === 0) return [];
-	      if (S.length === 0) return _regexpExecAbstract(splitter, S) === null ? [S] : [];
-	      var p = 0;
-	      var q = 0;
-	      var A = [];
-	      while (q < S.length) {
-	        splitter.lastIndex = SUPPORTS_Y ? q : 0;
-	        var z = _regexpExecAbstract(splitter, SUPPORTS_Y ? S : S.slice(q));
-	        var e;
-	        if (
-	          z === null ||
-	          (e = $min(_toLength(splitter.lastIndex + (SUPPORTS_Y ? 0 : q)), S.length)) === p
-	        ) {
-	          q = _advanceStringIndex(S, q, unicodeMatching);
-	        } else {
-	          A.push(S.slice(p, q));
-	          if (A.length === lim) return A;
-	          for (var i = 1; i <= z.length - 1; i++) {
-	            A.push(z[i]);
-	            if (A.length === lim) return A;
-	          }
-	          q = p = e;
-	        }
-	      }
-	      A.push(S.slice(p));
-	      return A;
-	    }
-	  ];
-	});
-
 	var settingsSankey = {
 	  margin: {
-	    top: 0,
+	    top: 5,
 	    right: 0,
 	    left: 2,
-	    bottom: 0
+	    bottom: 10
 	  },
-	  aspectRatio: 16 / 33,
+	  aspectRatio: 16 / 30,
 	  // ......16 / 9,  // width/height
-	  width: 455,
+	  width: 480,
 	  // 480,
 	  viewBox: {
 	    x: 0,
-	    y: 40
+	    y: 0
 	  }
 	};
 
@@ -1324,7 +1324,7 @@
 	    left: 25,
 	    bottom: 47
 	  },
-	  aspectRatio: 0.86,
+	  aspectRatio: 0.91,
 	  // 16 / 9,  // width/height
 	  width: 220,
 	  showUnits: true,
@@ -1336,7 +1336,7 @@
 	  },
 	  viewBox: {
 	    x: -25,
-	    y: -28
+	    y: -22
 	  }
 	};
 
@@ -1345,9 +1345,55 @@
 	    top: 0,
 	    right: 60,
 	    left: 50,
+	    bottom: 25
+	  },
+	  aspectRatio: 1.6,
+	  // 16 / 9,  // width/height
+	  width: 220,
+	  showUnits: false,
+	  x: {
+	    ticks: 8
+	  },
+	  y: {
+	    ticks: 3
+	  },
+	  viewBox: {
+	    x: 0,
+	    y: -2
+	  }
+	};
+
+	var settingsAS = {
+	  margin: {
+	    top: 0,
+	    right: 20,
+	    left: 25,
+	    bottom: 19
+	  },
+	  aspectRatio: 0.88,
+	  // 16 / 9,  // width/height
+	  width: 220,
+	  showUnits: false,
+	  x: {
+	    ticks: 8
+	  },
+	  y: {
+	    ticks: 3
+	  },
+	  viewBox: {
+	    x: -25,
+	    y: 0
+	  }
+	};
+
+	var settingsNA = {
+	  margin: {
+	    top: 0,
+	    right: 60,
+	    left: 50,
 	    bottom: 40
 	  },
-	  aspectRatio: 1.4,
+	  aspectRatio: 1.1,
 	  // 16 / 9,  // width/height
 	  width: 220,
 	  showUnits: false,
@@ -1363,52 +1409,6 @@
 	  }
 	};
 
-	var settingsAS = {
-	  margin: {
-	    top: 0,
-	    right: 20,
-	    left: 25,
-	    bottom: 47
-	  },
-	  aspectRatio: 0.8,
-	  // 16 / 9,  // width/height
-	  width: 220,
-	  showUnits: false,
-	  x: {
-	    ticks: 8
-	  },
-	  y: {
-	    ticks: 3
-	  },
-	  viewBox: {
-	    x: -25,
-	    y: -10
-	  }
-	};
-
-	var settingsNA = {
-	  margin: {
-	    top: 0,
-	    right: 60,
-	    left: 50,
-	    bottom: 20
-	  },
-	  aspectRatio: 1.2,
-	  // 16 / 9,  // width/height
-	  width: 220,
-	  showUnits: false,
-	  x: {
-	    ticks: 8
-	  },
-	  y: {
-	    ticks: 3
-	  },
-	  viewBox: {
-	    x: 0,
-	    y: 0
-	  }
-	};
-
 	var settingsOC = {
 	  margin: {
 	    top: 0,
@@ -1416,7 +1416,7 @@
 	    left: 50,
 	    bottom: 22
 	  },
-	  aspectRatio: 4,
+	  aspectRatio: 4.5,
 	  // 16 / 9,  // width/height
 	  width: 220,
 	  showUnits: false,
@@ -1428,7 +1428,7 @@
 	  },
 	  viewBox: {
 	    x: 0,
-	    y: 2
+	    y: 0
 	  }
 	};
 
@@ -1439,7 +1439,7 @@
 	    left: 50,
 	    bottom: 40
 	  },
-	  aspectRatio: 2.1,
+	  aspectRatio: 2.3,
 	  // width/height
 	  width: 220,
 	  showUnits: false,
@@ -1447,7 +1447,7 @@
 	    ticks: 8
 	  },
 	  y: {
-	    ticks: 3
+	    ticks: 2
 	  },
 	  viewBox: {
 	    x: 0,
@@ -1508,8 +1508,7 @@
 	/* -- display areaChart -- */
 
 
-	function showSankey(svg, settings, graph) {
-	  var chartNum = d3.select(".data.sankey1").select("svg").attr("id").split("chart")[1];
+	function showSankey(chartNum, svg, settings, graph) {
 	  var outerWidth = settings.width;
 	  var outerHeight = Math.ceil(outerWidth / settings.aspectRatio);
 	  var innerHeight = outerHeight - settings.margin.top - settings.margin.bottom;
@@ -1698,12 +1697,12 @@
 	    chartInner = svg.append("g").attr("class", "margin-offset").attr("transform", "translate(" + settings.margin.left + "," + settings.margin.top + ")");
 	  }
 
-	  var x = d3.scale.ordinal().rangeRoundBands([0, innerWidth], settings.barWidth ? settings.barWidth : 0.1); // last param controls bar width
+	  var x = d3.scaleBand().rangeRound([5, innerWidth], settings.barWidth ? settings.barWidth : 0.1).paddingInner(0.05);
+	  var y = d3.scaleLinear().range([innerHeight, 0]);
+	  var color = d3.scaleOrdinal().range(["#A9C1D9", "#607890", "#ABBE71"]);
+	  var xAxis = d3.axisBottom(x); // .scale(x);
 
-	  var y = d3.scale.linear().rangeRound([innerHeight, 0]);
-	  var color = d3.scale.ordinal().range(["#A9C1D9", "#607890", "#ABBE71"]);
-	  var xAxis = d3.svg.axis().scale(x).orient("bottom");
-	  var yAxis = d3.svg.axis().scale(y).orient("left").tickFormat(d3.format(".2s")).ticks(settings.y.ticks);
+	  var yAxis = d3.axisLeft(y).tickFormat(d3.format(".2s")).ticks(settings.y.ticks);
 	  color.domain(d3.keys(data[0]).filter(function (key) {
 	    return key !== "country";
 	  }));
@@ -1746,7 +1745,7 @@
 	    if (settings.showUnits) {
 	      yAxisObj.append("text").attr("class", "chart-label").attr("x", -50).attr("y", 0).attr("dy", "-0.5em").attr("text-anchor", "start").html("".concat(i18next.t("units", {
 	        ns: "constants"
-	      }))).append("tspan").text("-1").attr("dx", ".01em").attr("dy", "-.2em");
+	      }))).append("tspan").text("-1").style("font-size", "9px").attr("y", -11).attr("dx", ".01em").attr("dy", "-.2em");
 	    }
 	  }
 
@@ -1756,11 +1755,13 @@
 	    return d.flux;
 	  }).enter().append("rect").attr("class", function (d) {
 	    return d.loac;
-	  }).attr("width", x.rangeBand()).attr("y", function (d) {
-	    return y(d.y1);
 	  }).attr("x", function (d) {
 	    return x(d.country) + settings.margin.left; // NB: NEED TO ADD THE LEFT MARGIN...WHY????
-	  }).attr("height", function (d) {
+	    // return x(d.country);
+	  }).attr("y", function (d) {
+	    return y(d.y1);
+	  }) // .attr("width", x.rangeBand())
+	  .attr("width", x.bandwidth()).attr("height", function (d) {
 	    return y(d.y0) - y(d.y1);
 	  });
 	  country.selectAll("rect").on("mousemove", function (d) {
@@ -1780,8 +1781,7 @@
 
 
 	i18n.load(["src/i18n"], function () {
-	  // d3.queue()
-	  queue().defer(d3.json, "data/LOAC_budget_TgCyr181113_sankey1.json").defer(d3.json, "data/LOAC_budget_TgCyr181113_sankey2.json").defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_SAmer.csv").defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_Africa.csv").defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_Asia.csv").defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_NAmer.csv").defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_Oceania.csv").defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_Europe.csv")["await"](function (error, sankeyfile1, sankeyfile2, stackedfileSA, stackedfileAfrica, stackedfileAsia, stackedfileNAmer, stackedfileOceania, stackedfileEurope) {
+	  d3.queue().defer(d3.json, "data/LOAC_budget_TgCyr181113_sankey1.json").defer(d3.json, "data/LOAC_budget_TgCyr181113_sankey2.json").defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_SAmer.csv").defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_Africa.csv").defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_Asia.csv").defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_NAmer.csv").defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_Oceania.csv").defer(d3.csv, "data/LOAC_budget_TgCyr181113_stackedbar_Europe.csv")["await"](function (error, sankeyfile1, sankeyfile2, stackedfileSA, stackedfileAfrica, stackedfileAsia, stackedfileNAmer, stackedfileOceania, stackedfileEurope) {
 	    sankeydata1 = sankeyfile1;
 	    sankeydata2 = sankeyfile2;
 	    stackedSA = stackedfileSA;
@@ -1793,8 +1793,8 @@
 
 	    pageText(); // Draw graphs
 
-	    showSankey(chartSankey1, settingsSankey, sankeydata1);
-	    showSankey(chartSankey2, settingsSankey, sankeydata2);
+	    showSankey(1, chartSankey1, settingsSankey, sankeydata1);
+	    showSankey(2, chartSankey2, settingsSankey, sankeydata2);
 	    showStackedBar(chartSA, settingsSA, stackedSA);
 	    showStackedBar(chartAF, settingsAF, stackedAfrica);
 	    showStackedBar(chartAS, settingsAS, stackedAsia);
