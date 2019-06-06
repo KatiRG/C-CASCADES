@@ -13,6 +13,11 @@ text, .container {
     margin: -20px;
 }
 
+.col-lg-1 {
+  float: right;
+  margin-top: -2.5em;
+}
+
 .container {
   position: relative;
   margin-right: auto;
@@ -22,17 +27,40 @@ text, .container {
   border: 1px solid #fff;
 }
 
-.headings {
-  font-size: 20px;
-  padding-left: 20px;
-  color: #565656;
-  text-align: center;
+.container::before, .container::after {
+  display: table;
+  content: " ";
 }
 
-#helpButton {
-  position: absolute;
-  left: 15px;
-  top: 4px;
+.container::after {
+  clear: both;
+}
+
+.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.428571429;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.headings {
+  font-size: 20px;
+  color: #565656;
+  text-align: center;
+  margin-bottom: .5em;
+}
+
+#helpButton,
+#backButton {
   background-color: #ffaa1b;
   border-color: #fff;
   color: #000;
@@ -199,4 +227,25 @@ table, th, td {
 th, td {
   padding: 2px;
   text-align: left;
+}
+
+/* Boostrap overrides */
+.col-sm-5 {
+  width: 39.66666667%;
+}
+
+.col-sm-2 {
+  width: 15.66666667%;
+}
+
+.col-sm-5,
+.col-sm-2 {
+  float: left;
+  padding-right: 5px;
+  padding-left:5px;
+}
+
+.row {
+  margin-right: -5px;
+  margin-left: -5px;
 }

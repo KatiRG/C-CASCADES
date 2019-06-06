@@ -78,7 +78,7 @@ const init = (urlRoot = "") => {
         linkType: "dotOnly",
         divToHelpId: "helpInlandwater",
         text: i18next.t("helpInlandwater", {ns: "helpOverlay"}),
-        marginTop: 245,
+        marginTop: 295,
         marginLeft: 0,
         textLengthByLine: 70,
         myTitle: i18next.t("helpTitle", {ns: "helpOverlay"})
@@ -87,7 +87,7 @@ const init = (urlRoot = "") => {
         linkType: "dotOnly",
         divToHelpId: "helpLakeRef",
         text: i18next.t("helpLakeRef", {ns: "helpOverlay"}),
-        marginTop: 310,
+        marginTop: 360,
         marginLeft: 0,
         textLengthByLine: 30
       },
@@ -95,7 +95,7 @@ const init = (urlRoot = "") => {
         linkType: "middle",
         divToHelpId: "helpHighLat",
         text: i18next.t("helpHighLat", {ns: "helpOverlay"}),
-        marginTop: 400,
+        marginTop: 450,
         marginLeft: 350,
         textLengthByLine: 40
       },
@@ -103,7 +103,7 @@ const init = (urlRoot = "") => {
         linkType: "dotOnly",
         divToHelpId: "helpEstRef",
         text: i18next.t("helpEstRef", {ns: "helpOverlay"}),
-        marginTop: 480,
+        marginTop: 530,
         marginLeft: 0,
         textLengthByLine: 30
       },
@@ -111,7 +111,7 @@ const init = (urlRoot = "") => {
         linkType: "dotOnly",
         divToHelpId: "helpLowLat",
         text: i18next.t("helpLowLat", {ns: "helpOverlay"}),
-        marginTop: 690,
+        marginTop: 740,
         marginLeft: 0,
         textLengthByLine: 50
       },
@@ -119,7 +119,7 @@ const init = (urlRoot = "") => {
         linkType: "middle",
         divToHelpId: "helpCountry",
         text: i18next.t("helpCountry", {ns: "helpOverlay"}),
-        marginTop: 300,
+        marginTop: 350,
         marginLeft: 850,
         textLengthByLine: 25
       },
@@ -127,7 +127,7 @@ const init = (urlRoot = "") => {
         linkType: "middle",
         divToHelpId: "helpRivers",
         text: i18next.t("helpRivers", {ns: "helpOverlay"}),
-        marginTop: 235,
+        marginTop: 285,
         marginLeft: 566,
         textLengthByLine: 30
       },
@@ -135,7 +135,7 @@ const init = (urlRoot = "") => {
         linkType: "dotOnly",
         divToHelpId: "helpAsia",
         text: i18next.t("helpAsia", {ns: "helpOverlay"}),
-        marginTop: 520,
+        marginTop: 570,
         marginLeft: 666,
         textLengthByLine: 30
       },
@@ -143,7 +143,7 @@ const init = (urlRoot = "") => {
         linkType: "dotOnly",
         divToHelpId: "helpLakes",
         text: i18next.t("helpLakes", {ns: "helpOverlay"}),
-        marginTop: 640,
+        marginTop: 690,
         marginLeft: 3,
         textLengthByLine: 50
       },
@@ -151,7 +151,7 @@ const init = (urlRoot = "") => {
         linkType: "dotOnly",
         divToHelpId: "helpEstuaries",
         text: i18next.t("helpEstuaries", {ns: "helpOverlay"}),
-        marginTop: 855,
+        marginTop: 905,
         marginLeft: 450,
         textLengthByLine: 50
       }

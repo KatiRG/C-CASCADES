@@ -1,0 +1,120 @@
+<?php
+
+/**
+ * Implements hook_libraries_info().
+ *
+ * @see hook_libraries_info()
+ */
+function ccascades_libraries_info() {
+  $libraries['ccascades'] = array(
+    'name' => 'ccascades',
+    'vendor url' => '',
+    'download url' => '',
+    'version callback' => 'ccascades_version_callback',
+    'files' => array(
+      'js' => array(
+        'lib/d3.v4.4.min.js',
+        'lib/i18next.min.js',
+        'lib/queue.v1.min.js',
+        'lib/sankey_v0.4.1_sameScaleFactor.js',
+        'lib/stc_visualization_components/utils.min.js',
+        'lib/jquery.class.js',
+        'lib/Help.js',
+        'src/index.js',
+      ),
+      'css' => array(
+        'src/ccascades.css',
+      ),
+    ),
+  );
+
+  return $libraries;
+}
+
+function ccascades_version_callback() {
+  return TRUE;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function ccascades_menu() {
+  $items['carbon-cascades'] = array(
+    'type' => MENU_NORMAL_ITEM,
+    'title' => t('Carbon fluxes across countries and regions from inland water sources'),
+    'description' => '',
+    'page callback' => 'ccascades_page',
+    'access callback' => 'user_access',
+    'access arguments' => array('access content'),
+  );
+
+  return $items;
+}
+
+/**
+ * Page callback.
+ */
+function ccascades_page() {
+  drupal_add_js(array('dv' => array('urlRoot' => libraries_get_path('ccascades'))), 'setting');
+  $content = array(
+    'help' => array(
+      '#type' => 'markup',
+      '#markup' => '
+      <div class="container" id="thisContainer" style="width:1000px; position: relative; margin-top: 1em;">
+            <!-- divs for help overlay -->
+            <div id="helpTitleName"></div>
+            <div id="helpInlandwater"></div>
+            <div id="helpLakeRef"></div>
+            <div id="helpEstRef"></div>
+            <div id="helpCountry"></div>
+            <div id="helpRivers"></div>
+            <div id="helpLakes"></div>
+            <div id="helpEstuaries"></div>
+            <div id="helpAsia"></div>
+            <div id="helpHighLat"></div>
+            <div id="helpLowLat"></div>
+            <div class="row">
+                <div class="col-lg-11 headings" id="pageTitle"></div>
+                <div class="col-lg-1">
+                    <button id="helpButton" class="btn btn-info" type="button">Help</button>
+                    <a id="backButton" class="btn btn-info" href="/en/LOAC-emissions">Back to info</a>
+                </div>
+            </div>'
+    ),
+    'intro' => array(
+      '#type' => 'markup',
+      '#markup' => '<div id="infotext">Inland water carbon flux
+      estimates for the present day showing contributions in Tg C yr<sup>-1</sup>
+      from 3 inland sources (Rivers, Lakes, and Estuaries) for 3 latitude bands and
+      6 continental regions. Stacked bars show breakdown by country for each region.
+      Data sources:
+      <a target="_blank" href="https://doi.org/10.1111/gcb.13902">Hastie et al. (2018)</a>,
+      <a target="_blank" href="https://doi.org/10.1002/2014GB004941">Lauerwald et al. (2015)</a>,
+      <a target="_blank" href="https://doi.org/10.5194/hess-17-2029-2013">Laruelle et al. (2013)</a>, and
+      <a target="_blank" href="http://dx.doi.org/10.1038/nature12760">Raymond et al. (2013)</a>.<br><br>
+      One terragram (TgC y⁻¹) is one million ton of carbon per year.
+      </div>
+      <div class="col-lg-10" id="subtitle">Total inland water carbon fluxes: 1292.0 Tg C yr<sup>-1</sup></div>',
+    ),
+    'data' => array(
+      '#type' => 'markup',
+      '#markup' => '<div class="row">
+          <div class="col-sm-5"><div class="data sankey1"></div></div>
+          <div class="col-sm-5"><div class="data sankey2"></div></div>
+          <div class="col-sm-2">
+              <div class="row"><div class="data SAdata"></div></div>
+              <div class="row"><div class="data AFdata"></div></div>
+              <div class="row"><div class="data ASdata"></div></div>
+              <div class="row"><div class="data NAdata"></div></div>
+              <div class="row"><div class="data OCdata"></div></div>
+              <div class="row"><div class="data EUdata"></div></div>
+          </div>
+      </div>',
+      '#attached' => array(
+        'libraries_load' => array(array('ccascades')),
+      )
+    )
+  );
+
+  return $content;
+}
