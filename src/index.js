@@ -62,6 +62,39 @@ const chartEU = d3.select(".data.EUdata")
     .append("svg")
     .attr("id", "stackedbar_Europe");
 
+// ----------------------------------------------------------------
+// Help button
+d3.select("#helpButton")
+    .on("click", function() {
+      createHelp();
+    });
+
+function createHelp() {
+  const parameters = {};
+  parameters.parentContainerId = "#thisContainer";
+  parameters.helpArray = [
+    {
+      linkType: "dotOnly",
+      divToHelpId: "helpTitleName",
+      text: i18next.t("helpTitleName", {ns: "helpOverlay"}),
+      marginTop: 100,
+      marginLeft: 250,
+      textLengthByLine: 60,
+      myTitle: i18next.t("helpTitle", {ns: "helpOverlay"}),
+      myfooter: i18next.t("helpFooter", {ns: "helpOverlay"})
+    },
+    {
+      linkType: "dotOnly",
+      divToHelpId: "helpBU",
+      text: i18next.t("helpBU", {ns: "helpOverlay"}),
+      marginTop: 100,
+      marginLeft: -312,
+      textLengthByLine: 30
+    }
+  ];
+  new window.Help( parameters );
+}
+
 // -----------------------------------------------------------------------------
 // FNS
 // page texts

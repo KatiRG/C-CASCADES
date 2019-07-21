@@ -1,5 +1,9 @@
 {
   "en": {
+    "helpOverlay": {
+      "helpTitleName": "These interactive bar charts show the per capita CO₂ emissions for hundreds of cities world-wide, organized by geographical region.",
+      "helpBU": "Hover over a bar to highlight a city on the bar chart and the map, and display its statistics in the info area."
+    },
     "constants": {
       "units": "Tg C yr<sup>-1</sup>",
       "linkURL": "https://www.statcan.gc.ca/eng/concepts/definitions/guide-symbol"

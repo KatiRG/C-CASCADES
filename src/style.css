@@ -17,6 +17,15 @@ body {
   text-align: center;
 }
 
+#helpButton {
+  position: absolute;
+  left: 15px; 
+  top: 4px;
+  background-color: #ffaa1b;
+  border-color: #fff;
+  color: #000;
+}
+
 #infotext {
   top: 10px;
   padding-bottom: 7px;
@@ -24,6 +33,7 @@ body {
 
 #subtitle {
   top: 30px;
+  left: -73px;
   font-size: 14px;
   font-weight: bold;
   text-align: center;
