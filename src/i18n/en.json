@@ -1,7 +1,7 @@
 {
   "en": {
     "helpOverlay": {
-      "helpTitleName": "These interactive bar charts show the per capita CO₂ emissions for hundreds of cities world-wide, organized by geographical region.",
+      "helpTitle": "CO<sub>2</sub> emissions for 3 latitudinal bands (left) and the 5 continents (right) partitioned into 3 sources",
       "helpBU": "Hover over a bar to highlight a city on the bar chart and the map, and display its statistics in the info area."
     },
     "constants": {

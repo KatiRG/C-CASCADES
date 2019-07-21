@@ -6,8 +6,11 @@ body {
 }
 
 .container {
-  margin: 0 auto;
-  text-align: left;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 15px;
+  padding-left: 15px;
+  border: 1px solid #fff;
 }
 
 .headings {
@@ -24,6 +27,27 @@ body {
   background-color: #ffaa1b;
   border-color: #fff;
   color: #000;
+}
+
+.helpOverlay {
+  top: 12px;
+}
+.helpOverlayTitle {
+  color: #fff;
+  font: bold;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 13px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.helpOverlayFooter {
+  color: #fff;
+  font-size: 14px;
+  font-style: italic;
+  text-align: left;
+  margin-top: 955px;
+  margin-left: 20px;
 }
 
 #infotext {
