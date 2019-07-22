@@ -1,12 +1,19 @@
 {
   "en": {
     "helpOverlay": {
-      "helpTitle": "CO<sub>2</sub> emissions for 3 latitudinal bands (left) and the 5 continents (right) partitioned into 3 sources",
-      "helpBU": "Hover over a bar to highlight a city on the bar chart and the map, and display its statistics in the info area."
+      "helpTitle": "CO<sub>2</sub> emissions for 3 latitudinal bands (left) and the 5 continents (right) partitioned into 3 sources (rivers, lakes, estuaries) as estimated using a bottom-up (BU) approach relying on high spatial-resolution (0.5°) products. These estimates are mean climatologies for the last 3–4 decades. Hover over a region, source or flow path to see its contribution to the global CO<sub>2</sub> budget of inland waters.",
+      "helpBU": "Bottom-up estimates: based on diverse data inventories and observation-driven upscaling approaches. Decadal trends in inland water CO2 emissions are not yet available at the continental or global scales. The decomposition of the total flux between natural and anthropogenic contributions is also largely unknown, at least in quantitative terms (Regnier et al., 2013).",
+      "helpInlandwater": "Global lake, estuary and river surface areas are 3.106, 1.106, and 0.65.106 km2, respectively. Small streams and ponds, and floodplains are currently not  included in the inland water budget.",
+      "helpCountry": "Major emitters at the country level are also shown. Note the different scales.",
+      "helpRivers": "Continental-scale emissions are largely dominated by rivers in S. America and Africa.",
+      "helpLakes": "Lakes dominate continental-scale emissions in N. America and Europe.",
+      "helpEstuaries": "Estuaries Estuaries contribute significantly in Asia, N. America and Europe.",
+      "helpAsia": "In Asia, both rivers and lakes are significant sources.",
+      "helpHighLat": "The latitudinal distribution of CO2 emissions primarily reflects the distribution of water surface area, with lakes largely dominant at high-latitudes.",
+      "helpLowLat": "Rivers contribute most at low-latitudes. The river CO2 emission rate per unit area is also significantly larger in the Tropics than in other latitudinal bands."
     },
     "constants": {
-      "units": "Tg C yr<sup>-1</sup>",
-      "linkURL": "https://www.statcan.gc.ca/eng/concepts/definitions/guide-symbol"
+      "units": "Tg C yr<sup>-1</sup>"
     },
      "pageText": {
       "titletag": "Carbon Fluxes",
@@ -29,3 +36,5 @@
    
   }
 }
+
+
