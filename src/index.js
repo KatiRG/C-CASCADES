@@ -75,21 +75,21 @@ function createHelp() {
   parameters.helpArray = [
     {
       linkType: "dotOnly",
-      divToHelpId: "helpTitleName",
-      text: i18next.t("helpTitleName", {ns: "helpOverlay"}),
-      marginTop: 100,
-      marginLeft: 250,
-      textLengthByLine: 60,
+      divToHelpId: "helpBU",
+      text: i18next.t("helpBU", {ns: "helpOverlay"}),
+      marginTop: 170,
+      marginLeft: -210,
+      textLengthByLine: 100,
       myTitle: i18next.t("helpTitle", {ns: "helpOverlay"}),
       myfooter: i18next.t("helpFooter", {ns: "helpOverlay"})
     },
     {
       linkType: "dotOnly",
-      divToHelpId: "helpBU",
-      text: i18next.t("helpBU", {ns: "helpOverlay"}),
-      marginTop: 100,
-      marginLeft: -312,
-      textLengthByLine: 30
+      divToHelpId: "helpInlandwater",
+      text: i18next.t("helpInlandwater", {ns: "helpOverlay"}),
+      marginTop: 235,
+      marginLeft: -230,
+      textLengthByLine: 50
     }
   ];
   new window.Help( parameters );

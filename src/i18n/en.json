@@ -1,12 +1,12 @@
 {
   "en": {
     "helpOverlay": {
-      "helpTitle": "CO<sub>2</sub> emissions for 3 latitudinal bands (left) and the 5 continents (right) partitioned into 3 sources",
-      "helpBU": "Hover over a bar to highlight a city on the bar chart and the map, and display its statistics in the info area."
+      "helpTitle": "CO<sub>2</sub> emissions for 3 latitudinal bands (left) and the 5 continents (right) partitioned into 3 sources (rivers, lakes, estuaries) as estimated using a bottom-up (BU) approach relying on high spatial-resolution (0.5°) products. These estimates are mean climatologies for the last 3–4 decades. Hover over a region, source or flow path to see its contribution to the global CO<sub>2</sub> budget of inland waters.",
+      "helpBU": "Bottom-up estimates: based on diverse data inventories and observation-driven upscaling approaches.",
+      "helpInlandwater": "Global lake, estuary and river surface areas are 3.106, 1.106, and 0.65.106 km2, respectively."
     },
     "constants": {
-      "units": "Tg C yr<sup>-1</sup>",
-      "linkURL": "https://www.statcan.gc.ca/eng/concepts/definitions/guide-symbol"
+      "units": "Tg C yr<sup>-1</sup>"
     },
      "pageText": {
       "titletag": "Carbon Fluxes",
@@ -29,3 +29,5 @@
    
   }
 }
+
+
