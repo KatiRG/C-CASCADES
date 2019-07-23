@@ -1,13 +1,23 @@
 body {
   padding-top: 10px;
-  font-family: "Ubuntu", sans-serif;
   font-size: 14px;
   color: #555;
 }
 
+text, .container {
+  font-family: "Ubuntu", sans-serif;
+}
+
+.col-lg-2 {
+    margin: -20px;
+}
+
 .container {
-  margin: 0 auto;
-  text-align: left;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 15px;
+  padding-left: 15px;
+  border: 1px solid #fff;
 }
 
 .headings {
@@ -17,12 +27,44 @@ body {
   text-align: center;
 }
 
+#helpButton {
+  position: absolute;
+  left: 15px; 
+  top: 4px;
+  background-color: #ffaa1b;
+  border-color: #fff;
+  color: #000;
+}
+
+.helpOverlay {
+  top: 12px;
+}
+.helpOverlayTitle {
+  color: #fff;
+  font: bold;
+  font-size: 18px;
+  text-align: center;
+  margin-top: 13px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.helpOverlayFooter {
+  color: #fff;
+  font-size: 14px;
+  font-style: italic;
+  text-align: left;
+  margin-top: 955px;
+  margin-left: 20px;
+}
+
 #infotext {
   top: 10px;
+  padding-bottom: 17px;
 }
 
 #subtitle {
   top: 30px;
+  left: 23px;
   font-size: 14px;
   font-weight: bold;
   text-align: center;
@@ -55,6 +97,9 @@ div.tooltip {
 .node text {
   pointer-events: none;
   fill: #555;
+  font-weight: bold;
+  font-size: 16px;
+  font-family: "Ubuntu", sans-serif;
 }
 
 .link {
@@ -84,9 +129,6 @@ div.tooltip {
   stroke-width: 2px;
   stroke: #555;
   /*shape-rendering: crispEdges;*/
-}
-.node text {
-  font-weight: bold;
 }
 .Rivers {
   fill: #A9C1D9;

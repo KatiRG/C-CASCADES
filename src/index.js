@@ -63,6 +63,95 @@ const init = (urlRoot = "") => {
       .append("svg")
       .attr("id", "stackedbar_Europe");
 
+  // ----------------------------------------------------------------
+  // Help button
+  d3.select("#helpButton")
+      .on("click", function() {
+        createHelp();
+      });
+
+  function createHelp() {
+    const parameters = {};
+    parameters.parentContainerId = "#thisContainer";
+    parameters.helpArray = [
+      {
+        linkType: "dotOnly",
+        divToHelpId: "helpBU",
+        text: i18next.t("helpBU", {ns: "helpOverlay"}),
+        marginTop: 120,
+        marginLeft: -210,
+        textLengthByLine: 100,
+        myTitle: i18next.t("helpTitle", {ns: "helpOverlay"}),
+        myfooter: i18next.t("helpFooter", {ns: "helpOverlay"})
+      },
+      {
+        linkType: "dotOnly",
+        divToHelpId: "helpInlandwater",
+        text: i18next.t("helpInlandwater", {ns: "helpOverlay"}),
+        marginTop: 210,
+        marginLeft: -210,
+        textLengthByLine: 70
+      },
+      {
+        linkType: "left",
+        divToHelpId: "helpHighLat",
+        text: i18next.t("helpHighLat", {ns: "helpOverlay"}),
+        marginTop: 290,
+        marginLeft: 90,
+        textLengthByLine: 40
+      },
+      {
+        linkType: "dotOnly",
+        divToHelpId: "helpLowLat",
+        text: i18next.t("helpLowLat", {ns: "helpOverlay"}),
+        marginTop: 770,
+        marginLeft: -320,
+        textLengthByLine: 40
+      },
+      {
+        linkType: "dotOnly",
+        divToHelpId: "helpCountry",
+        text: i18next.t("helpCountry", {ns: "helpOverlay"}),
+        marginTop: 200,
+        marginLeft: 610,
+        textLengthByLine: 25
+      },
+      {
+        linkType: "dotOnly",
+        divToHelpId: "helpRivers",
+        text: i18next.t("helpRivers", {ns: "helpOverlay"}),
+        marginTop: 370,
+        marginLeft: 147,
+        textLengthByLine: 50
+      },
+      {
+        linkType: "dotOnly",
+        divToHelpId: "helpAsia",
+        text: i18next.t("helpAsia", {ns: "helpOverlay"}),
+        marginTop: 570,
+        marginLeft: 347,
+        textLengthByLine: 50
+      },
+      {
+        linkType: "dotOnly",
+        divToHelpId: "helpLakes",
+        text: i18next.t("helpRivers", {ns: "helpOverlay"}),
+        marginTop: 715,
+        marginLeft: 147,
+        textLengthByLine: 50
+      },
+      {
+        linkType: "dotOnly",
+        divToHelpId: "helpEstuaries",
+        text: i18next.t("helpEstuaries", {ns: "helpOverlay"}),
+        marginTop: 910,
+        marginLeft: 147,
+        textLengthByLine: 60
+      }
+    ];
+    new window.Help( parameters );
+  }
+
   // -----------------------------------------------------------------------------
   // FNS
   // page texts
