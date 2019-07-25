@@ -1,13 +1,24 @@
 {
   "en": {
+    "helpOverlay": {
+      "helpTitle": "CO<sub>2</sub> emissions for 3 latitudinal bands (left) and the 5 continents (right) partitioned into 3 sources (rivers, lakes, estuaries) as estimated using a bottom-up (BU) approach relying on high spatial-resolution (0.5°) products. These estimates are mean climatologies for the last 3–4 decades. Hover over a region, source or flow path to see its contribution to the global CO<sub>2</sub> budget of inland waters.",
+      "helpBU": "Bottom-up estimates: based on diverse data inventories and observation-driven upscaling approaches. Decadal trends in inland water CO2 emissions are not yet available at the continental or global scales. The decomposition of the total flux between natural and anthropogenic contributions is also largely unknown, at least in quantitative terms (Regnier et al., 2013).",
+      "helpInlandwater": "Global lake, estuary and river surface areas are 3.106, 1.106, and 0.65.106 km2, respectively. Small streams and ponds, and floodplains are currently not  included in the inland water budget.",
+      "helpCountry": "Major emitters at the country level are also shown. Note the different scales.",
+      "helpRivers": "Continental-scale emissions are largely dominated by rivers in S. America and Africa.",
+      "helpLakes": "Lakes dominate continental-scale emissions in N. America and Europe.",
+      "helpEstuaries": "Estuaries Estuaries contribute significantly in Asia, N. America and Europe.",
+      "helpAsia": "In Asia, both rivers and lakes are significant sources.",
+      "helpHighLat": "The latitudinal distribution of CO2 emissions primarily reflects the distribution of water surface area, with lakes largely dominant at high-latitudes.",
+      "helpLowLat": "Rivers contribute most at low-latitudes. The river CO2 emission rate per unit area is also significantly larger in the Tropics than in other latitudinal bands."
+    },
     "constants": {
-      "units": "Tg C yr<sup>-1</sup>",
-      "linkURL": "https://www.statcan.gc.ca/eng/concepts/definitions/guide-symbol"
+      "units": "Tg C yr<sup>-1</sup>"
     },
      "pageText": {
       "titletag": "Carbon Fluxes",
       "title": "Carbon fluxes across countries and regions from inland water sources",
-      "infotext": "Inland water carbon flux estimates for the present day showing contributions in Tg C yr<sup>-1</sup> from 3 inland sources (Rivers, Lakes, and Estuaries) for 3 latitude bands and 6 continental regions. Stacked bars show breakdown by country for each region. Data sources: <a target='_blank' href='https://doi.org/10.1111/gcb.13902'>Hastie et al. (2018)</a>, <a target='_blank' href='https://doi.org/10.1002/2014GB004941'>Lauerwald et al. (2015)</a>, <a target='_blank' href='https://doi.org/10.5194/hess-17-2029-2013'>Laruelle et al. (2013)</a>, and <a target='_blank' href='http://dx.doi.org/10.1038/nature12760'>Raymond et al. (2013)</a>.",
+      "infotext": "Present-day inland water carbon flux estimates in Tg C yr<sup>-1</sup> from 3 inland sources (Rivers, Lakes, and Estuaries) for 3 latitude bands and 6 regions. Stacked bars show breakdown by country for each region. Data sources: <a target='_blank' href='https://onlinelibrary.wiley.com/doi/full/10.1111/gcb.13902'>Hastie et al. (2018)</a>, <a target='_blank' href='https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2014GB004941'>Lauerwald et al. (2015)</a>, <a target='_blank' href='https://www.hydrol-earth-syst-sci.net/17/2029/2013/'>Laruelle et al. (2013)</a>, <a target='_blank' href='https://www.nature.com/articles/nature12760'>Raymond et al. (2013)</a>, and <a target='_blank' href='https://www.nature.com/articles/ngeo1830'>Regnier et al. (2013)</a>.",
       "subtitle": "Total inland water carbon fluxes: 1292.0 Tg C yr<sup>-1</sup>"
     },
     "labels": {
@@ -25,3 +36,5 @@
    
   }
 }
+
+
