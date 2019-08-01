@@ -6,6 +6,7 @@ body {
 
 text, .container {
   font-family: "Ubuntu", sans-serif;
+  width: 1000px !important;
 }
 
 .col-lg-2 {
