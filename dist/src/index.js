@@ -1501,81 +1501,87 @@
 	    parameters.parentContainerId = "#thisContainer";
 	    parameters.helpArray = [{
 	      linkType: "dotOnly",
-	      divToHelpId: "helpBU",
-	      text: i18next.t("helpBU", {
-	        ns: "helpOverlay"
-	      }),
-	      marginTop: 120,
-	      marginLeft: -210,
-	      textLengthByLine: 100,
-	      myTitle: i18next.t("helpTitle", {
-	        ns: "helpOverlay"
-	      }),
-	      myfooter: i18next.t("helpFooter", {
-	        ns: "helpOverlay"
-	      })
-	    }, {
-	      linkType: "dotOnly",
 	      divToHelpId: "helpInlandwater",
 	      text: i18next.t("helpInlandwater", {
 	        ns: "helpOverlay"
 	      }),
-	      marginTop: 210,
-	      marginLeft: -210,
-	      textLengthByLine: 70
+	      marginTop: 235,
+	      marginLeft: -430,
+	      textLengthByLine: 70,
+	      myTitle: i18next.t("helpTitle", {
+	        ns: "helpOverlay"
+	      })
 	    }, {
-	      linkType: "left",
+	      linkType: "dotOnly",
+	      divToHelpId: "helpLakeRef",
+	      text: i18next.t("helpLakeRef", {
+	        ns: "helpOverlay"
+	      }),
+	      marginTop: 310,
+	      marginLeft: -410,
+	      textLengthByLine: 30
+	    }, {
+	      linkType: "middle",
 	      divToHelpId: "helpHighLat",
 	      text: i18next.t("helpHighLat", {
 	        ns: "helpOverlay"
 	      }),
-	      marginTop: 290,
-	      marginLeft: 90,
+	      marginTop: 400,
+	      marginLeft: -37,
 	      textLengthByLine: 40
+	    }, {
+	      linkType: "dotOnly",
+	      divToHelpId: "helpEstRef",
+	      text: i18next.t("helpEstRef", {
+	        ns: "helpOverlay"
+	      }),
+	      marginTop: 480,
+	      marginLeft: -410,
+	      textLengthByLine: 30
 	    }, {
 	      linkType: "dotOnly",
 	      divToHelpId: "helpLowLat",
 	      text: i18next.t("helpLowLat", {
 	        ns: "helpOverlay"
 	      }),
-	      marginTop: 770,
-	      marginLeft: -320,
-	      textLengthByLine: 40
+	      marginTop: 690,
+	      marginLeft: -410,
+	      textLengthByLine: 50
 	    }, {
-	      linkType: "dotOnly",
+	      linkType: "middle",
 	      divToHelpId: "helpCountry",
 	      text: i18next.t("helpCountry", {
 	        ns: "helpOverlay"
 	      }),
-	      marginTop: 200,
-	      marginLeft: 610,
+	      marginTop: 350,
+	      marginLeft: 465,
 	      textLengthByLine: 25
 	    }, {
-	      linkType: "dotOnly",
+	      linkType: "middle",
 	      divToHelpId: "helpRivers",
 	      text: i18next.t("helpRivers", {
 	        ns: "helpOverlay"
 	      }),
-	      marginTop: 370,
-	      marginLeft: 147,
-	      textLengthByLine: 50
+	      marginTop: 235,
+	      marginLeft: 320,
+	      textLengthByLine: 30
 	    }, {
 	      linkType: "dotOnly",
 	      divToHelpId: "helpAsia",
 	      text: i18next.t("helpAsia", {
 	        ns: "helpOverlay"
 	      }),
-	      marginTop: 570,
-	      marginLeft: 347,
-	      textLengthByLine: 50
+	      marginTop: 520,
+	      marginLeft: 170,
+	      textLengthByLine: 30
 	    }, {
 	      linkType: "dotOnly",
 	      divToHelpId: "helpLakes",
-	      text: i18next.t("helpRivers", {
+	      text: i18next.t("helpLakes", {
 	        ns: "helpOverlay"
 	      }),
-	      marginTop: 715,
-	      marginLeft: 147,
+	      marginTop: 640,
+	      marginLeft: 3,
 	      textLengthByLine: 50
 	    }, {
 	      linkType: "dotOnly",
@@ -1583,8 +1589,8 @@
 	      text: i18next.t("helpEstuaries", {
 	        ns: "helpOverlay"
 	      }),
-	      marginTop: 910,
-	      marginLeft: 147,
+	      marginTop: 807,
+	      marginLeft: 3,
 	      textLengthByLine: 60
 	    }];
 	    new window.Help(parameters);
