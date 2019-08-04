@@ -151,9 +151,9 @@ const init = (urlRoot = "") => {
         linkType: "dotOnly",
         divToHelpId: "helpEstuaries",
         text: i18next.t("helpEstuaries", {ns: "helpOverlay"}),
-        marginTop: 807,
+        marginTop: 755,
         marginLeft: 3,
-        textLengthByLine: 60
+        textLengthByLine: 50
       }
     ];
     new window.Help( parameters );
