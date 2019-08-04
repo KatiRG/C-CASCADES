@@ -30,7 +30,7 @@
 	  return store[key] || (store[key] = value !== undefined ? value : {});
 	})('versions', []).push({
 	  version: _core.version,
-	  mode: _library ? 'pure' : 'global',
+	  mode: 'global',
 	  copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
 	});
 	});
@@ -1589,9 +1589,9 @@
 	      text: i18next.t("helpEstuaries", {
 	        ns: "helpOverlay"
 	      }),
-	      marginTop: 807,
+	      marginTop: 755,
 	      marginLeft: 3,
-	      textLengthByLine: 60
+	      textLengthByLine: 50
 	    }];
 	    new window.Help(parameters);
 	  } // -----------------------------------------------------------------------------
