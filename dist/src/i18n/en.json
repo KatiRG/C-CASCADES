@@ -1,15 +1,15 @@
 {
   "en": {
     "helpOverlay": {
-      "helpTitle": "CO<sub>2</sub> emission estimates for 3 latitudinal bands (left) and the 5 continents (right) partitioned into 3 sources (rivers, lakes, estuaries). Estimates are mean climatologies for the last 3–4 decades based on a bottom-up approach using diverse data inventories and observation-driven upscaling. Decadal trends in inland water CO<sub>2</sub> emissions are not yet available at the continental or global scales. The decomposition of the total flux between natural and anthropogenic contributions is also largely unknown, at least in quantitative terms (Regnier et al., 2013).<br><br><b>Hover over a region, source or flow path to see its contribution to the global CO<sub>2</sub> budget of inland waters. To close help, click anywhere in the grey box.</b>",
+      "helpTitle": "CO₂ emission estimates for 3 latitudinal bands (left) and the 5 continents (right) partitioned into 3 sources (rivers, lakes, estuaries). Estimates are mean climatologies for the last 3–4 decades based on a bottom-up approach using diverse data inventories and observation-driven upscaling. Decadal trends in inland water CO₂ emissions are not yet available at the continental or global scales. The decomposition of the total flux between natural and anthropogenic contributions is also largely unknown, at least in quantitative terms (Regnier et al., 2013).<br><br><b>Hover over a region, source or flow path to see its contribution to the global CO₂ budget of inland waters. To close help, click anywhere in the grey box.</b>",
       "helpInlandwater": "Global lake, estuary and river surface areas are 3.106, 1.106, and 0.65.106 km2, respectively. Small streams, ponds, and floodplains are currently not  included in the inland water budget.",
       "helpCountry": "Major emitters at the country level are also shown in stacked bar charts. Note the different scales.",
       "helpRivers": "Continental-scale emissions are largely dominated by rivers in S. America and Africa.",
       "helpLakes": "Lakes dominate continental-scale emissions in N. America and Europe.",
       "helpEstuaries": "Estuaries contribute significantly in Asia, N. America and Europe.",
       "helpAsia": "In Asia, both rivers and lakes are significant sources of continental-scale emissions.",
-      "helpHighLat": "The latitudinal distribution of CO2 emissions primarily reflects the distribution of water surface area, with lakes largely dominant at high-latitudes.",
-      "helpLowLat": "Rivers contribute most at low-latitudes. The river CO2 emission rate per unit area is also significantly larger in the Tropics than in other latitudinal bands. River estimates based on emission data from Lauerwald et al. (2015).",
+      "helpHighLat": "The latitudinal distribution of CO₂ emissions primarily reflects the distribution of water surface area, with lakes largely dominant at high-latitudes.",
+      "helpLowLat": "Rivers contribute most at low-latitudes. The river CO₂ emission rate per unit area is also significantly larger in the Tropics than in other latitudinal bands. River estimates based on emission data from Lauerwald et al. (2015).",
       "helpEstRef": "Estuary estimates based on emission data from Laruelle et al. (2013).",
       "helpLakeRef": "Lake estimates based on emission data from Hastie et al. (2018)."
     },
@@ -34,8 +34,6 @@
       "Lakes": "February",
       "Estuaries": "December"
     }
-   
+
   }
 }
-
-
