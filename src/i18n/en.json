@@ -2,7 +2,7 @@
   "en": {
     "helpOverlay": {
       "helpTitle": "CO₂ emission estimates for 3 latitudinal bands (left) and the 5 continents (right) partitioned into 3 sources (rivers, lakes, estuaries). Estimates are mean climatologies for the last 3–4 decades based on a bottom-up approach using diverse data inventories and observation-driven upscaling. Decadal trends in inland water CO₂ emissions are not yet available at the continental or global scales. The decomposition of the total flux between natural and anthropogenic contributions is also largely unknown, at least in quantitative terms (Regnier et al., 2013).<br><br><b>Hover over a region, source or flow path to see its contribution to the global CO₂ budget of inland waters. To close help, click anywhere in the grey box.</b>",
-      "helpInlandwater": "Global lake, estuary and river surface areas are 3.106, 1.106, and 0.65.106 km2, respectively. Small streams, ponds, and floodplains are currently not  included in the inland water budget.",
+      "helpInlandwater": "Global lake, estuary and river surface areas are 3.106, 1.106, and 0.65.106 km², respectively. Small streams, ponds, and floodplains are currently not  included in the inland water budget.",
       "helpCountry": "Major emitters at the country level are also shown in stacked bar charts. Note the different scales.",
       "helpRivers": "Continental-scale emissions are largely dominated by rivers in S. America and Africa.",
       "helpLakes": "Lakes dominate continental-scale emissions in N. America and Europe.",
