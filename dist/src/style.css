@@ -14,6 +14,7 @@ text, .container {
 }
 
 .container {
+  position: relative;
   margin-right: auto;
   margin-left: auto;
   padding-right: 15px;
@@ -30,7 +31,7 @@ text, .container {
 
 #helpButton {
   position: absolute;
-  left: 15px; 
+  left: 15px;
   top: 4px;
   background-color: #ffaa1b;
   border-color: #fff;
@@ -38,8 +39,9 @@ text, .container {
 }
 
 .helpOverlay {
-  top: 12px;
+  top: 0;
 }
+
 .helpOverlayTitle {
   color: #fff;
   font: bold;
